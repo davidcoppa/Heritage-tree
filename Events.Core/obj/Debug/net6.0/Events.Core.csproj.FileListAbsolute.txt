@@ -573,5 +573,3 @@ D:\Dropbox\david\code\C#\Events\Events.Core\obj\Debug\net6.0\Events.Core.pdb
 D:\Dropbox\david\code\C#\Events\Events.Core\obj\Debug\net6.0\Events.Core.genruntimeconfig.cache
 D:\Dropbox\david\code\C#\Events\Events.Core\obj\Debug\net6.0\ref\Events.Core.dll
 D:\Dropbox\david\code\C#\Events\Events.Core\bin\Debug\net6.0\AutoMapper.dll
-D:\Dropbox\david\code\C#\Events\Events.Core\obj\Debug\net6.0\Events.Core.RazorAssemblyInfo.cache
-D:\Dropbox\david\code\C#\Events\Events.Core\obj\Debug\net6.0\Events.Core.RazorAssemblyInfo.cs

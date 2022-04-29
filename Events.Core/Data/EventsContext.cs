@@ -10,11 +10,20 @@ namespace EventsManager.Data
 {
     public class EventsContext : DbContext
     {
+        private readonly Action<EventsContext, ModelBuilder> _customizeModel;
+
         public EventsContext(DbContextOptions<EventsContext> options)
             : base(options)
         {
         }
-
+        //used in test project
+        public EventsContext(DbContextOptions<EventsContext> options, Action<EventsContext, ModelBuilder> customizeModel)
+              : base(options)
+        {
+            // customizeModel must be the same for every instance in a given application.
+            // Otherwise a custom IModelCacheKeyFactory implementation must be provided.
+            _customizeModel = customizeModel;
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
