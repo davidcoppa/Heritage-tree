@@ -10,3 +10,15 @@ where you will can:
   - manage the location of the person as place of birth and death
 
 The plan is to create the back-end first using .Net 6 and SQL-Server, and then start with front end using Angular +13
+
+back-end:
+  1- basic API comunication to do all the tasks
+  2- add user management 
+  3- add security
+
+Front-end
+  1- start with the basics forms to upload and data edition
+  2- add a visualization tree or similar model to get all the data in an easy view
+
+far future:
+  1- find missing relationships
