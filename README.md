@@ -12,9 +12,10 @@ where you will can:
 The plan is to create the back-end first using .Net 6 and SQL-Server, and then start with front end using Angular +13
 
 back-end:
-  1- basic API comunication to do all the tasks
-  2- add user management 
-  3- add security
+		1- basic API comunication to do all the tasks
+		2- Exception management
+  3- add user management 
+  4- add security
 
 Front-end
   1- start with the basics forms to upload and data edition
