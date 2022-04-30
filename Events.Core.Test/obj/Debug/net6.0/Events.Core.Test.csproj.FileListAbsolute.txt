@@ -656,3 +656,8 @@ D:\Dropbox\david\code\C#\Events\Events.Core.Test\obj\Debug\net6.0\refint\Events.
 D:\Dropbox\david\code\C#\Events\Events.Core.Test\obj\Debug\net6.0\Events.Core.Test.pdb
 D:\Dropbox\david\code\C#\Events\Events.Core.Test\obj\Debug\net6.0\Events.Core.Test.genruntimeconfig.cache
 D:\Dropbox\david\code\C#\Events\Events.Core.Test\obj\Debug\net6.0\ref\Events.Core.Test.dll
+D:\Dropbox\david\code\C#\Events\Events.Core.Test\bin\Debug\net6.0\Castle.Core.dll
+D:\Dropbox\david\code\C#\Events\Events.Core.Test\bin\Debug\net6.0\Moq.dll
+D:\Dropbox\david\code\C#\Events\Events.Core.Test\bin\Debug\net6.0\System.Net.Http.Formatting.dll
+D:\Dropbox\david\code\C#\Events\Events.Core.Test\bin\Debug\net6.0\System.Web.Http.dll
+D:\Dropbox\david\code\C#\Events\Events.Core.Test\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

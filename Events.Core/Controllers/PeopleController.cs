@@ -31,7 +31,7 @@ namespace Events.Core.Controllers
         [HttpGet("Get")]
         public async Task<IActionResult> Index()
         {
-            var data = await context.Person.ToListAsync();
+            List<Person> data = await context.Person.ToListAsync();
             return Ok(data);
         }
 
@@ -54,33 +54,36 @@ namespace Events.Core.Controllers
         }
 
         // POST: People/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Create([Bind("FirstName,SecondName,FirstSurname,SecondSurname,PlaceOfBirth,PlaceOfDeath,DateOfBirth,DateOfDeath,Sex")] PersonCreateDTO personDto)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create(PersonCreateDTO personDto)
         {
             if (ModelState.IsValid)
             {
-                var person=mapper.Map<Person>(personDto);
+                var person = mapper.Map<Person>(personDto);
+                if (!validateObject(person))
+                {
+                    context.Add(person);
+                    await context.SaveChangesAsync();
+                    return Ok(person);
+                }
 
-                context.Add(person);
-                await context.SaveChangesAsync();
-               // return RedirectToAction(nameof(Index));
-                return Ok(personDto);
+                return BadRequest("Model is null");
+
+
 
             }
-            //revesrse map???
             return BadRequest("Model is not valid");
         }
 
-       
+
         // POST: People/Edit/5
         [HttpPost("Edit/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,SecondName,FirstSurname,SecondSurname,PlaceOfBirth,PlaceOfDeath,DateOfBirth,DateOfDeath,Sex")] Person person)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Edit(int id, PersonEditDTO person)
         {
             if (id != person.ID)
             {
@@ -89,14 +92,25 @@ namespace Events.Core.Controllers
 
             if (ModelState.IsValid)
             {
+                var personToEdit = mapper.Map<Person>(person);
+
+                //TODO: data validation
+
+                var entity = await context.Person.FindAsync(id);
+                if (entity == null)
+                {
+                    return NotFound();
+                }
+
                 try
                 {
-                    context.Update(person);
+                    context.Entry(entity).CurrentValues.SetValues(personToEdit);
+
                     await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PersonExists(person.ID))
+                    if (!PersonExists(personToEdit.ID))
                     {
                         return NotFound();
                     }
@@ -105,7 +119,7 @@ namespace Events.Core.Controllers
                         throw;
                     }
                 }
-                return Ok(person);
+                return Ok(personToEdit);
 
             }
             return BadRequest("Model is not valid");
@@ -130,11 +144,24 @@ namespace Events.Core.Controllers
             return Ok();
         }
 
-    
+
         private bool PersonExists(int id)
         {
 
             return context.Person.Any(e => e.ID == id);
+        }
+
+        private bool validateObject(Person myObject)
+        {
+            return myObject.GetType().GetProperties()
+            .Where(p => p.GetValue(myObject) is string) // selecting only string props
+            .All(p => string.IsNullOrWhiteSpace((p.GetValue(myObject) as string)));
+
+            //return myObject.GetType()
+            //    .GetProperties() //get all properties on object
+            //    .Select(pi => pi.GetValue(myObject)) //get value for the property
+            //    .Any(value => value != null); // Check if one of the values is not null, if so it returns true.
+
         }
     }
 }

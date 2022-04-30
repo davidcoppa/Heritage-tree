@@ -1,13 +1,10 @@
 ﻿using EventsManager.Enums;
-using System;
-using System.Collections.Generic;
+using EventsManager.Model;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace EventsManager.Model
+namespace Events.Core.DTOs
 {
-    public class Person
+    public class PersonEditDTO
     {
         [Required]
         public int ID { get; set; }
@@ -27,6 +24,5 @@ namespace EventsManager.Model
         public List<Photos>? Photos { get; set; }
 
         public int? Order { get; set; }
-
     }
 }

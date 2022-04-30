@@ -6,7 +6,8 @@ namespace Events.Core.DTOs
 {
     public class PersonCreateDTO
     {
-        public string? FirstName { get; set; }
+        [Required]
+        public string FirstName { get; set; }
         public string? SecondName { get; set; }
         public string? FirstSurname { get; set; }
         public string? SecondSurname { get; set; }
