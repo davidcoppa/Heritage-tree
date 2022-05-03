@@ -10,6 +10,7 @@ using EventsManager.Data;
 using EventsManager.Model;
 using AutoMapper;
 using Events.Core.DTOs;
+using Events.Core.Common.Validators;
 
 namespace Events.Core.Controllers
 {
@@ -19,11 +20,13 @@ namespace Events.Core.Controllers
     {
         private readonly EventsContext context;
         private readonly IMapper mapper;
+        private readonly IDataValidator validator;
 
-        public PeopleController(EventsContext context, IMapper mapper)
+        public PeopleController(EventsContext context, IMapper mapper, IDataValidator validator)
         {
             this.context = context;
             this.mapper = mapper;
+            this.validator = validator;
 
         }
 
@@ -62,17 +65,13 @@ namespace Events.Core.Controllers
             if (ModelState.IsValid)
             {
                 var person = mapper.Map<Person>(personDto);
-                if (!validateObject(person))
+                if (validator.ValidateObject<Person>(person))
                 {
-                    context.Add(person);
-                    await context.SaveChangesAsync();
-                    return Ok(person);
+                    return BadRequest("Model is null or not valid");
                 }
-
-                return BadRequest("Model is null");
-
-
-
+                context.Add(person);
+                await context.SaveChangesAsync();
+                return Ok(person);
             }
             return BadRequest("Model is not valid");
         }
@@ -94,9 +93,7 @@ namespace Events.Core.Controllers
             {
                 var personToEdit = mapper.Map<Person>(person);
 
-                //TODO: data validation
-
-                var entity = await context.Person.FindAsync(id);
+                Person entity = await context.Person.FindAsync(id);
                 if (entity == null)
                 {
                     return NotFound();
@@ -141,7 +138,7 @@ namespace Events.Core.Controllers
             }
             context.Person.Remove(person);
             await context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
 
 
@@ -151,17 +148,6 @@ namespace Events.Core.Controllers
             return context.Person.Any(e => e.ID == id);
         }
 
-        private bool validateObject(Person myObject)
-        {
-            return myObject.GetType().GetProperties()
-            .Where(p => p.GetValue(myObject) is string) // selecting only string props
-            .All(p => string.IsNullOrWhiteSpace((p.GetValue(myObject) as string)));
-
-            //return myObject.GetType()
-            //    .GetProperties() //get all properties on object
-            //    .Select(pi => pi.GetValue(myObject)) //get value for the property
-            //    .Any(value => value != null); // Check if one of the values is not null, if so it returns true.
-
-        }
+     
     }
 }

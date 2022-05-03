@@ -4,6 +4,7 @@ using EventsManager.Data;
 using EventsManager.Model;
 using Events.Core.DTOs;
 using AutoMapper;
+using Events.Core.Common.Validators;
 
 namespace Events.Core.Controllers
 {
@@ -14,14 +15,18 @@ namespace Events.Core.Controllers
     {
         private readonly EventsContext context;
         private readonly IMapper mapper;
+        private readonly IDataValidator validator;
+
 
 
         public EventController(EventsContext context,
-            IMapper mapper
+            IMapper mapper,
+            IDataValidator validator
             )
         {
             this.context = context;
             this.mapper = mapper;
+            this.validator = validator;
 
         }
 

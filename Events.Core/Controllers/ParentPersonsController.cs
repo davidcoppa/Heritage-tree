@@ -1,15 +1,11 @@
-﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EventsManager.Data;
 using EventsManager.Model;
 using Events.Core.DTOs;
 using AutoMapper;
+using Events.Core.Common.Validators;
 
 namespace Events.Core.Controllers
 {
@@ -19,11 +15,14 @@ namespace Events.Core.Controllers
     {
         private readonly EventsContext context;
         private readonly IMapper mapper;
+        private readonly IDataValidator validator;
 
-        public ParentPersonsController(EventsContext context, IMapper mapper)
+
+        public ParentPersonsController(EventsContext context, IMapper mapper, IDataValidator validator)
         {
             this.context = context;
             this.mapper = mapper;
+            this.validator = validator;
         }
 
         // GET: ParentPersons
@@ -63,19 +62,27 @@ namespace Events.Core.Controllers
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Create([Bind("Description,PersonFather,PersonMother,Person")] ParentPersonCreateDTO parentPerson)
+        public async Task<IActionResult> Create( ParentPersonCreateDTO parentPerson)
         {
             if (ModelState.IsValid)
             {
                 ParentPerson person = mapper.Map<ParentPerson>(parentPerson);
-
-                //validate existence of the person
-                if (parentPerson.PersonMother != null)
+                if (validator.ValidateObject<ParentPerson>(person))
+                {
+                    return BadRequest("Model is null or not valid");
+                }
+                //validate existence of the person if not create (if it's valid)
+                if (parentPerson.Person != null)
                 {
                     Person son = await context.Person.Where(x => x.ID == parentPerson.Person.ID).FirstOrDefaultAsync();
                     if (son == null)
                     {
-                        return NotFound("son");
+                        if (validator.ValidateObject<Person>(parentPerson.Person))
+                        {
+                            return NotFound("son");
+                        }
+                        context.Add(parentPerson.Person);
+                        son = parentPerson.Person;
 
                     }
                     person.Person = son;
@@ -86,19 +93,27 @@ namespace Events.Core.Controllers
                     Person mom = await context.Person.Where(x => x.ID == parentPerson.PersonMother.ID).FirstOrDefaultAsync();
                     if (mom == null)
                     {
-                        return NotFound("mom");
-
+                        if (validator.ValidateObject<Person>(parentPerson.PersonMother))
+                        {
+                            return NotFound("mom");
+                        }
+                        context.Add(parentPerson.PersonMother);
+                        mom = parentPerson.PersonMother;
                     }
                     person.PersonMother = mom;
 
                 }
-                if (parentPerson.PersonMother != null)
+                if (parentPerson.PersonFather != null)
                 {
                     Person dad = await context.Person.Where(x => x.ID == parentPerson.PersonFather.ID).FirstOrDefaultAsync();
                     if (dad == null)
                     {
-                        return NotFound("dad");
-
+                        if (validator.ValidateObject<Person>(parentPerson.PersonFather))
+                        {
+                            return NotFound("dad");
+                        }
+                        context.Add(parentPerson.PersonFather);
+                        dad = parentPerson.PersonFather;
                     }
                     person.PersonFather = dad;
 

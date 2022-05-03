@@ -13,6 +13,7 @@ using EventsManager.Data;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
 using Events.Core.Common;
+using Events.Core.Common.Validators;
 
 namespace EventsManager
 {
@@ -32,16 +33,18 @@ namespace EventsManager
             services.AddDataProtection();
             services.AddControllersWithViews();
 
-            services.AddDbContext<EventsContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<EventsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddSingleton(provider =>
 
              new MapperConfiguration(config =>
              {
-
                  config.AddProfile(new AutoMapperProfiles());
              }).CreateMapper()
-         );
+             );
+           
+            //add a validator per controller
+            services.AddTransient<IDataValidator, DataValidator>();
 
             services.AddSwaggerGen(c =>
             {
@@ -99,7 +102,7 @@ namespace EventsManager
             app.UseRouting();
 
             app.UseAuthorization();
-         
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
