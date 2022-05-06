@@ -28,6 +28,13 @@ namespace Events.Core.Test.Helpers
                         return false;
                     }
                     return true;
+                case Event evt:
+                    if (evt.Title != null)
+                    {
+                        return false;
+                    }
+                    return true;
+
                 default:
                     return false;
             }

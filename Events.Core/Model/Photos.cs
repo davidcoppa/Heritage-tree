@@ -12,6 +12,7 @@ namespace EventsManager.Model
         [DataType(DataType.Date)]
         public DateTime? Date { get; set; }
         public string? Description { get; set; }
+        public string? Name { get; set; }
         public string? UrlFile { get; set; }
 
 

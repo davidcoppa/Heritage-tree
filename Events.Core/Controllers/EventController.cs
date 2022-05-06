@@ -61,12 +61,103 @@ namespace Events.Core.Controllers
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Create([Bind("Title,Description,EventDate")] EventCreateDTO @event)
+        public async Task<IActionResult> Create(EventCreateDTO evt)
         {
             
             if (ModelState.IsValid)
             {
-                Event evento =mapper.Map<Event>(@event);
+                Event evento = mapper.Map<Event>(evt);
+
+                if (validator.ValidateObject<Event>(evento))
+                {
+                    return BadRequest("Model is null or not valid");
+                }
+
+                if (evt.Person1 == null)
+                {
+                    return BadRequest("An event needs at least one person");
+                }
+                else
+                {
+                    Person son = await context.Person.Where(x => x.ID == evt.Person1.ID).FirstOrDefaultAsync();
+                    if (son == null)
+                    {
+                        if (validator.ValidateObject<Person>(evt.Person1))
+                        {
+                            return NotFound("Person1");
+                        }
+                        context.Add(evt.Person1);
+                        son = evt.Person1;
+
+                    }
+                    evt.Person1 = son;
+
+                }
+                if (evt.Person2!= null)
+                {
+                    Person mom = await context.Person.Where(x => x.ID == evt.Person2.ID).FirstOrDefaultAsync();
+                    if (mom == null)
+                    {
+                        if (validator.ValidateObject<Person>(evt.Person2))
+                        {
+                            return NotFound("Person2");
+                        }
+                        context.Add(evt.Person2);
+                        mom = evt.Person2;
+                    }
+                    evt.Person2 = mom;
+
+                }
+                if (evt.Person3!= null)
+                {
+                    Person dad = await context.Person.Where(x => x.ID == evt.Person3.ID).FirstOrDefaultAsync();
+                    if (dad == null)
+                    {
+                        if (validator.ValidateObject<Person>(evt.Person3))
+                        {
+                            return NotFound("Person3");
+                        }
+                        context.Add(evt.Person3);
+                        dad = evt.Person3;
+                    }
+                    evt.Person3 = dad;
+
+                }
+                if (evt.EventType!=null)
+                {
+                    EventTypes eventstypes = await context.EventType.Where(x => x.Id == evt.EventType.Id).FirstOrDefaultAsync();
+                    if (eventstypes==null)
+                    {
+                        if (validator.ValidateObject<EventTypes>(evt.EventType))
+                        {
+                            return NotFound("Event");
+                        }
+                        context.Add(evt.EventType);
+                        eventstypes = evt.EventType;
+                    }
+
+                    evt.EventType= eventstypes;
+                }
+                if (evt.photos != null)
+                {
+                    List<Photos> photos = new List<Photos>();
+                    foreach (var photo in evt.photos)
+                    {
+                        var photoElement = await context.Photos.Where(x => x.Id == photo.Id).FirstOrDefaultAsync();
+                        if (photoElement == null)
+                        {
+                            if (validator.ValidateObject<Photos>(photo))
+                            {
+                                return NotFound("photo");
+                            }
+                            context.Add(photo);
+                            photoElement = photo;
+                        }
+                        photos.Add(photoElement);
+                    }
+                 
+                    evt.photos = photos;
+                }
 
                 context.Add(evento);
                 await context.SaveChangesAsync();

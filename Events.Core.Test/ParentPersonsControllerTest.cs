@@ -203,9 +203,6 @@ namespace Events.Core.Test
 
             using (var context = CreateContext(options))
             {
-                context.Person.Add(pSon);
-                context.Person.Add(pMother);
-                context.Person.Add(pFather);
                 context.SaveChanges();
 
                 var testResul = new ParentPersonsController(context, mapper, validator);
