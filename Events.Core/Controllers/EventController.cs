@@ -57,13 +57,13 @@ namespace Events.Core.Controllers
             return Ok(@event);
         }
 
-       
+
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Create(EventCreateDTO evt)
         {
-            
+
             if (ModelState.IsValid)
             {
                 Event evento = mapper.Map<Event>(evt);
@@ -93,7 +93,7 @@ namespace Events.Core.Controllers
                     evt.Person1 = son;
 
                 }
-                if (evt.Person2!= null)
+                if (evt.Person2 != null)
                 {
                     Person mom = await context.Person.Where(x => x.ID == evt.Person2.ID).FirstOrDefaultAsync();
                     if (mom == null)
@@ -108,7 +108,7 @@ namespace Events.Core.Controllers
                     evt.Person2 = mom;
 
                 }
-                if (evt.Person3!= null)
+                if (evt.Person3 != null)
                 {
                     Person dad = await context.Person.Where(x => x.ID == evt.Person3.ID).FirstOrDefaultAsync();
                     if (dad == null)
@@ -123,10 +123,10 @@ namespace Events.Core.Controllers
                     evt.Person3 = dad;
 
                 }
-                if (evt.EventType!=null)
+                if (evt.EventType != null)
                 {
                     EventTypes eventstypes = await context.EventType.Where(x => x.Id == evt.EventType.Id).FirstOrDefaultAsync();
-                    if (eventstypes==null)
+                    if (eventstypes == null)
                     {
                         if (validator.ValidateObject<EventTypes>(evt.EventType))
                         {
@@ -136,7 +136,7 @@ namespace Events.Core.Controllers
                         eventstypes = evt.EventType;
                     }
 
-                    evt.EventType= eventstypes;
+                    evt.EventType = eventstypes;
                 }
                 if (evt.photos != null)
                 {
@@ -155,7 +155,7 @@ namespace Events.Core.Controllers
                         }
                         photos.Add(photoElement);
                     }
-                 
+
                     evt.photos = photos;
                 }
 
@@ -166,38 +166,47 @@ namespace Events.Core.Controllers
             return BadRequest("Model is not valid");
         }
 
-       
+
 
         // POST: Events/Edit/5
         [HttpPost("Edit/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Description,EventDate")] Event @event)
+        public async Task<IActionResult> Edit(int id, EventCreateEditDTO eventEdit)
         {
-            if (id != @event.ID)
+            if (id != eventEdit.ID)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                Event evento = mapper.Map<Event>(eventEdit);
+                Person entity = await context.Person.FindAsync(id);
+
+                if (entity != null)
                 {
-                    context.Update(@event);
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EventExists(@event.ID))
+                    try
                     {
-                        return NotFound();
+                        context.Entry(entity).CurrentValues.SetValues(evento);
+
+                        await context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!EventExists(evento.ID))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return Ok(evento);
                 }
-                return Ok(@event);
+                return NotFound("We can't edit the event");
+
             }
             return BadRequest("Model is not valid");
         }

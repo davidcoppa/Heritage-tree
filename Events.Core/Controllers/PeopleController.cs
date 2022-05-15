@@ -37,6 +37,13 @@ namespace Events.Core.Controllers
             List<Person> data = await context.Person.ToListAsync();
             return Ok(data);
         }
+        // GET: People
+        [HttpGet("GetFilter")]
+        public async Task<IActionResult> GetFilter([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page,[FromQuery] string search)
+        {
+            List<Person> data = await context.Person.ToListAsync();
+            return Ok(data);
+        }
 
         // GET: People/Details/5
         [HttpGet]

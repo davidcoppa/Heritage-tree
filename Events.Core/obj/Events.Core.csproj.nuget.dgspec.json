@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Dropbox\\david\\code\\C#\\Events\\Events.Core\\Events.Core.csproj": {}
+    "D:\\Dropbox\\david\\code\\C-S\\Events\\Events.Core\\Events.Core.csproj": {}
   },
   "projects": {
-    "D:\\Dropbox\\david\\code\\C#\\Events\\Events.Core\\Events.Core.csproj": {
+    "D:\\Dropbox\\david\\code\\C-S\\Events\\Events.Core\\Events.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Dropbox\\david\\code\\C#\\Events\\Events.Core\\Events.Core.csproj",
+        "projectUniqueName": "D:\\Dropbox\\david\\code\\C-S\\Events\\Events.Core\\Events.Core.csproj",
         "projectName": "Events.Core",
-        "projectPath": "D:\\Dropbox\\david\\code\\C#\\Events\\Events.Core\\Events.Core.csproj",
+        "projectPath": "D:\\Dropbox\\david\\code\\C-S\\Events\\Events.Core\\Events.Core.csproj",
         "packagesPath": "C:\\Users\\matlock\\.nuget\\packages\\",
-        "outputPath": "D:\\Dropbox\\david\\code\\C#\\Events\\Events.Core\\obj\\",
+        "outputPath": "D:\\Dropbox\\david\\code\\C-S\\Events\\Events.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Programs\\Vs-2019-Shared\\NuGetPackages"
@@ -51,6 +51,14 @@
             "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": {
               "target": "Package",
               "version": "[6.0.4, )"
+            },
+            "Microsoft.AspNetCore.SpaServices": {
+              "target": "Package",
+              "version": "[3.1.25, )"
+            },
+            "Microsoft.AspNetCore.SpaServices.Extensions": {
+              "target": "Package",
+              "version": "[6.0.5, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",

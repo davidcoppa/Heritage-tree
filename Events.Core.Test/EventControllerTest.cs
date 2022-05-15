@@ -105,7 +105,23 @@ namespace Events.Core.Test
         Photos photo2 = new Photos { Id = 2, Date = DateTime.Now, Name = "2.jpg", Description = "photo2", UrlFile = "c:/data2" };
         EventTypes eventypes = new EventTypes { Id = 1, Description = "test", Name = "test" };
 
-
+        EventCreateEditDTO evtEditGood = new () 
+        {
+            ID=1,
+            Description = "Edit event test full",
+            EventDate = DateTime.Now,
+            EventType = new EventTypes { Id = 1, Description = "test", Name = "test" },
+            Loccation = new Model.Location { Id = 1, Country = "US" },
+            Person1 = new Person { ID = 1, FirstName = "son" },
+            Person2 = new Person { ID = 2, FirstName = "ana" },
+            Person3 = new Person { ID = 3, FirstName = "juan" },
+            Title = "the test",
+            photos = new List<Photos>
+            {
+                new Photos{ Id=1, Date=DateTime.Now ,Name="1.jpg",Description="photo1",UrlFile="c:/data1"},
+                new Photos{ Id=2, Date=DateTime.Now ,Name="2.jpg",Description="photo2",UrlFile="c:/data2"},
+            }
+        };
         [TestMethod]
         public async Task GetAllTest()
         {
@@ -267,14 +283,6 @@ namespace Events.Core.Test
 
             using (var context = CreateContext(options))
             {
-        //        context.Person.Add(pSon);
-        //        context.Person.Add(pFather);
-        ////        context.Location.Add(location);
-        //        context.Photos.Add(photo1);
-        //        context.Photos.Add(photo2);
-        //      //  context.EventType.Add(eventypes);
-        //        context.SaveChanges();
-
                 var testResul = new EventController(context, mapper, validator);
                 IActionResult countResult = await testResul.Create(ppCreateNoMother);
 
@@ -302,19 +310,9 @@ namespace Events.Core.Test
 
             using (var context = CreateContext(options))
             {
-                //context.Person.Add(pSonBad);
-                //context.Person.Add(pFather);
-                //context.Person.Add(pMother);
-                //context.Location.Add(location);
-                //context.Photos.Add(photo1);
-                //context.Photos.Add(photo2);
-                //context.EventType.Add(eventypes);
-                //context.SaveChanges();
-
                 var testResul = new EventController(context, mapper, validator);
                 IActionResult countResult = await testResul.Create(ppCreateNoSon);
 
-             //   Assert.IsInstanceOfType(countResult, typeof(NotFoundObjectResult));
                 var contentResult = countResult as BadRequestObjectResult;
 
                 Assert.IsInstanceOfType(countResult, typeof(BadRequestObjectResult));
@@ -323,6 +321,37 @@ namespace Events.Core.Test
 
             }
         }
+
+        [TestMethod]
+        public async Task EditExistingEventRightValues()
+        {
+            var profile = new AutoMapperProfiles();
+            var mapConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
+            var mapper = new Mapper(mapConfiguration);
+            var validator = new ValidatorsMoq();
+
+            var options = new DbContextOptionsBuilder<EventsContext>()
+              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+              .Options;
+
+            using (var context = CreateContext(options))
+            {
+                context.Event.Add(evt);
+
+                context.SaveChanges();
+
+                var testResul = new EventController(context, mapper, validator);
+                IActionResult countResult = await testResul.Edit(1, evtEditGood);
+
+                var contentResult = countResult as OkObjectResult;
+
+                var value = contentResult?.Value as Event;
+                Assert.IsNotNull(value);
+                Assert.AreEqual("Edit event test full", value.Description);
+
+            }
+        }
+
 
         [TestMethod]
         public async Task DeletePerson()

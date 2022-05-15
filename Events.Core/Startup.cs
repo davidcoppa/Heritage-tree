@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using AutoMapper;
 using Events.Core.Common;
 using Events.Core.Common.Validators;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 
 namespace EventsManager
 {
@@ -34,6 +35,10 @@ namespace EventsManager
             services.AddControllersWithViews();
 
             services.AddDbContext<EventsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
 
             services.AddSingleton(provider =>
 
@@ -110,6 +115,29 @@ namespace EventsManager
                      pattern: "{controller}/{action=Index}/{id?}");
 
             });
+            if (!env.IsDevelopment())
+            {
+                using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+                {
+                    var context = serviceScope.ServiceProvider.GetRequiredService<EventsContext>();
+                    context.Database.Migrate();
+                }
+            };
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    //spa.Options.SourcePath = "ClientApp";
+
+
+                     //   spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+
+                      spa.UseAngularCliServer(npmScript: "start");
+                }
+            });
+
         }
     }
 }

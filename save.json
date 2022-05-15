@@ -1,0 +1,379 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Swagger specification",
+    "version": "1.0.0"
+  },
+  "definitions": {
+    "Sex": {
+      "type": "integer",
+      "description": "1 = Masculino\n2 = Femenino",
+      "x-enumNames": [
+        "Masculino",
+        "Femenino"
+      ],
+      "enum": [
+        1,
+        2
+      ]
+    },
+    "EventCreateDTO": {
+      "type": "object",
+      "required": [
+        "Title",
+        "EventType",
+        "Person1"
+      ],
+      "properties": {
+        "Title": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "EventDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "EventType": {
+          "$ref": "#/definitions/EventTypes"
+        },
+        "Person1": {
+          "$ref": "#/definitions/Person"
+        },
+        "Person2": {
+          "$ref": "#/definitions/Person"
+        },
+        "Person3": {
+          "$ref": "#/definitions/Person"
+        },
+        "photos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Photos"
+          }
+        },
+        "Loccation": {
+          "$ref": "#/definitions/Location"
+        }
+      }
+    },
+    "EventTypes": {
+      "type": "object",
+      "required": [
+        "Id",
+        "Name",
+        "Description"
+      ],
+      "properties": {
+        "Id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        }
+      }
+    },
+    "Person": {
+      "type": "object",
+      "required": [
+        "ID",
+        "FirstName",
+        "Sex"
+      ],
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "FirstName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "SecondName": {
+          "type": "string"
+        },
+        "FirstSurname": {
+          "type": "string"
+        },
+        "SecondSurname": {
+          "type": "string"
+        },
+        "PlaceOfBirth": {
+          "type": "string"
+        },
+        "PlaceOfDeath": {
+          "type": "string"
+        },
+        "DateOfBirth": {
+          "type": "string",
+          "format": "date"
+        },
+        "DateOfDeath": {
+          "type": "string",
+          "format": "date"
+        },
+        "Sex": {
+          "$ref": "#/definitions/Sex"
+        },
+        "Photos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Photos"
+          }
+        },
+        "Order": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Photos": {
+      "type": "object",
+      "required": [
+        "Id"
+      ],
+      "properties": {
+        "Id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Date": {
+          "type": "string",
+          "format": "date"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "UrlFile": {
+          "type": "string"
+        }
+      }
+    },
+    "Location": {
+      "type": "object",
+      "required": [
+        "Id"
+      ],
+      "properties": {
+        "Id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Country": {
+          "type": "string"
+        },
+        "City": {
+          "type": "string"
+        },
+        "lat": {
+          "type": "string"
+        },
+        "lgn": {
+          "type": "string"
+        }
+      }
+    },
+    "EventCreateEditDTO": {
+      "type": "object",
+      "required": [
+        "ID",
+        "Title",
+        "EventType",
+        "Person1"
+      ],
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Title": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "EventDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "EventType": {
+          "$ref": "#/definitions/EventTypes"
+        },
+        "Person1": {
+          "$ref": "#/definitions/Person"
+        },
+        "Person2": {
+          "$ref": "#/definitions/Person"
+        },
+        "Person3": {
+          "$ref": "#/definitions/Person"
+        },
+        "photos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Photos"
+          }
+        },
+        "Loccation": {
+          "$ref": "#/definitions/Location"
+        }
+      }
+    },
+    "ParentPersonCreateDTO": {
+      "type": "object",
+      "required": [
+        "Person"
+      ],
+      "properties": {
+        "Person": {
+          "$ref": "#/definitions/Person"
+        },
+        "PersonFather": {
+          "$ref": "#/definitions/Person"
+        },
+        "PersonMother": {
+          "$ref": "#/definitions/Person"
+        },
+        "Description": {
+          "type": "string"
+        }
+      }
+    },
+    "ParentPersonEditDTO": {
+      "type": "object",
+      "required": [
+        "ID",
+        "Person"
+      ],
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Person": {
+          "$ref": "#/definitions/Person"
+        },
+        "PersonFather": {
+          "$ref": "#/definitions/Person"
+        },
+        "PersonMother": {
+          "$ref": "#/definitions/Person"
+        },
+        "Description": {
+          "type": "string"
+        }
+      }
+    },
+    "PersonCreateDTO": {
+      "type": "object",
+      "required": [
+        "FirstName",
+        "Sex"
+      ],
+      "properties": {
+        "FirstName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "SecondName": {
+          "type": "string"
+        },
+        "FirstSurname": {
+          "type": "string"
+        },
+        "SecondSurname": {
+          "type": "string"
+        },
+        "PlaceOfBirth": {
+          "type": "string"
+        },
+        "PlaceOfDeath": {
+          "type": "string"
+        },
+        "DateOfBirth": {
+          "type": "string",
+          "format": "date"
+        },
+        "DateOfDeath": {
+          "type": "string",
+          "format": "date"
+        },
+        "Sex": {
+          "$ref": "#/definitions/Sex"
+        },
+        "Photos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Photos"
+          }
+        },
+        "Order": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "PersonEditDTO": {
+      "type": "object",
+      "required": [
+        "ID",
+        "FirstName",
+        "Sex"
+      ],
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "FirstName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "SecondName": {
+          "type": "string"
+        },
+        "FirstSurname": {
+          "type": "string"
+        },
+        "SecondSurname": {
+          "type": "string"
+        },
+        "PlaceOfBirth": {
+          "type": "string"
+        },
+        "PlaceOfDeath": {
+          "type": "string"
+        },
+        "DateOfBirth": {
+          "type": "string",
+          "format": "date"
+        },
+        "DateOfDeath": {
+          "type": "string",
+          "format": "date"
+        },
+        "Sex": {
+          "$ref": "#/definitions/Sex"
+        },
+        "Photos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Photos"
+          }
+        },
+        "Order": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    }
+  }
+}

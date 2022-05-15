@@ -9,9 +9,13 @@ namespace Events.Core.Common
         public AutoMapperProfiles()
         {
             CreateMap<Event, EventCreateDTO>().ReverseMap();
+            CreateMap<Event, EventCreateEditDTO>().ReverseMap();
+
             CreateMap<Person, PersonCreateDTO>().ReverseMap();
             CreateMap<Person, PersonEditDTO>().ReverseMap();
+
             CreateMap<ParentPerson, ParentPersonCreateDTO>().ReverseMap();
+            CreateMap<ParentPerson, ParentPersonEditDTO>().ReverseMap();
 
 
 

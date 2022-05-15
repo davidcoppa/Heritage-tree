@@ -67,6 +67,15 @@ namespace Events.Core.Test
             PersonFather = new Person { ID = 3, FirstName = "juan" }
         };
 
+        ParentPersonEditDTO ppeDto = new()
+        {
+            ID = 1,
+            Description = "NewSon",
+            Person = new Person { ID = 1,FirstName="son" },
+            PersonMother = new Person { FirstName = "ana" },
+            PersonFather = new Person { ID = 3, FirstName = "juan" }
+        };
+
 
         [TestMethod]
         public async Task GetAllTest()
@@ -272,6 +281,36 @@ namespace Events.Core.Test
 
                 Assert.IsInstanceOfType(countResult, typeof(NotFoundObjectResult));
 
+
+            }
+        }
+
+        [TestMethod]
+        public async Task EditExistingParentPersonRightValues()
+        {
+            var profile = new AutoMapperProfiles();
+            var mapConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
+            var mapper = new Mapper(mapConfiguration);
+            var validator = new ValidatorsMoq();
+
+            var options = new DbContextOptionsBuilder<EventsContext>()
+              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+              .Options;
+
+            using (var context = CreateContext(options))
+            {
+                context.ParentPerson.Add(pp);
+
+                context.SaveChanges();
+
+                var testResul = new ParentPersonsController(context, mapper, validator);
+                IActionResult countResult = await testResul.Edit(1, ppeDto);
+
+                var contentResult = countResult as OkObjectResult;
+
+                var value = contentResult?.Value as ParentPerson;
+                Assert.IsNotNull(value);
+                Assert.AreEqual("NewSon", value.Description);
 
             }
         }

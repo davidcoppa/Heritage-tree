@@ -131,7 +131,7 @@ namespace Events.Core.Controllers
         [HttpPost("Edit/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,PersonFather,PersonMother,Person")] ParentPerson parentPerson)
+        public async Task<IActionResult> Edit(int id, ParentPersonEditDTO parentPerson)
         {
             if (id != parentPerson.ID)
             {
@@ -140,23 +140,32 @@ namespace Events.Core.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                ParentPerson person = mapper.Map<ParentPerson>(parentPerson);
+                Person entity = await context.Person.FindAsync(id);
+                if (entity != null)
                 {
-                    context.Update(parentPerson);
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ParentPersonExists(parentPerson.ID))
+                    try
                     {
-                        return NotFound();
+                        context.Entry(entity).CurrentValues.SetValues(person);
+
+                        await context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ParentPersonExists(person.ID))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return Ok(person);
+
                 }
-                return Ok(parentPerson);
+            return NotFound("We can't edit the  parent person");
+
             }
             return BadRequest("Model is not valid");
         }
