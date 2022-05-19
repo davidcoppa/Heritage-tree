@@ -10,7 +10,7 @@ namespace EventsManager.Model
     public class Person
     {
         [Required]
-        public int ID { get; set; }
+        public int Id { get; set; }
         [Required]
         public string FirstName { get; set; }
         public string? SecondName { get; set; }

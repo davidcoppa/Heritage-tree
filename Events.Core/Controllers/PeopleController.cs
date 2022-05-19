@@ -11,6 +11,8 @@ using EventsManager.Model;
 using AutoMapper;
 using Events.Core.DTOs;
 using Events.Core.Common.Validators;
+using Events.Core.Common.Queryable;
+using System.Linq.Expressions;
 
 namespace Events.Core.Controllers
 {
@@ -39,9 +41,43 @@ namespace Events.Core.Controllers
         }
         // GET: People
         [HttpGet("GetFilter")]
-        public async Task<IActionResult> GetFilter([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page,[FromQuery] string search)
+        public async Task<IActionResult> GetFilter([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page, [FromQuery] string itemsPage, [FromQuery] string search)
         {
-            List<Person> data = await context.Person.ToListAsync();
+            //List<Person> data = await context.Person.Where(x=>
+
+            //    ).OrderBy(sort);
+
+            var data= context.Person.AsQueryable();
+            if (search == null)
+            {
+                data = (IQueryable<Person>)await context.Person.ToListAsync();
+            }
+            else
+            {
+                data = context.Person.Where(x => x.FirstName.Contains(search)
+                             || x.SecondName.Contains(search)
+                             || x.FirstSurname.Contains(search)
+                             || x.SecondSurname.Contains(search)
+                             || x.PlaceOfBirth.Contains(search)
+                             || x.PlaceOfDeath.Contains(search));
+
+            }
+            data = OrderByExtension.OrderBy(data,sort,order);
+
+            int itemsPageInt = int.TryParse(itemsPage, out int items) ? Int32.MaxValue : items;
+            Pagination pagination = new Pagination(data.Count(), itemsPageInt);
+
+            int pageIndex = int.TryParse(page, out int count) ? 0 : count;
+
+            var result = data.PagedIndex(pagination, pageIndex).ToList();
+
+
+            //.OrderBy(p => p.v.FleetId)
+            //.Skip(10 * (page - 1))
+            //.Take(10)
+            //.ToList();
+
+
             return Ok(data);
         }
 
@@ -155,6 +191,6 @@ namespace Events.Core.Controllers
             return context.Person.Any(e => e.ID == id);
         }
 
-     
+
     }
 }
