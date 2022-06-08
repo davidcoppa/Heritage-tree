@@ -3,9 +3,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { SortDirection } from "@angular/material/sort";
 import { PersonApi } from "../model/person.api.model";
+import { Person } from "../model/person.model";
 
 @Injectable()
 export class AppService {
+    
     constructor(private httpClient: HttpClient) {
     }
 
@@ -23,5 +25,12 @@ export class AppService {
 
         //?search=${search}&sort=${sort}&order=${order}&page=${page + 1}
         return this.httpClient.get<PersonApi>('api/People/GetFilter', { params: queryParams });
+    }
+
+
+    AddPerson(newPerson: Person): Observable<Person> {
+        
+        return this.httpClient.post<Person>('api/People/Create', newPerson);
+
     }
 }

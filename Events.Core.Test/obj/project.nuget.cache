@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "sayb9cEWaFNxsx2FmxinXpfET01mpN6LjzIzwQN0z9DicD7uhydgUrZPgj9VsHLNMBCH+7JIZnkxo2+5cHJ3gg==",
+  "dgSpecHash": "NeNpn6VVcD+oxDZeaeRd7l8PGybr+pxfsJ6ouRJCfP9J0BDxuTBpWk9is4DNx8E32nWkC7dfNlxmmbL3qqSGsA==",
   "success": true,
   "projectFilePath": "D:\\Dropbox\\david\\code\\C-S\\Events\\Events.Core.Test\\Events.Core.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\matlock\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\coverlet.collector\\3.1.2\\coverlet.collector.3.1.2.nupkg.sha512",
+    "C:\\Users\\matlock\\.nuget\\packages\\dynamiclinq\\1.0.0\\dynamiclinq.1.0.0.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\humanizer.core\\2.2.0\\humanizer.core.2.2.0.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\messagepack.annotations\\2.1.152\\messagepack.annotations.2.1.152.nupkg.sha512",
@@ -175,7 +176,9 @@
     "C:\\Users\\matlock\\.nuget\\packages\\system.io.filesystem.primitives\\4.3.0\\system.io.filesystem.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
+    "C:\\Users\\matlock\\.nuget\\packages\\system.linq.dynamic\\1.0.8\\system.linq.dynamic.1.0.8.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\system.linq.expressions\\4.3.0\\system.linq.expressions.4.3.0.nupkg.sha512",
+    "C:\\Users\\matlock\\.nuget\\packages\\system.linq.queryable\\4.3.0\\system.linq.queryable.4.3.0.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\system.net.http\\4.3.0\\system.net.http.4.3.0.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\system.net.primitives\\4.3.0\\system.net.primitives.4.3.0.nupkg.sha512",
@@ -232,8 +235,28 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
+      "message": "Package 'DynamicLINQ 1.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "DynamicLINQ",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
       "message": "Package 'Microsoft.AspNet.WebApi.Core 5.2.8' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
       "libraryId": "Microsoft.AspNet.WebApi.Core",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.Linq.Dynamic 1.0.8' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "System.Linq.Dynamic",
       "targetGraphs": [
         "net6.0"
       ]

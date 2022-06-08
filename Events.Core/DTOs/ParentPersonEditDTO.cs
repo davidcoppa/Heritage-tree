@@ -4,7 +4,7 @@ namespace Events.Core.DTOs
 {
     public class ParentPersonEditDTO
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public Person Person { get; set; }
         public Person? PersonFather { get; set; }
         public Person? PersonMother { get; set; }

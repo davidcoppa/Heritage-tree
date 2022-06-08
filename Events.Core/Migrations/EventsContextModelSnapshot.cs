@@ -17,7 +17,7 @@ namespace Events.Core.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.4")
+                .HasAnnotation("ProductVersion", "6.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -36,6 +36,9 @@ namespace Events.Core.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Town")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("lat")
                         .HasColumnType("nvarchar(max)");
 
@@ -49,11 +52,11 @@ namespace Events.Core.Migrations
 
             modelBuilder.Entity("EventsManager.Model.Event", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -67,30 +70,30 @@ namespace Events.Core.Migrations
                     b.Property<int?>("LoccationId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Person1ID")
+                    b.Property<int>("Person1Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Person2ID")
+                    b.Property<int?>("Person2Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Person3ID")
+                    b.Property<int?>("Person3Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("EventTypeId");
 
                     b.HasIndex("LoccationId");
 
-                    b.HasIndex("Person1ID");
+                    b.HasIndex("Person1Id");
 
-                    b.HasIndex("Person2ID");
+                    b.HasIndex("Person2Id");
 
-                    b.HasIndex("Person3ID");
+                    b.HasIndex("Person3Id");
 
                     b.ToTable("Event");
                 });
@@ -127,33 +130,33 @@ namespace Events.Core.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PersonFatherID")
+                    b.Property<int?>("PersonFatherId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PersonID")
+                    b.Property<int>("PersonId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PersonMotherID")
+                    b.Property<int?>("PersonMotherId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonFatherID");
+                    b.HasIndex("PersonFatherId");
 
-                    b.HasIndex("PersonID");
+                    b.HasIndex("PersonId");
 
-                    b.HasIndex("PersonMotherID");
+                    b.HasIndex("PersonMotherId");
 
                     b.ToTable("ParentPerson");
                 });
 
             modelBuilder.Entity("EventsManager.Model.Person", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -162,6 +165,7 @@ namespace Events.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstSurname")
@@ -185,7 +189,7 @@ namespace Events.Core.Migrations
                     b.Property<int>("Sex")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Person");
                 });
@@ -202,20 +206,25 @@ namespace Events.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EventID")
+                    b.Property<int?>("EventId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PersonID")
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PersonId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UrlFile")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventID");
+                    b.HasIndex("EventId");
 
-                    b.HasIndex("PersonID");
+                    b.HasIndex("PersonId");
 
                     b.ToTable("Photos");
                 });
@@ -234,17 +243,17 @@ namespace Events.Core.Migrations
 
                     b.HasOne("EventsManager.Model.Person", "Person1")
                         .WithMany()
-                        .HasForeignKey("Person1ID")
+                        .HasForeignKey("Person1Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EventsManager.Model.Person", "Person2")
                         .WithMany()
-                        .HasForeignKey("Person2ID");
+                        .HasForeignKey("Person2Id");
 
                     b.HasOne("EventsManager.Model.Person", "Person3")
                         .WithMany()
-                        .HasForeignKey("Person3ID");
+                        .HasForeignKey("Person3Id");
 
                     b.Navigation("EventType");
 
@@ -261,17 +270,17 @@ namespace Events.Core.Migrations
                 {
                     b.HasOne("EventsManager.Model.Person", "PersonFather")
                         .WithMany()
-                        .HasForeignKey("PersonFatherID");
+                        .HasForeignKey("PersonFatherId");
 
                     b.HasOne("EventsManager.Model.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("PersonID")
+                        .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EventsManager.Model.Person", "PersonMother")
                         .WithMany()
-                        .HasForeignKey("PersonMotherID");
+                        .HasForeignKey("PersonMotherId");
 
                     b.Navigation("Person");
 
@@ -284,11 +293,11 @@ namespace Events.Core.Migrations
                 {
                     b.HasOne("EventsManager.Model.Event", null)
                         .WithMany("photos")
-                        .HasForeignKey("EventID");
+                        .HasForeignKey("EventId");
 
                     b.HasOne("EventsManager.Model.Person", null)
                         .WithMany("Photos")
-                        .HasForeignKey("PersonID");
+                        .HasForeignKey("PersonId");
                 });
 
             modelBuilder.Entity("EventsManager.Model.Event", b =>

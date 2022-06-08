@@ -48,7 +48,7 @@ namespace Events.Core.Controllers
                 return NotFound();
             }
 
-            var @event = await context.Event.FirstOrDefaultAsync(m => m.ID == id);
+            var @event = await context.Event.FirstOrDefaultAsync(m => m.Id == id);
             if (@event == null)
             {
                 return NotFound();
@@ -79,7 +79,7 @@ namespace Events.Core.Controllers
                 }
                 else
                 {
-                    Person son = await context.Person.Where(x => x.ID == evt.Person1.ID).FirstOrDefaultAsync();
+                    Person son = await context.Person.Where(x => x.Id == evt.Person1.Id).FirstOrDefaultAsync();
                     if (son == null)
                     {
                         if (validator.ValidateObject<Person>(evt.Person1))
@@ -95,7 +95,7 @@ namespace Events.Core.Controllers
                 }
                 if (evt.Person2 != null)
                 {
-                    Person mom = await context.Person.Where(x => x.ID == evt.Person2.ID).FirstOrDefaultAsync();
+                    Person mom = await context.Person.Where(x => x.Id == evt.Person2.Id).FirstOrDefaultAsync();
                     if (mom == null)
                     {
                         if (validator.ValidateObject<Person>(evt.Person2))
@@ -110,7 +110,7 @@ namespace Events.Core.Controllers
                 }
                 if (evt.Person3 != null)
                 {
-                    Person dad = await context.Person.Where(x => x.ID == evt.Person3.ID).FirstOrDefaultAsync();
+                    Person dad = await context.Person.Where(x => x.Id == evt.Person3.Id).FirstOrDefaultAsync();
                     if (dad == null)
                     {
                         if (validator.ValidateObject<Person>(evt.Person3))
@@ -194,7 +194,7 @@ namespace Events.Core.Controllers
                     }
                     catch (DbUpdateConcurrencyException)
                     {
-                        if (!EventExists(evento.ID))
+                        if (!EventExists(evento.Id))
                         {
                             return NotFound();
                         }
@@ -220,7 +220,7 @@ namespace Events.Core.Controllers
                 return NotFound();
             }
 
-            var @event = await context.Event.FirstOrDefaultAsync(m => m.ID == id);
+            var @event = await context.Event.FirstOrDefaultAsync(m => m.Id == id);
             if (@event == null)
             {
                 return NotFound();
@@ -233,7 +233,7 @@ namespace Events.Core.Controllers
 
         private bool EventExists(int id)
         {
-            return context.Event.Any(e => e.ID == id);
+            return context.Event.Any(e => e.Id == id);
         }
     }
 }

@@ -43,42 +43,43 @@ namespace Events.Core.Controllers
         [HttpGet("GetFilter")]
         public async Task<IActionResult> GetFilter([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page, [FromQuery] string itemsPage, [FromQuery] string search)
         {
-            //List<Person> data = await context.Person.Where(x=>
-
-            //    ).OrderBy(sort);
-
-            var data= context.Person.AsQueryable();
-            if (search == null)
+            try
             {
-                data = (IQueryable<Person>)await context.Person.ToListAsync();
+
+                IQueryable<Person> data = context.Person.AsQueryable();
+                if (search == null)
+                {
+                    data = context.Person.AsQueryable<Person>();
+                }
+                else
+                {
+                    data = context.Person.Where(x => x.FirstName.Contains(search)
+                                 || x.SecondName.Contains(search)
+                                 || x.FirstSurname.Contains(search)
+                                 || x.SecondSurname.Contains(search)
+                                 || x.PlaceOfBirth.Contains(search)
+                                 || x.PlaceOfDeath.Contains(search)).AsQueryable<Person>();
+
+                }
+              
+                data = OrderByExtension.OrderBy(data, sort, order);
+
+                int itemsPageInt = int.TryParse(itemsPage, out int items) ? Int32.MaxValue : items;
+                Pagination pagination = new Pagination(data.Count(), itemsPageInt);
+
+                int pageIndex = int.TryParse(page, out int count) ? 0 : count;
+
+                var result = data.PagedIndex(pagination, pageIndex).ToList();
+
+                return Ok(data);
+
+
             }
-            else
+            catch (Exception ex)
             {
-                data = context.Person.Where(x => x.FirstName.Contains(search)
-                             || x.SecondName.Contains(search)
-                             || x.FirstSurname.Contains(search)
-                             || x.SecondSurname.Contains(search)
-                             || x.PlaceOfBirth.Contains(search)
-                             || x.PlaceOfDeath.Contains(search));
-
+                Console.WriteLine(ex.ToString());
             }
-            data = OrderByExtension.OrderBy(data,sort,order);
-
-            int itemsPageInt = int.TryParse(itemsPage, out int items) ? Int32.MaxValue : items;
-            Pagination pagination = new Pagination(data.Count(), itemsPageInt);
-
-            int pageIndex = int.TryParse(page, out int count) ? 0 : count;
-
-            var result = data.PagedIndex(pagination, pageIndex).ToList();
-
-
-            //.OrderBy(p => p.v.FleetId)
-            //.Skip(10 * (page - 1))
-            //.Take(10)
-            //.ToList();
-
-
-            return Ok(data);
+            return BadRequest("the server exploded!!!");
         }
 
         // GET: People/Details/5
@@ -90,7 +91,7 @@ namespace Events.Core.Controllers
                 return NotFound();
             }
 
-            var person = await context.Person.FirstOrDefaultAsync(m => m.ID == id);
+            var person = await context.Person.FirstOrDefaultAsync(m => m.Id == id);
             if (person == null)
             {
                 return NotFound();
@@ -127,7 +128,7 @@ namespace Events.Core.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Edit(int id, PersonEditDTO person)
         {
-            if (id != person.ID)
+            if (id != person.Id)
             {
                 return NotFound();
             }
@@ -150,7 +151,7 @@ namespace Events.Core.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PersonExists(personToEdit.ID))
+                    if (!PersonExists(personToEdit.Id))
                     {
                         return NotFound();
                     }
@@ -174,7 +175,7 @@ namespace Events.Core.Controllers
                 return NotFound();
             }
 
-            var person = await context.Person.FirstOrDefaultAsync(m => m.ID == id);
+            var person = await context.Person.FirstOrDefaultAsync(m => m.Id == id);
             if (person == null)
             {
                 return NotFound();
@@ -188,7 +189,7 @@ namespace Events.Core.Controllers
         private bool PersonExists(int id)
         {
 
-            return context.Person.Any(e => e.ID == id);
+            return context.Person.Any(e => e.Id == id);
         }
 
 

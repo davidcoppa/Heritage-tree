@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace EventsManager.Enums
 {
-    public enum Sex
+    public enum Gender
     {
-        Masculino=1,  
-        Femenino=2
+        Male=1,  
+        Female=2
     }
 }

@@ -18,19 +18,20 @@ export class PeoplelistComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   term$ = new BehaviorSubject<string>('');
   resultsLength = 0;
+  pageSize = 15;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
- 
+  abmperson:boolean=false;
   constructor(private appService: AppService, private router: Router) { }
  
   ngAfterViewInit() {
     // If the user changes the sort order, reset back to the first page.
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 1);
  
     merge(this.sort.sortChange, this.term$.pipe(debounceTime(1000), distinctUntilChanged()), this.paginator.page)
       .pipe(
         startWith({}),
         switchMap((searchTerm) => {
-          return this.appService!.getPeople(this.sort.active, this.sort.direction, this.paginator.pageIndex,(searchTerm && typeof searchTerm == 'string') ? searchTerm.toString() : 'repo:angular/components')
+          return this.appService!.getPeople(this.sort.active, this.sort.direction, this.paginator.pageIndex,this.pageSize,(searchTerm && typeof searchTerm == 'string') ? searchTerm.toString() : '')
             .pipe(catchError(() => of(null)));
         }),
         map(data => {
@@ -45,8 +46,10 @@ export class PeoplelistComponent implements AfterViewInit {
   }
 
   editContact(contact: Person) {
-    let route = '/contacts/edit-contact';
-    this.router.navigate([route], { queryParams: { id: contact.id } });
+    // let route = '/contacts/edit-contact';
+    // this.router.navigate([route], { queryParams: { id: contact.id } });
+    this.abmperson=true;   
+
   }
 
   viewContact(contact: Person) {

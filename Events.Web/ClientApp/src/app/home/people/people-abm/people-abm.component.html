@@ -1,1 +1,72 @@
-<p>people-abm works!</p>
+<div class="mat-card">
+
+  <form class="form mat-card" [formGroup]="people" flex="50" fxLayout="column" (ngSubmit)="SavePerson(people)">
+
+
+    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+      <mat-label>First Name</mat-label>
+      <input matInput inputmode="text" placeholder="First Name *" formControlName="firstName" #nameInput>
+      <!--<mat-error **ngIf="(form.get('firstName')).errors?.required">
+                First Name is required
+            </mat-error>-->
+    </mat-form-field>
+    <mat-form-field class="ml-3 mat-form-field--inline" flex="50" fxLayout="column" appearance="fill">
+      <mat-label>Second Name</mat-label>
+      <input matInput inputmode="text" placeholder="Second Name" formControlName="secondName" #nameInput>
+    </mat-form-field>
+
+    <mat-form-field class="mat-form-field--inline" appearance="fill">
+      <mat-label>First Surname</mat-label>
+      <input matInput inputmode="text" placeholder="First Surname" formControlName="firstSurname" #nameInput>
+    </mat-form-field>
+    <mat-form-field class="mat-form-field--inline" appearance="fill">
+      <mat-label>Second Surname</mat-label>
+      <input matInput inputmode="text" placeholder="Second Surname" formControlName="secondSurname" #nameInput>
+    </mat-form-field>
+
+
+    <mat-radio-group class="radio-group" formControlName="sex">
+      <mat-radio-button *ngFor="let gender of genderList | enumPipe" [value]="gender[0]" class="radio-button" color="primary">
+        {{gender[1]}}
+      </mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field class="mat-form-field--inline" appearance="fill">
+      <mat-label># Order</mat-label>
+      <input class="numberOnly" matInput inputmode="number" placeholder="# Order" formControlName="order" #nameInput>
+    </mat-form-field>
+
+    <mat-form-field class="mat-form-field--inline" appearance="fill">
+      <mat-label>Date of birth</mat-label>
+      <input matInput inputmode="date" [matDatepicker]="pickerBirth" formControlName="dateBirth">
+      <mat-datepicker-toggle matSuffix [for]="pickerBirth">
+        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker #pickerBirth></mat-datepicker>
+      <mat-hint>DD/MM/YYYY</mat-hint>
+    </mat-form-field>
+
+
+    <mat-form-field class="mat-form-field--inline" appearance="fill">
+      <mat-label>Place Of Birth</mat-label>
+      <input matInput inputmode="text" placeholder="Place Of Birth" formControlName="placeOfBirth" #nameInput>
+    </mat-form-field>
+
+    <mat-form-field class="mat-form-field--inline" appearance="standard">
+      <mat-label>Date of death</mat-label>
+      <input matInput [matDatepicker]="pickerDeath" formControlName="dateBirth">
+      <mat-datepicker-toggle matSuffix [for]="pickerDeath">
+        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker #pickerDeath></mat-datepicker>
+      <mat-hint>DD/MM/YYYY</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="mat-form-field--inline" appearance="fill">
+      <mat-label>Place Of Death</mat-label>
+      <input matInput inputmode="text" placeholder="Place Of death" formControlName="placeOfDeath" #nameInput>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="!people.valid">Add</button>
+  </form>
+</div>

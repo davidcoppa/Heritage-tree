@@ -11,6 +11,12 @@ import { PeopleComponent } from './home/people/people.component';
 import { PeopleABMComponent } from './home/people/people-abm/people-abm.component';
 import { AppService } from './server/app.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { EventlistComponent } from './home/event/eventlist/eventlist.component';
+import { EventAbmComponent } from './home/event/event-abm/event-abm.component';
+import { EventComponent } from './home/event/event.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FieldComponent } from './helpers/field.component';
+import { EnumPipe } from './helpers/pipes/enum.pipe';
 
 
 
@@ -20,16 +26,26 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     AppComponent,
     PeoplelistComponent,
     PeopleComponent,
-    PeopleABMComponent
+    PeopleABMComponent,
+    EventComponent,
+    EventlistComponent,
+    EventAbmComponent,
+    FieldComponent,
+    EnumPipe
+
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppMaterial,
-    BrowserAnimationsModule
+
   ],
-  providers: [AppService,HttpClient],
-  bootstrap: [AppComponent]
+  providers: [AppService, HttpClient],
+  bootstrap: [AppComponent],
+  
 })
 export class AppModule { }

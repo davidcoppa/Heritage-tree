@@ -13,12 +13,8 @@
         "packagesPath": "C:\\Users\\matlock\\.nuget\\packages\\",
         "outputPath": "D:\\Dropbox\\david\\code\\C-S\\Events\\Events.Core.Test\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\Programs\\Vs-2019-Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\matlock\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -119,12 +115,8 @@
         "packagesPath": "C:\\Users\\matlock\\.nuget\\packages\\",
         "outputPath": "D:\\Dropbox\\david\\code\\C-S\\Events\\Events.Core\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\Programs\\Vs-2019-Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\matlock\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -153,6 +145,10 @@
             "AutoMapper": {
               "target": "Package",
               "version": "[11.0.1, )"
+            },
+            "DynamicLINQ": {
+              "target": "Package",
+              "version": "[1.0.0, )"
             },
             "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": {
               "target": "Package",
@@ -191,6 +187,14 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.3.0, )"
+            },
+            "System.Linq.Dynamic": {
+              "target": "Package",
+              "version": "[1.0.8, )"
+            },
+            "System.Linq.Queryable": {
+              "target": "Package",
+              "version": "[4.3.0, )"
             }
           },
           "imports": [

@@ -46,7 +46,7 @@ namespace Events.Core.Controllers
                 return NotFound();
             }
 
-            var parentPerson = await context.ParentPerson.FirstOrDefaultAsync(m => m.ID == id);
+            var parentPerson = await context.ParentPerson.FirstOrDefaultAsync(m => m.Id == id);
             if (parentPerson == null)
             {
                 return NotFound();
@@ -74,7 +74,7 @@ namespace Events.Core.Controllers
                 //validate existence of the person if not create (if it's valid)
                 if (parentPerson.Person != null)
                 {
-                    Person son = await context.Person.Where(x => x.ID == parentPerson.Person.ID).FirstOrDefaultAsync();
+                    Person son = await context.Person.Where(x => x.Id == parentPerson.Person.Id).FirstOrDefaultAsync();
                     if (son == null)
                     {
                         if (validator.ValidateObject<Person>(parentPerson.Person))
@@ -90,7 +90,7 @@ namespace Events.Core.Controllers
                 }
                 if (parentPerson.PersonMother != null)
                 {
-                    Person mom = await context.Person.Where(x => x.ID == parentPerson.PersonMother.ID).FirstOrDefaultAsync();
+                    Person mom = await context.Person.Where(x => x.Id == parentPerson.PersonMother.Id).FirstOrDefaultAsync();
                     if (mom == null)
                     {
                         if (validator.ValidateObject<Person>(parentPerson.PersonMother))
@@ -105,7 +105,7 @@ namespace Events.Core.Controllers
                 }
                 if (parentPerson.PersonFather != null)
                 {
-                    Person dad = await context.Person.Where(x => x.ID == parentPerson.PersonFather.ID).FirstOrDefaultAsync();
+                    Person dad = await context.Person.Where(x => x.Id == parentPerson.PersonFather.Id).FirstOrDefaultAsync();
                     if (dad == null)
                     {
                         if (validator.ValidateObject<Person>(parentPerson.PersonFather))
@@ -133,7 +133,7 @@ namespace Events.Core.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(int id, ParentPersonEditDTO parentPerson)
         {
-            if (id != parentPerson.ID)
+            if (id != parentPerson.Id)
             {
                 return NotFound();
             }
@@ -152,7 +152,7 @@ namespace Events.Core.Controllers
                     }
                     catch (DbUpdateConcurrencyException)
                     {
-                        if (!ParentPersonExists(person.ID))
+                        if (!ParentPersonExists(person.Id))
                         {
                             return NotFound();
                         }
@@ -179,7 +179,7 @@ namespace Events.Core.Controllers
                 return NotFound();
             }
 
-            var parentPerson = await context.ParentPerson.FirstOrDefaultAsync(m => m.ID == id);
+            var parentPerson = await context.ParentPerson.FirstOrDefaultAsync(m => m.Id == id);
             if (parentPerson == null)
             {
                 return NotFound();
@@ -192,7 +192,7 @@ namespace Events.Core.Controllers
 
         private bool ParentPersonExists(int id)
         {
-            return context.ParentPerson.Any(e => e.ID == id);
+            return context.ParentPerson.Any(e => e.Id == id);
         }
     }
 }

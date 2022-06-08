@@ -30,23 +30,23 @@ namespace Events.Core.Test
 
         ParentPerson pp = new ParentPerson
         {
-            ID = 1,
+            Id = 1,
             Description = "Son",
-            Person = new Person { ID = 1, FirstName = "pepe" },
-            PersonMother = new Person { ID = 2, FirstName = "ana" },
-            PersonFather = new Person { ID = 3, FirstName = "juan" }
+            Person = new Person { Id = 1, FirstName = "pepe" },
+            PersonMother = new Person { Id = 2, FirstName = "ana" },
+            PersonFather = new Person { Id = 3, FirstName = "juan" }
 
         };
-        Person pSon = new() { ID = 1, FirstName = "pepe" };
-        Person pMother = new() { ID = 2, FirstName = "ana" };
-        Person pFather = new() { ID = 3, FirstName = "juan" };
+        Person pSon = new() { Id = 1, FirstName = "pepe" };
+        Person pMother = new() { Id = 2, FirstName = "ana" };
+        Person pFather = new() { Id = 3, FirstName = "juan" };
 
         ParentPersonCreateDTO ppCreate = new ParentPersonCreateDTO
         {
             Description = "Son",
-            Person = new Person { ID = 1, FirstName = "pepe" },
-            PersonMother = new Person { ID = 2, FirstName = "ana" },
-            PersonFather = new Person { ID = 3, FirstName = "juan" }
+            Person = new Person { Id = 1, FirstName = "pepe" },
+            PersonMother = new Person { Id = 2, FirstName = "ana" },
+            PersonFather = new Person { Id = 3, FirstName = "juan" }
 
         };
         ParentPersonCreateDTO ppCreateNull = new() { };
@@ -54,26 +54,26 @@ namespace Events.Core.Test
         ParentPersonCreateDTO ppCreateNoMother = new()
         {
             Description = "Son",
-            Person = new Person { ID = 1 },
+            Person = new Person { Id = 1 },
             PersonMother = new Person {FirstName = "ana" },
-            PersonFather = new Person { ID = 3, FirstName = "juan" }
+            PersonFather = new Person { Id = 3, FirstName = "juan" }
         };
 
         ParentPersonCreateDTO ppCreateNoSon = new()
         {
             Description = "Son",
-            Person = new Person { ID = 1},//no name, coudnt create the person
-            PersonMother = new Person { ID = 2, FirstName = "ana" },
-            PersonFather = new Person { ID = 3, FirstName = "juan" }
+            Person = new Person { Id = 1},//no name, coudnt create the person
+            PersonMother = new Person { Id = 2, FirstName = "ana" },
+            PersonFather = new Person { Id = 3, FirstName = "juan" }
         };
 
         ParentPersonEditDTO ppeDto = new()
         {
-            ID = 1,
+            Id = 1,
             Description = "NewSon",
-            Person = new Person { ID = 1,FirstName="son" },
+            Person = new Person { Id = 1,FirstName="son" },
             PersonMother = new Person { FirstName = "ana" },
-            PersonFather = new Person { ID = 3, FirstName = "juan" }
+            PersonFather = new Person { Id = 3, FirstName = "juan" }
         };
 
 
@@ -136,7 +136,7 @@ namespace Events.Core.Test
 
                 var value = contentResult?.Value as ParentPerson;
                 Assert.IsNotNull(value);
-                Assert.AreEqual(1, value.ID);
+                Assert.AreEqual(1, value.Id);
 
             }
         }
@@ -193,7 +193,7 @@ namespace Events.Core.Test
 
                 var value = contentResult?.Value as ParentPerson;
                 Assert.IsNotNull(value);
-                Assert.AreEqual(1, value.ID);
+                Assert.AreEqual(1, value.Id);
 
             }
         }
@@ -252,7 +252,7 @@ namespace Events.Core.Test
 
                 var value = contentResult?.Value as ParentPerson;
                 Assert.IsNotNull(value);
-                Assert.AreEqual(1, value.ID);
+                Assert.AreEqual(1, value.Id);
 
             }
         }

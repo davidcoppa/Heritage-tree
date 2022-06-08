@@ -34,9 +34,9 @@ namespace Events.Core.Test
             Description ="event test",
             EventDate = DateTime.Now,
             EventType=  new EventTypes { Id=1,Description="test", Name="test"},
-            ID=1,
+            Id=1,
             Loccation=new Model.Location { Id=1,Country="US"},
-            Person1=new Person {ID=1,FirstName="pepe" },
+            Person1=new Person {Id=1,FirstName="pepe" },
             Title="the test"
             
         };
@@ -49,9 +49,9 @@ namespace Events.Core.Test
             EventDate = DateTime.Now,
             EventType = new EventTypes { Id = 1, Description = "test", Name = "test" },
             Loccation = new Model.Location { Id = 1, Country = "US" },
-            Person1 = new Person { ID = 1, FirstName = "son" },
-            Person2 = new Person { ID = 2, FirstName = "ana" },
-            Person3 = new Person { ID = 3, FirstName = "juan" },
+            Person1 = new Person { Id = 1, FirstName = "son" },
+            Person2 = new Person { Id = 2, FirstName = "ana" },
+            Person3 = new Person { Id = 3, FirstName = "juan" },
             Title = "the test",
             photos=new List<Photos> 
             {
@@ -67,9 +67,9 @@ namespace Events.Core.Test
             EventDate = DateTime.Now,
             EventType = new EventTypes { Id = 1, Description = "test", Name = "test" },
             Loccation = new Model.Location { Id = 1, Country = "US" },
-            Person1 = new Person { ID = 1, FirstName = "son" },
-            Person2 = new Person { ID = 2, FirstName = "ana" },
-            Person3 = new Person { ID = 3, FirstName = "juan" },
+            Person1 = new Person { Id = 1, FirstName = "son" },
+            Person2 = new Person { Id = 2, FirstName = "ana" },
+            Person3 = new Person { Id = 3, FirstName = "juan" },
             Title = "the test",
             photos = new List<Photos>
             {
@@ -85,8 +85,8 @@ namespace Events.Core.Test
             EventType = new EventTypes { Id = 1, Description = "test", Name = "test" },
             Loccation = new Model.Location { Id = 1, Country = "US" },
            // Person1 = new Person { ID = 1, FirstName = "son" },
-            Person2 = new Person { ID = 2, FirstName = "ana" },
-            Person3 = new Person { ID = 3, FirstName = "juan" },
+            Person2 = new Person { Id = 2, FirstName = "ana" },
+            Person3 = new Person { Id= 3, FirstName = "juan" },
             Title = "the test",
             photos = new List<Photos>
             {
@@ -96,10 +96,10 @@ namespace Events.Core.Test
 
         };
 
-        Person pSon = new() { ID = 1, FirstName = "son" };
-        Person pSonBad = new() { ID = 1};
-        Person pMother = new() { ID = 2, FirstName = "ana" };
-        Person pFather = new() { ID = 3, FirstName = "juan" };
+        Person pSon = new() { Id = 1, FirstName = "son" };
+        Person pSonBad = new() { Id = 1};
+        Person pMother = new() { Id = 2, FirstName = "ana" };
+        Person pFather = new() { Id = 3, FirstName = "juan" };
         Model.Location location = new Model.Location() { Id = 1, Country = "US" };
         Photos photo1 = new Photos { Id = 1, Date = DateTime.Now, Name = "1.jpg", Description = "photo1", UrlFile = "c:/data1" };
         Photos photo2 = new Photos { Id = 2, Date = DateTime.Now, Name = "2.jpg", Description = "photo2", UrlFile = "c:/data2" };
@@ -112,9 +112,9 @@ namespace Events.Core.Test
             EventDate = DateTime.Now,
             EventType = new EventTypes { Id = 1, Description = "test", Name = "test" },
             Loccation = new Model.Location { Id = 1, Country = "US" },
-            Person1 = new Person { ID = 1, FirstName = "son" },
-            Person2 = new Person { ID = 2, FirstName = "ana" },
-            Person3 = new Person { ID = 3, FirstName = "juan" },
+            Person1 = new Person { Id = 1, FirstName = "son" },
+            Person2 = new Person { Id = 2, FirstName = "ana" },
+            Person3 = new Person { Id = 3, FirstName = "juan" },
             Title = "the test",
             photos = new List<Photos>
             {
@@ -181,7 +181,7 @@ namespace Events.Core.Test
 
                 var value = contentResult?.Value as Event;
                 Assert.IsNotNull(value);
-                Assert.AreEqual(1, value.ID);
+                Assert.AreEqual(1, value.Id);
 
             }
         }
@@ -234,7 +234,7 @@ namespace Events.Core.Test
 
                 var value = contentResult?.Value as Event;
                 Assert.IsNotNull(value);
-                Assert.AreEqual(1, value.ID);
+                Assert.AreEqual(1, value.Id);
 
             }
         }
@@ -290,7 +290,7 @@ namespace Events.Core.Test
 
                 var value = contentResult?.Value as Event;
                 Assert.IsNotNull(value);
-                Assert.AreEqual(1, value.ID);
+                Assert.AreEqual(1, value.Id);
 
             }
         }

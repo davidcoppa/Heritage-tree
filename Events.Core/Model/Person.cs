@@ -23,7 +23,7 @@ namespace EventsManager.Model
         public DateTime? DateOfBirth { get; set; }
         [DataType(DataType.Date)]
         public DateTime? DateOfDeath { get; set; }
-        public Sex Sex { get; set; }
+        public Gender Sex { get; set; }
         public List<Photos>? Photos { get; set; }
 
         public int? Order { get; set; }

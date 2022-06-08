@@ -33,7 +33,7 @@ namespace Events.Core.Test
         }
         Person p = new Person
         {
-            ID = 1,
+            Id = 1,
             FirstName = "Test",
             DateOfBirth = DateTime.Today.AddDays(-1000),
             DateOfDeath = DateTime.Today,
@@ -44,7 +44,7 @@ namespace Events.Core.Test
             PlaceOfDeath = "some pc",
             SecondName = "secondName",
             SecondSurname = "secondSurname",
-            Sex = EventsManager.Enums.Sex.Masculino
+            Sex = EventsManager.Enums.Gender.Male
 
         };
         PersonCreateDTO pCreate = new PersonCreateDTO
@@ -59,14 +59,14 @@ namespace Events.Core.Test
             PlaceOfDeath = "some pc",
             SecondName = "secondName",
             SecondSurname = "secondSurname",
-            Sex = EventsManager.Enums.Sex.Masculino
+            Sex = EventsManager.Enums.Gender.Male
 
         };
         PersonCreateDTO pCreateNull = new PersonCreateDTO { };
 
         PersonEditDTO pEditGood = new PersonEditDTO
         {
-            ID = 1,
+            Id = 1,
             FirstName = "NewName",
             DateOfBirth = DateTime.Today.AddDays(-1000),
             DateOfDeath = DateTime.Today,
@@ -77,7 +77,7 @@ namespace Events.Core.Test
             PlaceOfDeath = "some pc",
             SecondName = "secondName",
             SecondSurname = "secondSurname",
-            Sex = EventsManager.Enums.Sex.Masculino
+            Sex = EventsManager.Enums.Gender.Male
 
         };
 
@@ -141,7 +141,7 @@ namespace Events.Core.Test
 
                 var value = contentResult?.Value as Person;
                 Assert.IsNotNull(value);
-                Assert.AreEqual(1, value.ID);
+                Assert.AreEqual(1, value.Id);
 
             }
         }
@@ -191,7 +191,7 @@ namespace Events.Core.Test
 
                 var value = contentResult?.Value as Person;
                 Assert.IsNotNull(value);
-                Assert.AreEqual(1, value.ID);
+                Assert.AreEqual(1, value.Id);
 
             }
         }
