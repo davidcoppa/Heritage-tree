@@ -31,7 +31,7 @@ import { EnumPipe } from './helpers/pipes/enum.pipe';
     EventlistComponent,
     EventAbmComponent,
     FieldComponent,
-    EnumPipe
+    EnumPipe,
 
   ],
   imports: [

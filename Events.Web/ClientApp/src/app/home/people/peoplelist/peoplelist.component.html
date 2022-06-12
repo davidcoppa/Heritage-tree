@@ -4,23 +4,25 @@
         <div class="search-hero">
             <input type="text" placeholder="&#61442; Search a name" (input)="term$.next($any($event.target).value)">
         </div>
-            <div class="example-container mat-elevation-z8">
+
+        <div class="example-container mat-elevation-z8">
             <div class="example-table-container">
-  
-                <table mat-table [dataSource]="data" class="example-table" matSort matSortActive="firstName"
+
+                <table mat-table [dataSource]="data" class="example-table"
+                    matSort matSortActive="firstName"
                     matSortDisableClear matSortDirection="desc">
                     <!-- first name Column -->
                     <ng-container matColumnDef="first name">
                         <th mat-header-cell *matHeaderCellDef>First name</th>
                         <td mat-cell *matCellDef="let row">{{row.firstName}}</td>
                     </ng-container>
- 
+
                     <!-- second name Column -->
                     <ng-container matColumnDef="second name">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Second name</th>
                         <td mat-cell *matCellDef="let row">{{row.secondName}}</td>
                     </ng-container>
- 
+
                     <!-- first surname Column -->
                     <ng-container matColumnDef="first surname">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>First surname</th>
@@ -38,8 +40,8 @@
                         <td mat-cell *matCellDef="let row">{{row.sex}}</td>
                     </ng-container>
 
-                     <!-- order Column -->
-                     <ng-container matColumnDef="order">
+                    <!-- order Column -->
+                    <ng-container matColumnDef="order">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Order</th>
                         <td mat-cell *matCellDef="let row">{{row.order}}</td>
                     </ng-container>
@@ -51,21 +53,21 @@
                         </th>
                         <td mat-cell *matCellDef="let row">{{row.dateOfBirth | date}}</td>
                     </ng-container>
- 
+
                     <!-- place of birth Column -->
                     <ng-container matColumnDef="place of birth">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Place of birth</th>
                         <td mat-cell *matCellDef="let row">{{row.placeOfBirth}}</td>
                     </ng-container>
 
-                      <!-- date of death Column -->
-                      <ng-container matColumnDef="date of death">
+                    <!-- date of death Column -->
+                    <ng-container matColumnDef="date of death">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
                             Date of death
                         </th>
                         <td mat-cell *matCellDef="let row">{{row.dateOfDeath | date}}</td>
                     </ng-container>
- 
+
                     <!-- place of death Column -->
                     <ng-container matColumnDef="place of death">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Place of death</th>
@@ -76,33 +78,39 @@
                     <ng-container matColumnDef="media">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>media</th>
                         <td mat-cell *matCellDef="let row">
-                            <button mat-icon-button color="primary" (click)="viewMedia(row)" title="media"><mat-icon>{{row.media.count}}</mat-icon></button>
+                            <button mat-icon-button color="primary" (click)="viewMedia(row)" title="media">
+                                <mat-icon>{{row.media.count}}</mat-icon>
+                            </button>
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="action">
-                        <tr><th mat-header-cell *matHeaderCellDef> Action </th></tr>
                         <tr>
-                          <td mat-cell *matCellDef="let row" style="width:20%">
-                            <button mat-icon-button color="primary" (click)="viewContact(row)" title="View"><mat-icon>preview</mat-icon>
-                            </button>
-                            <button mat-icon-button color="primary" (click)="editContact(row)" title="Edit"><mat-icon>edit</mat-icon>
-                                <ng-container *ngIf="abmperson">
-                                    <app-people-abm [personSelected]=row></app-people-abm>
-                                    
-                                  </ng-container>
-                            </button>
-                          </td>
+                            <th mat-header-cell *matHeaderCellDef> Action </th>
+                        </tr>
                         <tr>
-                      </ng-container>
+                            <td mat-cell *matCellDef="let row" style="width:20%">
+                                <button mat-icon-button color="primary" (click)="viewContact(row)" title="View">
+                                    <mat-icon>preview</mat-icon>
+                                </button>
+                                <button mat-icon-button color="primary" (click)="editContact(row)" title="Edit">
+                                    <mat-icon>edit</mat-icon>
+                                    <ng-container *ngIf="abmperson">
+                                        <app-people-abm [personSelected]=row></app-people-abm>
+
+                                    </ng-container>
+                                </button>
+                            </td>
+                        <tr>
+                    </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
-                <mat-paginator [length]="resultsLength" [pageSize]="15" aria-label="Select page of GitHub search results">
+                <mat-paginator [length]="resultsLength" [pageSize]="15"
+                    aria-label="Select page of GitHub search results">
                 </mat-paginator>
             </div>
         </div>
     </mat-card-content>
 </mat-card>
-

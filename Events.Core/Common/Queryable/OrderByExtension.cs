@@ -12,6 +12,10 @@ namespace Events.Core.Common.Queryable
         //(this IQueryable<t> query,  string column,string order) //where T : Entity
         {
             var searchProperty = typeof(TEntity).GetProperty(propertyName);
+            if (searchProperty==null)
+            {
+                searchProperty = typeof(TEntity).GetProperty("Id");
+            }
 
             ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "p");
 

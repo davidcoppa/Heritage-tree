@@ -14,9 +14,4 @@ export interface Person {
   order: number;
   photos: Photos[];
 
-
-  /**
-   *
-   */
-
 }

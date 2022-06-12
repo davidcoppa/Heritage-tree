@@ -1,1 +1,97 @@
-<p>eventlist works!</p>
+<mat-card class="container">
+    <mat-card-title>Mat DataTable</mat-card-title>
+    <mat-card-content>
+        <div class="search-hero">
+            <input type="text" placeholder="&#61442; Search a name" (input)="term$.next($any($event.target).value)">
+        </div>
+
+        <div class="example-container mat-elevation-z8">
+            <div class="example-table-container">
+
+                <table mat-table [dataSource]="data" class="example-table"
+                    matSort matSortActive="Title"
+                    matSortDisableClear matSortDirection="desc">
+                    <!-- first name Column -->
+                    <ng-container matColumnDef="Title">
+                        <th mat-header-cell *matHeaderCellDef>Title</th>
+                        <td mat-cell *matCellDef="let row">{{row.Title}}</td>
+                    </ng-container>
+
+                    <!-- second name Column -->
+                    <ng-container matColumnDef="Description">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                        <td mat-cell *matCellDef="let row">{{row.Description}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Date">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                        <td mat-cell *matCellDef="let row">{{row.Date| date}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Event Type">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Event Type</th>
+                        <td mat-cell *matCellDef="let row">{{row.EventType}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Person1">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Person1</th>
+                        <td mat-cell *matCellDef="let row">{{row.Person1}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Person2">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Person2</th>
+                        <td mat-cell *matCellDef="let row">{{row.Person2}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Person3">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Person2</th>
+                        <td mat-cell *matCellDef="let row">{{row.Person3}}</td>
+                    </ng-container>
+
+                    <!-- order Column -->
+                    <ng-container matColumnDef="Location">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+                        <td mat-cell *matCellDef="let row">{{row.Location}}</td>
+                    </ng-container>
+
+
+                    <!-- media Column -->
+                    <ng-container matColumnDef="Photos">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Photos</th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-icon-button color="primary" (click)="viewMedia(row)" title="media">
+                                <mat-icon>{{row.Photos.count}}</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="action">
+                        <tr>
+                            <th mat-header-cell *matHeaderCellDef> Action </th>
+                        </tr>
+                        <tr>
+                            <td mat-cell *matCellDef="let row" style="width:20%">
+                                <button mat-icon-button color="primary" (click)="viewContact(row)" title="View">
+                                    <mat-icon>preview</mat-icon>
+                                </button>
+                                <button mat-icon-button color="primary" (click)="editContact(row)" title="Edit">
+                                    <mat-icon>edit</mat-icon>
+                                    <ng-container *ngIf="abmperson">
+                                        <app-people-abm [personSelected]=row></app-people-abm>
+
+                                    </ng-container>
+                                </button>
+                            </td>
+                        <tr>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator [length]="resultsLength" [pageSize]="15"
+                    aria-label="Select page of GitHub search results">
+                </mat-paginator>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

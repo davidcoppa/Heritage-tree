@@ -5,6 +5,7 @@ using EventsManager.Model;
 using Events.Core.DTOs;
 using AutoMapper;
 using Events.Core.Common.Validators;
+using Events.Core.Common.Queryable;
 
 namespace Events.Core.Controllers
 {
@@ -37,6 +38,46 @@ namespace Events.Core.Controllers
             var events = await context.Event.ToListAsync();
             return Ok(events);
         }
+
+        // GET: Event
+        [HttpGet("GetFilter")]
+        public async Task<IActionResult> GetFilter([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page, [FromQuery] string itemsPage, [FromQuery] string search)
+        {
+            try
+            {
+
+                IQueryable<Event> data = context.Event.AsQueryable();
+                if (search == null)
+                {
+                    data = context.Event.AsQueryable<Event>();
+                }
+                else
+                {
+                    data = context.Event.Where(x => x.Title.Contains(search)
+                                 || x.Description.Contains(search)).AsQueryable<Event>();
+
+                }
+
+                data = OrderByExtension.OrderBy(data, sort, order);
+
+                int itemsPageInt = int.TryParse(itemsPage, out int items) ? Int32.MaxValue : items;
+                Pagination pagination = new Pagination(data.Count(), itemsPageInt);
+
+                int pageIndex = int.TryParse(page, out int count) ? 0 : count;
+
+                var result = data.PagedIndex(pagination, pageIndex).ToList();
+
+                return Ok(data);
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return BadRequest("the server exploded!!!");
+        }
+
 
 
         // GET: Events/Details/5

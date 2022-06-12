@@ -25,9 +25,9 @@ export class PeoplelistComponent implements AfterViewInit {
  
   ngAfterViewInit() {
     // If the user changes the sort order, reset back to the first page.
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 1);
+     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 1);
  
-    merge(this.sort.sortChange, this.term$.pipe(debounceTime(1000), distinctUntilChanged()), this.paginator.page)
+     merge(this.sort.sortChange, this.term$.pipe(debounceTime(1000), distinctUntilChanged()), this.paginator.page)
       .pipe(
         startWith({}),
         switchMap((searchTerm) => {
@@ -65,17 +65,3 @@ export class PeoplelistComponent implements AfterViewInit {
 }
 
 
-
-
-// export interface GithubApi {
-//   items: GithubIssue[];
-//   total_count: number;
-// }
- 
-// export interface GithubIssue {
-//   created_at: string;
-//   number: string;
-//   state: string;
-//   title: string;
-// }
- 
