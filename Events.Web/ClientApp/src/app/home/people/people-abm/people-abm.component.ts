@@ -48,16 +48,16 @@ export class PeopleABMComponent implements OnInit, OnChanges {
     }
     else{
       return this.fb.group({
-        firstName: new FormControl(personEdit.firstName ?? null),
-        secondName: new FormControl(personEdit.secondName ?? null),
-        firstSurname:new FormControl(personEdit.firstSurname ?? null),
-        secondSurname: new FormControl(personEdit.secondSurname ?? null),
-        sex: new FormControl(personEdit.sex ?? null),
-        order: new FormControl(personEdit.order ?? null),
-        dateBirth:new FormControl(personEdit.dateBirth ?? null),
-        placeOfBirth:new FormControl(personEdit.placeOfBirth ?? null),
-        dateDeath: new FormControl(personEdit.dateDeath ?? null),
-        placeOfDeath: new FormControl(personEdit.placeOfDeath ?? null)
+        firstName: new FormControl(personEdit.FirstName ?? null),
+        secondName: new FormControl(personEdit.SecondName ?? null),
+        firstSurname:new FormControl(personEdit.FirstSurname ?? null),
+        secondSurname: new FormControl(personEdit.SecondSurname ?? null),
+        sex: new FormControl(personEdit.Sex ?? null),
+        order: new FormControl(personEdit.Order ?? null),
+        dateBirth:new FormControl(personEdit.DateBirth ?? null),
+        placeOfBirth:new FormControl(personEdit.PlaceOfBirth ?? null),
+        dateDeath: new FormControl(personEdit.DateDeath ?? null),
+        placeOfDeath: new FormControl(personEdit.PlaceOfDeath ?? null)
   
       });
     }

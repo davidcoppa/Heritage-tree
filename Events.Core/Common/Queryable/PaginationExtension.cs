@@ -7,6 +7,10 @@ namespace Events.Core.Common.Queryable
 
         public static IQueryable<t> PagedIndex<t>(this IQueryable<t> query, Pagination pagination, int pageIndex) //where T : Entity
         {
+            if (pageIndex==0)
+            {
+                pageIndex++;
+            }
             if (pageIndex < pagination.MinPage || pageIndex > pagination.MaxPage)
             {
                 throw new ArgumentOutOfRangeException(null,

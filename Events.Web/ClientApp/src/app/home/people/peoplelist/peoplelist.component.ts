@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import { Router } from '@angular/router';
@@ -13,8 +13,17 @@ import { AppService } from 'src/app/server/app.service';
   styleUrls: ['./peoplelist.component.css']
 })
 export class PeoplelistComponent implements AfterViewInit {
-  displayedColumns: string[] = ['first name', 'second name', 'first surname', 'second surname','sex','order','date of birth','place of birth','date of death','place of death','media'];
-  data: Person[] = [];
+  displayedColumns: string[] = ['FirstName', 
+                                'SecondName', 
+                                'FirstSurname', 
+                                'SecondSurname',
+                                'Sex','Order',
+                                'DateOfDeath',
+                                'PlaceOfBirth',
+                                'DateOfBirth',
+                                'PlaceOfDeath',
+                                'Photos'];
+  person: Person[] = [];
   @ViewChild(MatSort) sort!: MatSort;
   term$ = new BehaviorSubject<string>('');
   resultsLength = 0;
@@ -22,27 +31,35 @@ export class PeoplelistComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   abmperson:boolean=false;
   constructor(private appService: AppService, private router: Router) { }
+
  
   ngAfterViewInit() {
     // If the user changes the sort order, reset back to the first page.
      this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 1);
+    
+  //   console.log("page: "+this.paginator.pageIndex);
  
      merge(this.sort.sortChange, this.term$.pipe(debounceTime(1000), distinctUntilChanged()), this.paginator.page)
       .pipe(
         startWith({}),
         switchMap((searchTerm) => {
           return this.appService!.getPeople(this.sort.active, this.sort.direction, this.paginator.pageIndex,this.pageSize,(searchTerm && typeof searchTerm == 'string') ? searchTerm.toString() : '')
-            .pipe(catchError(() => of(null)));
+            .pipe(catchError(() =>
+                  of(null)
+               ));
         }),
         map(data => {
+          
+          console.log(data);
+
           if (data === null) {
             return [];
           }
-          this.resultsLength = data.totalItems;
+          this.resultsLength = data.length;
 
-          return data.person;
+          return data;
         })
-      ).subscribe(data => this.data = data);
+      ).subscribe(data => this.person = data);
   }
 
   editContact(contact: Person) {
@@ -54,11 +71,11 @@ export class PeoplelistComponent implements AfterViewInit {
 
   viewContact(contact: Person) {
     let route = '/contacts/view-contact';
-    this.router.navigate([route], { queryParams: { id: contact.id } });
+    this.router.navigate([route], { queryParams: { id: contact.Id } });
   }
   viewMedia(contact: Person) {
     let route = '/contacts/view-media';
-    this.router.navigate([route], { queryParams: { id: contact.id } });
+    this.router.navigate([route], { queryParams: { id: contact.Id } });
   }
 
 

@@ -61,17 +61,21 @@ namespace Events.Core.Controllers
                                  || x.PlaceOfDeath.Contains(search)).AsQueryable<Person>();
 
                 }
-              
-                data = OrderByExtension.OrderBy(data, sort, order);
 
-                int itemsPageInt = int.TryParse(itemsPage, out int items) ? Int32.MaxValue : items;
-                Pagination pagination = new Pagination(data.Count(), itemsPageInt);
+                if (data.Count()!=0)
+                {
+                    data = OrderByExtension.OrderBy(data, sort, order);
 
-                int pageIndex = int.TryParse(page, out int count) ? 0 : count;
+                    int itemsPageInt = int.TryParse(itemsPage, out int items) ? items : Int32.MaxValue;
+                    Pagination pagination = new Pagination(data.Count(), itemsPageInt);
 
-                var result = data.PagedIndex(pagination, pageIndex).ToList();
+                    int pageIndex = int.TryParse(page, out int count) ? count : 0;
 
-                return Ok(data);
+                    var result = data.PagedIndex(pagination, pageIndex).ToList();
+
+                    return Ok(data);
+                }
+                return Ok(null);
 
 
             }

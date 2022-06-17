@@ -1,17 +1,17 @@
 import { Photos } from "./photos.model";
 
 export interface Person {
-  id: number;
-  firstName: string;
-  secondName: string;
-  firstSurname: string;
-  secondSurname: string;
-  placeOfBirth: string;
-  placeOfDeath: string;
-  sex: number;
-  dateBirth: Date;
-  dateDeath: Date;
-  order: number;
-  photos: Photos[];
+  Id: number;
+  FirstName: string;
+  SecondName: string;
+  FirstSurname: string;
+  SecondSurname: string;
+  PlaceOfBirth: string;
+  PlaceOfDeath: string;
+  Sex: number;
+  DateBirth: Date;
+  DateDeath: Date;
+  Order: number;
+  Photos: Photos[];
 
 }

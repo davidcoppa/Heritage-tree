@@ -16,25 +16,25 @@ export class EventtypelistComponent implements OnInit,AfterViewInit {
   ngOnInit(): void {
   }
   ngAfterViewInit() {
-    this.eventData = this.appService.GetEventType().pipe(first())
-    .subscribe(
-      data => {
-        //   console.log(data);
-        //  var pp = new Document{ data };
-        // this.dataSource = new MatTableDataSource<Clients>();
+    // this.eventData = this.appService.GetEventType()
+    // .subscribe(
+    //   data => {
+    //     //   console.log(data);
+    //     //  var pp = new Document{ data };
+    //     // this.dataSource = new MatTableDataSource<Clients>();
 
-        // this.GetAll();
+    //     // this.GetAll();
 
-      //  this.service.sendUpdate();
+    //   //  this.service.sendUpdate();
 
 
-        return;
-      },
-      (err) => {
+    //     return;
+    //   },
+    //   (err) => {
 
-        console.log(err);
+    //     console.log(err);
 
-      });
+    //   });
 
   }
 

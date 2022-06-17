@@ -16,7 +16,7 @@ export class AppService {
     constructor(private httpClient: HttpClient) {
     }
 
-    getPeople(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<PersonApi> {
+    getPeople(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<Person[]> {
         let queryParams = new HttpParams();
         queryParams = queryParams.append("sort", sort);//column
         queryParams = queryParams.append("order", order);
@@ -25,7 +25,7 @@ export class AppService {
         queryParams = queryParams.append("search", search);
 
         //?search=${search}&sort=${sort}&order=${order}&page=${page + 1}
-        return this.httpClient.get<PersonApi>('api/People/GetFilter', { params: queryParams });
+        return this.httpClient.get<Person[]>('api/People/GetFilter', { params: queryParams });
     }
 
 
