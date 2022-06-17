@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PeopleABMComponent } from './people-abm.component';
+import { EventtypelistComponent } from './eventtypelist.component';
 
-describe('PeopleABMComponent', () => {
-  let component: PeopleABMComponent;
-  let fixture: ComponentFixture<PeopleABMComponent>;
+describe('EventtypelistComponent', () => {
+  let component: EventtypelistComponent;
+  let fixture: ComponentFixture<EventtypelistComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PeopleABMComponent ]
+      declarations: [ EventtypelistComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PeopleABMComponent);
+    fixture = TestBed.createComponent(EventtypelistComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

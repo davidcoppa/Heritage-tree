@@ -1,31 +1,16 @@
 import { Component, Inject, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { first } from 'rxjs';
 import { Person } from 'src/app/model/person.model';
 import { AppService } from 'src/app/server/app.service';
-
-import {
-  MAT_MOMENT_DATE_FORMATS,
-  MomentDateAdapter,
-  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-} from '@angular/material-moment-adapter';
 import { Gender } from 'src/app/helpers/enums/gender.enum';
 
 @Component({
   selector: 'app-people-abm',
   templateUrl: './people-abm.component.html',
   styleUrls: ['./people-abm.component.css'],
-  // providers: [
-  //   { provide: MAT_DATE_LOCALE, useValue: 'es' },
-  //   {
-  //     provide: DateAdapter,
-  //     useClass: MomentDateAdapter,
-  //     deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-  //   },
-  //   { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
-  // ]
+ 
 })
 export class PeopleABMComponent implements OnInit, OnChanges {
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Date>;
@@ -36,8 +21,7 @@ export class PeopleABMComponent implements OnInit, OnChanges {
   genderList = Gender;
   person: Person;
 
-  constructor(fb: FormBuilder, private appService: AppService
-  ) {
+  constructor(fb: FormBuilder, private appService: AppService) {
     this.fb = fb;
   }
 

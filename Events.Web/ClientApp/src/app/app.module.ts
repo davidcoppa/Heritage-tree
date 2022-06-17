@@ -17,6 +17,9 @@ import { EventComponent } from './home/event/event.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FieldComponent } from './helpers/field.component';
 import { EnumPipe } from './helpers/pipes/enum.pipe';
+import { EventTypeComponent } from './home/eventType/eventtype.component';
+import { EventtypeAbmComponent } from './home/eventType/eventtype-abm/eventtype-abm.component';
+import { EventtypelistComponent } from './home/eventType/eventtypelist/eventtypelist.component';
 
 
 
@@ -32,6 +35,9 @@ import { EnumPipe } from './helpers/pipes/enum.pipe';
     EventAbmComponent,
     FieldComponent,
     EnumPipe,
+    EventTypeComponent,
+    EventtypeAbmComponent,
+    EventtypelistComponent,
 
   ],
   imports: [

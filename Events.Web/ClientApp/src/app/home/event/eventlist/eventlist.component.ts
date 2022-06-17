@@ -12,6 +12,7 @@ import { AppService } from 'src/app/server/app.service';
   styleUrls: ['./eventlist.component.css']
 })
 export class EventlistComponent implements AfterViewInit {
+  displayedColumns: string[] = ['Title', 'Description', 'Date', 'Event Type','Person1','Person2','Person3','Location','Media'];
 
   data: Events[] = [];
   @ViewChild(MatSort) sort!: MatSort;
@@ -44,18 +45,18 @@ export class EventlistComponent implements AfterViewInit {
       ).subscribe(data => this.data = data);
   }
 
-  editContact(contact: Events) {
+  editEvent(contact: Events) {
     // let route = '/contacts/edit-contact';
     // this.router.navigate([route], { queryParams: { id: contact.id } });
     this.abmEvent=true;   
 
   }
 
-  viewContact(contact: Events) {
+  viewEvent(contact: Events) {
     // let route = '/contacts/view-contact';
     // this.router.navigate([route], { queryParams: { id: contact.id } });
   }
-  viewMedia(contact: Events) {
+  viewEventMedia(contact: Events) {
     // let route = '/contacts/view-media';
     // this.router.navigate([route], { queryParams: { id: contact.id } });
   }
