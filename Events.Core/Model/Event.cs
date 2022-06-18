@@ -20,7 +20,7 @@ namespace EventsManager.Model
         public Person Person1 { get; set; }
         public Person? Person2 { get; set; }
         public Person? Person3 { get; set; }
-        public List<Photos>? photos { get; set; }
+        public List<Photos>? Photos { get; set; }
         public Location? Loccation { get; set; }
         
     }

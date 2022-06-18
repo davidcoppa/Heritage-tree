@@ -2,9 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { SortDirection } from "@angular/material/sort";
-import { PersonApi } from "../model/person.api.model";
 import { Person } from "../model/person.model";
-import { EventApi } from "../model/event.api";
 import { Events } from "../model/event.model";
 import { EventType } from "../model/eventType.model";
 
@@ -34,7 +32,7 @@ export class AppService {
         return this.httpClient.post<Person>('api/People/Create', newPerson);
 
     }
-    getEvents(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<EventApi> {
+    getEvents(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<Events[]> {
         let queryParams = new HttpParams();
         queryParams = queryParams.append("sort", sort);//column
         queryParams = queryParams.append("order", order);
@@ -43,7 +41,7 @@ export class AppService {
         queryParams = queryParams.append("search", search);
 
         //?search=${search}&sort=${sort}&order=${order}&page=${page + 1}
-        return this.httpClient.get<EventApi>('api/Event/GetFilter', { params: queryParams });
+        return this.httpClient.get<Events[]>('api/Event/GetFilter', { params: queryParams });
     }
 
     AddPEvent(evt: Events) : Observable<Events> {

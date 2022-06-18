@@ -4,6 +4,7 @@ import {MatSort} from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { BehaviorSubject, merge, of } from 'rxjs';
 import { startWith, switchMap, catchError, map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Gender } from 'src/app/helpers/enums/gender.enum';
 import { Person } from 'src/app/model/person.model';
 import { AppService } from 'src/app/server/app.service';
 
@@ -31,13 +32,13 @@ export class PeoplelistComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   abmperson:boolean=false;
   constructor(private appService: AppService, private router: Router) { }
-
+  gender=Gender;
  
   ngAfterViewInit() {
     // If the user changes the sort order, reset back to the first page.
      this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 1);
     
-  //   console.log("page: "+this.paginator.pageIndex);
+     console.log(this.gender);
  
      merge(this.sort.sortChange, this.term$.pipe(debounceTime(1000), distinctUntilChanged()), this.paginator.page)
       .pipe(

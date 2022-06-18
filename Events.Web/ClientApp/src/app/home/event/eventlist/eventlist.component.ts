@@ -12,9 +12,17 @@ import { AppService } from 'src/app/server/app.service';
   styleUrls: ['./eventlist.component.css']
 })
 export class EventlistComponent implements AfterViewInit {
-  displayedColumns: string[] = ['Title', 'Description', 'Date', 'Event Type','Person1','Person2','Person3','Location','Media'];
+  displayedColumns: string[] = ['Title',
+                                 'Description',
+                                 'EventDate',
+                                 'EventType',
+                                 'Person1',
+                                 'Person2',
+                                 'Person3',
+                                 'Location',
+                                 'Photos'];
 
-  data: Events[] = [];
+  event: Events[] = [];
   @ViewChild(MatSort) sort!: MatSort;
   term$ = new BehaviorSubject<string>('');
   resultsLength = 0;
@@ -38,11 +46,11 @@ export class EventlistComponent implements AfterViewInit {
           if (data === null) {
             return [];
           }
-          this.resultsLength = data.totalItems;
+          this.resultsLength = data.length;
 
-          return data.event;
+          return data;
         })
-      ).subscribe(data => this.data = data);
+      ).subscribe(data => this.event = data);
   }
 
   editEvent(contact: Events) {
