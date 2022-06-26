@@ -1,25 +1,15 @@
-<p *ngFor="let enum of gender | enumPipe">
-    {{enum[0]}}
-    {{enum[1]}}
-
-    <!-- <td mat-cell *matCellDef="let row">
-        <ng-template [ngIf]="row.sex==enum.keys">
-            {{enum.values}}
-        </ng-template>
-       </td> -->
-</p>
 
 <mat-card class="container">
     <mat-card-title>Mat DataTable</mat-card-title>
     <mat-card-content>
         <div class="search-hero">
-            <input type="text" placeholder="&#61442; Search..." (input)="term$.next($any($event.target).value)">
+            <input type="text" placeholder="&#61442; Search..." class="search" (input)="term$.next($any($event.target).value)">
         </div>
 
-        <div class="example-container mat-elevation-z8">
-            <div class="example-table-container">
+        <div class="mat-elevation-z8">
+            <div>
 
-                <table mat-table [dataSource]="person" class="example-table" matSort matSortActive="FirstName"
+                <table mat-table [dataSource]="person" class="table" matSort matSortActive="FirstName"
                     matSortDisableClear matSortDirection="desc">
                     <!-- first name Column -->
                     <ng-container matColumnDef="FirstName">
@@ -101,12 +91,13 @@
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>media</th>
                         <td mat-cell *matCellDef="let row">
                             <button mat-icon-button color="primary" (click)="viewMedia(row)" title="Photos">
-                                <mat-icon>{{row.photos?.length}}</mat-icon>
+                                <mat-icon>search</mat-icon>
+                                {{row.photos?.length}}
                             </button>
                         </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="action">
+                    <ng-container matColumnDef="Action">
                         <tr>
                             <th mat-header-cell *matHeaderCellDef> Action </th>
                         </tr>
@@ -117,10 +108,7 @@
                                 </button>
                                 <button mat-icon-button color="primary" (click)="editContact(row)" title="Edit">
                                     <mat-icon>edit</mat-icon>
-                                    <ng-container *ngIf="abmperson">
-                                        <app-people-abm [personSelected]=row></app-people-abm>
-
-                                    </ng-container>
+                                    
                                 </button>
                             </td>
                         <tr>
@@ -136,3 +124,8 @@
         </div>
     </mat-card-content>
 </mat-card>
+
+<ng-container *ngIf="abmperson">
+    <app-people-abm [personSelected]=rowSelected></app-people-abm>
+
+</ng-container>

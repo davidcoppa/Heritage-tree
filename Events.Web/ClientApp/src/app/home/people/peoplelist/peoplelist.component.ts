@@ -19,11 +19,12 @@ export class PeoplelistComponent implements AfterViewInit {
                                 'FirstSurname', 
                                 'SecondSurname',
                                 'Sex','Order',
-                                'DateOfDeath',
-                                'PlaceOfBirth',
                                 'DateOfBirth',
+                                'PlaceOfBirth',
+                                'DateOfDeath',
                                 'PlaceOfDeath',
-                                'Photos'];
+                                'Photos',
+                                'Action'];
   person: Person[] = [];
   @ViewChild(MatSort) sort!: MatSort;
   term$ = new BehaviorSubject<string>('');
@@ -33,7 +34,9 @@ export class PeoplelistComponent implements AfterViewInit {
   abmperson:boolean=false;
   constructor(private appService: AppService, private router: Router) { }
   gender=Gender;
- 
+  rowSelected:Person;
+
+  
   ngAfterViewInit() {
     // If the user changes the sort order, reset back to the first page.
      this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 1);
@@ -67,6 +70,7 @@ export class PeoplelistComponent implements AfterViewInit {
     // let route = '/contacts/edit-contact';
     // this.router.navigate([route], { queryParams: { id: contact.id } });
     this.abmperson=true;   
+    this.rowSelected=contact;
 
   }
 

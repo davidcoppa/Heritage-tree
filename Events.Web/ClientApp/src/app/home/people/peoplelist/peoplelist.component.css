@@ -1,21 +1,31 @@
-
-
 .container {
-    padding-top: 50px;
-    padding-bottom: 10px;
-  }
-  
-  .search-hero {
-    width: 50%;
-    padding: 20px;
-    margin:auto;
-      text-align: center;
+  padding-top: 50px;
+  padding-bottom: 10px;
+}
 
-  }
-  
-  .form-control {
-    box-shadow: 0 10px 40px 0 #B0C1D9;
-  }
-  .form-control::placeholder  {
-    font-family: FontAwesome;
-  }
+.search-hero {
+  width: 50%;
+  padding: 20px;
+  margin: auto;
+  text-align: center;
+
+}
+
+.search {
+  height: 30px;
+  padding: 0px;
+  font-size: 25px;
+  margin: 5px 0;
+}
+
+.form-control {
+  box-shadow: 0 10px 40px 0 #B0C1D9;
+}
+
+.form-control::placeholder {
+  font-family: FontAwesome;
+}
+
+.table {
+  width: 100%;
+}
