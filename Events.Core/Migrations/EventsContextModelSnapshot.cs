@@ -17,7 +17,7 @@ namespace Events.Core.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -292,7 +292,7 @@ namespace Events.Core.Migrations
             modelBuilder.Entity("EventsManager.Model.Photos", b =>
                 {
                     b.HasOne("EventsManager.Model.Event", null)
-                        .WithMany("photos")
+                        .WithMany("Photos")
                         .HasForeignKey("EventId");
 
                     b.HasOne("EventsManager.Model.Person", null)
@@ -302,7 +302,7 @@ namespace Events.Core.Migrations
 
             modelBuilder.Entity("EventsManager.Model.Event", b =>
                 {
-                    b.Navigation("photos");
+                    b.Navigation("Photos");
                 });
 
             modelBuilder.Entity("EventsManager.Model.Person", b =>

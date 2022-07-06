@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EventsManager.Data;
 using EventsManager.Model;
+using Events.Core.DTOs;
+using AutoMapper;
+using Events.Core.Common.Validators;
+using Events.Core.Common.Messages;
 
 namespace Events.Core.Controllers
 {
@@ -16,10 +20,20 @@ namespace Events.Core.Controllers
     public class EventTypesController : Controller
     {
         private readonly EventsContext context;
+        private readonly IMapper mapper;
+        private readonly IDataValidator validator;
+        private readonly IMessages messages;
 
-        public EventTypesController(EventsContext context)
+
+        public EventTypesController(EventsContext context,
+            IMapper mapper,
+            IDataValidator validator,
+            IMessages messages)
         {
             this.context = context;
+            this.mapper = mapper;
+            this.validator = validator;
+            this.messages = messages; 
         }
 
         // GET: EventTypes
@@ -58,15 +72,32 @@ namespace Events.Core.Controllers
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([Bind("Name,Description")] EventTypes eventTypes)
+        public async Task<IActionResult> Create(EventTypeCreateDTO eventTypeDTO)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                context.Add(eventTypes);
-                await context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return BadRequest(messages.BadRequestModelInvalid);
             }
-            return View(eventTypes);
+
+            EventTypes eventType = mapper.Map<EventTypes>(eventTypeDTO);
+
+
+            if (validator.ValidateObject<EventTypes>(eventType))
+            {
+                return BadRequest(messages.BadRequestModelNullOrInvalid);
+            }
+
+            //TODO: validate if we already have that event
+
+            var events = await context.EventType.Where(x => x.Name == eventType.Name || x.Description == eventType.Description).ToListAsync();
+            if (events.Count > 0)
+                return BadRequest(string.Format(messages.EventTypeExistingDatabase, eventType.Name));
+
+            context.Add(eventType);
+
+            await context.SaveChangesAsync();
+
+            return Ok(eventType);
         }
 
 
@@ -80,27 +111,28 @@ namespace Events.Core.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    context.Update(eventTypes);
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EventTypesExists(eventTypes.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return Ok(eventTypes);
+                return BadRequest(messages.BadRequestModelInvalid);
             }
-            return BadRequest("Model is not valid");
+
+            try
+            {
+                context.Update(eventTypes);
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EventTypesExists(eventTypes.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return Ok(eventTypes);
         }
 
         // GET: EventTypes/Delete/5

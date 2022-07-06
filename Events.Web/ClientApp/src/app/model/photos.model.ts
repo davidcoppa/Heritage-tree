@@ -1,8 +1,8 @@
 export interface Photos {
-    id: number;
-    date: Date;
-    description:string;
-    name:string;
-    urlFile:string;
+    Id: number;
+    Date: Date;
+    Description:string;
+    Name:string;
+    UrlFile:string;
 
   }

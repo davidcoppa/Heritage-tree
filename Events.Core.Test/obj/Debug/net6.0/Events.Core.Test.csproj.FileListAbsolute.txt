@@ -1327,3 +1327,5 @@ D:\Dropbox\david\code\C-S\Events\Events.Core.Test\bin\Debug\net6.0\Microsoft.Vis
 D:\Dropbox\david\code\C-S\Events\Events.Core.Test\obj\Debug\net6.0\Events.Core.Test.csproj.CopyComplete
 D:\Dropbox\david\code\C-S\Events\Events.Core.Test\obj\Debug\net6.0\Events.Core.Test.genruntimeconfig.cache
 D:\Dropbox\david\code\C-S\Events\Events.Core.Test\obj\Debug\net6.0\ref\Events.Core.Test.dll
+D:\Dropbox\david\code\C-S\Events\Events.Core.Test\bin\Debug\net6.0\DynamicLINQ.dll
+D:\Dropbox\david\code\C-S\Events\Events.Core.Test\bin\Debug\net6.0\System.Linq.Dynamic.dll

@@ -5,6 +5,7 @@ import { SortDirection } from "@angular/material/sort";
 import { Person } from "../model/person.model";
 import { Events } from "../model/event.model";
 import { EventType } from "../model/eventType.model";
+import { Photos } from "../model/photos.model";
 
 @Injectable()
 export class AppService {
@@ -32,6 +33,7 @@ export class AppService {
         return this.httpClient.post<Person>('api/People/Create', newPerson);
 
     }
+
     getEvents(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<Events[]> {
         let queryParams = new HttpParams();
         queryParams = queryParams.append("sort", sort);//column
@@ -44,12 +46,34 @@ export class AppService {
         return this.httpClient.get<Events[]>('api/Event/GetFilter', { params: queryParams });
     }
 
-    AddPEvent(evt: Events) : Observable<Events> {
+    AddEvent(evt: Events) : Observable<Events> {
         return this.httpClient.post<Events>('api/Event/Create', evt);
     }
 
     GetEventType() : Observable<EventType[]> {
         return this.httpClient.get<EventType[]>('api/EventTypes/Get');
       }
+
+
+
+
+
+
+
+      getPhotos(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<Photos[]> {
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append("sort", sort);//column
+        queryParams = queryParams.append("order", order);
+        queryParams = queryParams.append("page", page ?? 0);
+        queryParams = queryParams.append("itemsPage", itemsPage ?? 10);
+        queryParams = queryParams.append("search", search);
+
+        //?search=${search}&sort=${sort}&order=${order}&page=${page + 1}
+        return this.httpClient.get<Photos[]>('api/Photos/GetFilter', { params: queryParams });
+    }
+
+    AddPhotos(photos: Photos) : Observable<Photos> {
+        return this.httpClient.post<Photos>('api/Photos/Create', photos);
+    }
 
 }

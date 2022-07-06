@@ -73,7 +73,7 @@ export class EventAbmComponent implements OnInit {
   SaveEvent(EventABM: FormGroup) {
     this.evt = EventABM.value as Events;
 
-    this.appService.AddPEvent(this.evt).pipe(first())
+    this.appService.AddEvent(this.evt).pipe(first())
       .subscribe(
         {
           next(data) {

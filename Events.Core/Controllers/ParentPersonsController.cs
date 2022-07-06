@@ -6,6 +6,7 @@ using EventsManager.Model;
 using Events.Core.DTOs;
 using AutoMapper;
 using Events.Core.Common.Validators;
+using Events.Core.Common.Messages;
 
 namespace Events.Core.Controllers
 {
@@ -16,13 +17,18 @@ namespace Events.Core.Controllers
         private readonly EventsContext context;
         private readonly IMapper mapper;
         private readonly IDataValidator validator;
+        private readonly IMessages messages;
 
 
-        public ParentPersonsController(EventsContext context, IMapper mapper, IDataValidator validator)
+        public ParentPersonsController(EventsContext context,
+            IMapper mapper,
+            IDataValidator validator,
+            IMessages messages)
         {
             this.context = context;
             this.mapper = mapper;
             this.validator = validator;
+            this.messages = messages;
         }
 
         // GET: ParentPersons
@@ -62,69 +68,72 @@ namespace Events.Core.Controllers
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Create( ParentPersonCreateDTO parentPerson)
+        public async Task<IActionResult> Create(ParentPersonCreateDTO parentPerson)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                ParentPerson person = mapper.Map<ParentPerson>(parentPerson);
-                if (validator.ValidateObject<ParentPerson>(person))
-                {
-                    return BadRequest("Model is null or not valid");
-                }
-                //validate existence of the person if not create (if it's valid)
-                if (parentPerson.Person != null)
-                {
-                    Person son = await context.Person.Where(x => x.Id == parentPerson.Person.Id).FirstOrDefaultAsync();
-                    if (son == null)
-                    {
-                        if (validator.ValidateObject<Person>(parentPerson.Person))
-                        {
-                            return NotFound("son");
-                        }
-                        context.Add(parentPerson.Person);
-                        son = parentPerson.Person;
-
-                    }
-                    person.Person = son;
-
-                }
-                if (parentPerson.PersonMother != null)
-                {
-                    Person mom = await context.Person.Where(x => x.Id == parentPerson.PersonMother.Id).FirstOrDefaultAsync();
-                    if (mom == null)
-                    {
-                        if (validator.ValidateObject<Person>(parentPerson.PersonMother))
-                        {
-                            return NotFound("mom");
-                        }
-                        context.Add(parentPerson.PersonMother);
-                        mom = parentPerson.PersonMother;
-                    }
-                    person.PersonMother = mom;
-
-                }
-                if (parentPerson.PersonFather != null)
-                {
-                    Person dad = await context.Person.Where(x => x.Id == parentPerson.PersonFather.Id).FirstOrDefaultAsync();
-                    if (dad == null)
-                    {
-                        if (validator.ValidateObject<Person>(parentPerson.PersonFather))
-                        {
-                            return NotFound("dad");
-                        }
-                        context.Add(parentPerson.PersonFather);
-                        dad = parentPerson.PersonFather;
-                    }
-                    person.PersonFather = dad;
-
-                }
-
-
-                context.Add(person);
-                await context.SaveChangesAsync();
-                return Ok(person);
+                return BadRequest(messages.BadRequestModelInvalid);
             }
-            return BadRequest("Model is not valid");
+
+            ParentPerson person = mapper.Map<ParentPerson>(parentPerson);
+            if (validator.ValidateObject<ParentPerson>(person))
+            {
+                return BadRequest(messages.BadRequestModelInvalid);
+            }
+
+            //validate existence of the person if not create (if it's valid)
+            if (parentPerson.Person != null)
+            {
+                Person son = await context.Person.Where(x => x.Id == parentPerson.Person.Id).FirstOrDefaultAsync();
+                if (son == null)
+                {
+                    if (validator.ValidateObject<Person>(parentPerson.Person))
+                    {
+                        return NotFound("son");
+                    }
+                    context.Add(parentPerson.Person);
+                    son = parentPerson.Person;
+
+                }
+                person.Person = son;
+
+            }
+            if (parentPerson.PersonMother != null)
+            {
+                Person mom = await context.Person.Where(x => x.Id == parentPerson.PersonMother.Id).FirstOrDefaultAsync();
+                if (mom == null)
+                {
+                    if (validator.ValidateObject<Person>(parentPerson.PersonMother))
+                    {
+                        return NotFound("mom");
+                    }
+                    context.Add(parentPerson.PersonMother);
+                    mom = parentPerson.PersonMother;
+                }
+                person.PersonMother = mom;
+
+            }
+            if (parentPerson.PersonFather != null)
+            {
+                Person dad = await context.Person.Where(x => x.Id == parentPerson.PersonFather.Id).FirstOrDefaultAsync();
+                if (dad == null)
+                {
+                    if (validator.ValidateObject<Person>(parentPerson.PersonFather))
+                    {
+                        return NotFound("dad");
+                    }
+                    context.Add(parentPerson.PersonFather);
+                    dad = parentPerson.PersonFather;
+                }
+                person.PersonFather = dad;
+
+            }
+
+
+            context.Add(person);
+            await context.SaveChangesAsync();
+            return Ok(person);
+
         }
 
         // POST: ParentPersons/Edit/5
@@ -133,41 +142,51 @@ namespace Events.Core.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(int id, ParentPersonEditDTO parentPerson)
         {
+
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(messages.BadRequestModelInvalid);
+            }
+
             if (id != parentPerson.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            ParentPerson person = mapper.Map<ParentPerson>(parentPerson);
+            if (validator.ValidateObject<ParentPerson>(person))
             {
-                ParentPerson person = mapper.Map<ParentPerson>(parentPerson);
-                Person entity = await context.Person.FindAsync(id);
-                if (entity != null)
-                {
-                    try
-                    {
-                        context.Entry(entity).CurrentValues.SetValues(person);
-
-                        await context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!ParentPersonExists(person.Id))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                    return Ok(person);
-
-                }
-            return NotFound("We can't edit the  parent person");
-
+                return BadRequest(messages.BadRequestModelInvalid);
             }
-            return BadRequest("Model is not valid");
+
+            Person entity = await context.Person.FindAsync(id);
+            if (entity == null)
+            {
+                return NotFound(messages.ParentPersonNotFound);
+            }
+            try
+            {
+                context.Entry(entity).CurrentValues.SetValues(person);
+
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ParentPersonExists(person.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return Ok(person);
+
+
+
+
         }
 
         // GET: ParentPersons/Delete/5

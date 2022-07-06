@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Events.Core.Common;
+using Events.Core.Common.Messages;
 using Events.Core.Common.Validators;
 using EventsManager.Data;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -38,7 +39,12 @@ namespace Events.Web
              );
 
             //add a validator per controller
-            services.AddTransient<IDataValidator, DataValidator>();
+            services.AddSingleton<IDataValidator, DataValidator>();
+            services.AddSingleton<IMessages, En_Messages>();
+            //    >((ServiceProvider) =>
+            //{
+            //    var env=ServiceProvider.GetRequiredService<Iwe>
+            //});
 
 
 

@@ -13,6 +13,7 @@ using Events.Core.DTOs;
 using Events.Core.Common.Validators;
 using Events.Core.Common.Queryable;
 using System.Linq.Expressions;
+using Events.Core.Common.Messages;
 
 namespace Events.Core.Controllers
 {
@@ -23,12 +24,17 @@ namespace Events.Core.Controllers
         private readonly EventsContext context;
         private readonly IMapper mapper;
         private readonly IDataValidator validator;
+        private readonly IMessages messages;
 
-        public PeopleController(EventsContext context, IMapper mapper, IDataValidator validator)
+        public PeopleController(EventsContext context,
+            IMapper mapper,
+            IDataValidator validator,
+            IMessages messages)
         {
             this.context = context;
             this.mapper = mapper;
             this.validator = validator;
+            this.messages = messages;
 
         }
 
@@ -62,28 +68,29 @@ namespace Events.Core.Controllers
 
                 }
 
-                if (data.Count()!=0)
+                if (!data.Any())
                 {
-                    data = OrderByExtension.OrderBy(data, sort, order);
-
-                    int itemsPageInt = int.TryParse(itemsPage, out int items) ? items : Int32.MaxValue;
-                    Pagination pagination = new Pagination(data.Count(), itemsPageInt);
-
-                    int pageIndex = int.TryParse(page, out int count) ? count : 0;
-
-                    var result = data.PagedIndex(pagination, pageIndex).ToList();
-
-                    return Ok(data);
+                    return Ok(null);
                 }
-                return Ok(null);
+                data = OrderByExtension.OrderBy(data, sort, order);
+
+                int itemsPageInt = int.TryParse(itemsPage, out int items) ? items : Int32.MaxValue;
+                Pagination pagination = new Pagination(data.Count(), itemsPageInt);
+
+                int pageIndex = int.TryParse(page, out int count) ? count : 0;
+
+                var result = data.PagedIndex(pagination, pageIndex).ToList();
+
+                return Ok(data);
 
 
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return BadRequest(ex.Message);
+
             }
-            return BadRequest("the server exploded!!!");
         }
 
         // GET: People/Details/5
@@ -115,13 +122,13 @@ namespace Events.Core.Controllers
                 var person = mapper.Map<Person>(personDto);
                 if (validator.ValidateObject<Person>(person))
                 {
-                    return BadRequest("Model is null or not valid");
+                    return BadRequest(messages.BadRequestModelNullOrInvalid);
                 }
                 context.Add(person);
                 await context.SaveChangesAsync();
                 return Ok(person);
             }
-            return BadRequest("Model is not valid");
+            return BadRequest(messages.BadRequestModelInvalid);
         }
 
 
@@ -167,7 +174,7 @@ namespace Events.Core.Controllers
                 return Ok(personToEdit);
 
             }
-            return BadRequest("Model is not valid");
+            return BadRequest(messages.BadRequestModelInvalid);
         }
 
         // GET: People/Delete/5

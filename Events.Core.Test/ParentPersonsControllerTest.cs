@@ -85,6 +85,8 @@ namespace Events.Core.Test
             var profile = new AutoMapperProfiles();
             var mapConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
             var mapper = new Mapper(mapConfiguration);
+            var messages = new MessagesMoq();
+
 
             var options = new DbContextOptionsBuilder<EventsContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -96,7 +98,7 @@ namespace Events.Core.Test
 
                 context.SaveChanges();
 
-                var testResul = new ParentPersonsController(context, mapper, validator);
+                var testResul = new ParentPersonsController(context, mapper, validator,messages);
                 IActionResult countResult = await testResul.Index();
 
                 var contentResult = countResult as OkObjectResult;
@@ -114,6 +116,7 @@ namespace Events.Core.Test
             var profile = new AutoMapperProfiles();
             var mapConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
             var mapper = new Mapper(mapConfiguration);
+            var messages = new MessagesMoq();
 
             var validator = new ValidatorsMoq();
 
@@ -129,7 +132,7 @@ namespace Events.Core.Test
 
                 context.SaveChanges();
 
-                var testResul = new ParentPersonsController(context, mapper, validator);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
                 IActionResult countResult = await testResul.Details(1);
 
                 var contentResult = countResult as OkObjectResult;
@@ -147,6 +150,7 @@ namespace Events.Core.Test
             var profile = new AutoMapperProfiles();
             var mapConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
             var mapper = new Mapper(mapConfiguration);
+            var messages = new MessagesMoq();
 
             var validator = new ValidatorsMoq();
 
@@ -156,7 +160,7 @@ namespace Events.Core.Test
 
             using (var context = CreateContext(options))
             {
-                var testResul = new ParentPersonsController(context, mapper, validator);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
                 IActionResult countResult = await testResul.Details(5);
 
 
@@ -171,6 +175,7 @@ namespace Events.Core.Test
             var profile = new AutoMapperProfiles();
             var mapConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
             var mapper = new Mapper(mapConfiguration);
+            var messages = new MessagesMoq();
 
             var validator = new ValidatorsMoq();
 
@@ -186,7 +191,7 @@ namespace Events.Core.Test
                 context.Person.Add(pFather);
                 context.SaveChanges();
 
-                var testResul = new ParentPersonsController(context, mapper, validator);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
                 IActionResult countResult = await testResul.Create(ppCreate);
 
                 var contentResult = countResult as OkObjectResult;
@@ -205,6 +210,7 @@ namespace Events.Core.Test
             var mapConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
             var mapper = new Mapper(mapConfiguration);
             var validator = new ValidatorsMoq();
+            var messages = new MessagesMoq();
 
             var options = new DbContextOptionsBuilder<EventsContext>()
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -214,14 +220,14 @@ namespace Events.Core.Test
             {
                 context.SaveChanges();
 
-                var testResul = new ParentPersonsController(context, mapper, validator);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
                 IActionResult countResult = await testResul.Create(ppCreateNull);
 
                 var contentResult = countResult as BadRequestObjectResult;
 
                 Assert.IsInstanceOfType(countResult, typeof(BadRequestObjectResult));
                 Assert.IsNotNull(contentResult);
-                Assert.AreEqual("Model is null or not valid", contentResult.Value);
+                Assert.AreEqual("Model is not valid", contentResult.Value);
 
             }
         }
@@ -232,7 +238,8 @@ namespace Events.Core.Test
             var profile = new AutoMapperProfiles();
             var mapConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
             var mapper = new Mapper(mapConfiguration);
-            
+            var messages = new MessagesMoq();
+
             var validator = new ValidatorsMoq();
 
             var options = new DbContextOptionsBuilder<EventsContext>()
@@ -245,7 +252,7 @@ namespace Events.Core.Test
                 context.Person.Add(pFather);
                 context.SaveChanges();
 
-                var testResul = new ParentPersonsController(context, mapper, validator);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
                 IActionResult countResult = await testResul.Create(ppCreateNoMother);
 
                 var contentResult = countResult as OkObjectResult;
@@ -263,6 +270,7 @@ namespace Events.Core.Test
             var profile = new AutoMapperProfiles();
             var mapConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
             var mapper = new Mapper(mapConfiguration);
+            var messages = new MessagesMoq();
 
             var validator = new ValidatorsMoq();
 
@@ -276,7 +284,7 @@ namespace Events.Core.Test
                 context.Person.Add(pMother);
                 context.SaveChanges();
 
-                var testResul = new ParentPersonsController(context, mapper, validator);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
                 IActionResult countResult = await testResul.Create(ppCreateNoSon);
 
                 Assert.IsInstanceOfType(countResult, typeof(NotFoundObjectResult));
@@ -292,6 +300,7 @@ namespace Events.Core.Test
             var mapConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
             var mapper = new Mapper(mapConfiguration);
             var validator = new ValidatorsMoq();
+            var messages = new MessagesMoq();
 
             var options = new DbContextOptionsBuilder<EventsContext>()
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -303,7 +312,7 @@ namespace Events.Core.Test
 
                 context.SaveChanges();
 
-                var testResul = new ParentPersonsController(context, mapper, validator);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
                 IActionResult countResult = await testResul.Edit(1, ppeDto);
 
                 var contentResult = countResult as OkObjectResult;
@@ -321,6 +330,7 @@ namespace Events.Core.Test
             var profile = new AutoMapperProfiles();
             var mapConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
             var mapper = new Mapper(mapConfiguration);
+            var messages = new MessagesMoq();
 
             var validator = new ValidatorsMoq();
 
@@ -335,7 +345,7 @@ namespace Events.Core.Test
 
                 context.SaveChanges();
 
-                var testResul = new ParentPersonsController(context, mapper, validator);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
                 IActionResult countResult = await testResul.Delete(1);
 
                 Assert.IsInstanceOfType(countResult, typeof(NoContentResult));

@@ -20,6 +20,12 @@ import { EnumPipe } from './helpers/pipes/enum.pipe';
 import { EventTypeComponent } from './home/eventType/eventtype.component';
 import { EventtypeAbmComponent } from './home/eventType/eventtype-abm/eventtype-abm.component';
 import { EventtypelistComponent } from './home/eventType/eventtypelist/eventtypelist.component';
+import { MediaComponent } from './home/media/media.component';
+import { MediaListComponent } from './home/media/media-list/media-list.component';
+import { MediaAbmComponent } from './home/media/media-abm/media-abm.component';
+import { LayoutComponent } from './home/nav/layout/layout.component';
+import { HeaderComponent } from './home/nav/header/header.component';
+import { SideNavComponent } from './home/nav/side-nav/side-nav.component';
 
 
 
@@ -38,6 +44,12 @@ import { EventtypelistComponent } from './home/eventType/eventtypelist/eventtype
     EventTypeComponent,
     EventtypeAbmComponent,
     EventtypelistComponent,
+    MediaComponent,
+    MediaListComponent,
+    MediaAbmComponent,
+    LayoutComponent,
+    HeaderComponent,
+    SideNavComponent,
 
   ],
   imports: [

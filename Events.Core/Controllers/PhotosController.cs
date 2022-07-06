@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EventsManager.Data;
 using EventsManager.Model;
+using Events.Core.Common.Messages;
 
 namespace Events.Core.Controllers
 {
@@ -11,11 +12,13 @@ namespace Events.Core.Controllers
     public class PhotosController : Controller
     {
         private readonly EventsContext context;
+        private readonly IMessages messages;
 
-        public PhotosController(EventsContext context)
+        public PhotosController(EventsContext context,
+            IMessages messages)
         {
             this.context = context;
-
+            this.messages = messages;
         }
 
         // GET: Photos
@@ -52,50 +55,55 @@ namespace Events.Core.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Create([Bind("Date,Description,UrlFile")] Photos photos)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                context.Add(photos);
-                await context.SaveChangesAsync();
-                return Ok(photos);
+                return BadRequest(messages.BadRequestModelInvalid);
 
             }
-            return BadRequest("Model is not valid");
+            context.Add(photos);
+            await context.SaveChangesAsync();
+            return Ok(photos);
+
+
         }
 
-       
+
         // POST: Photos/Edit/5
-   
+
         [HttpPost("Edit/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Description")] Photos photos)
         {
+          
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(messages.BadRequestModelInvalid);
+            }
+
             if (id != photos.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+
+            try
             {
-                try
-                {
-                    context.Update(photos);
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PhotosExists(photos.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return Ok(photos);
+                context.Update(photos);
+                await context.SaveChangesAsync();
             }
-            return BadRequest("Model is not valid");
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PhotosExists(photos.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return Ok(photos);
         }
 
         // GET: Photos/Delete/5
@@ -119,7 +127,7 @@ namespace Events.Core.Controllers
             return NoContent();
         }
 
-       
+
 
         private bool PhotosExists(int id)
         {
