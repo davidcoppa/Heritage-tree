@@ -10,7 +10,7 @@ import { Gender } from 'src/app/helpers/enums/gender.enum';
   selector: 'app-people-abm',
   templateUrl: './people-abm.component.html',
   styleUrls: ['./people-abm.component.css'],
- 
+
 })
 export class PeopleABMComponent implements OnInit, OnChanges {
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Date>;
@@ -20,18 +20,19 @@ export class PeopleABMComponent implements OnInit, OnChanges {
   fb: FormBuilder;
   genderList = Gender;
   person: Person;
+  buttonAction: string = "Add";
 
   constructor(fb: FormBuilder, private appService: AppService) {
     this.fb = fb;
   }
 
   ngOnInit(): void {
-    this.people = this.CreateForm(null);
+    //     this.people = this.CreateForm(null);
+    // console.log('abm person');
   }
 
-  CreateForm(personEdit:Person|null): FormGroup {
-    if(personEdit==null)
-    {
+  CreateForm(personEdit: Person | null): FormGroup {
+    if (personEdit == null) {
       return this.fb.group({
         firstName: [null, [Validators.required]],
         secondName: [null],
@@ -43,31 +44,27 @@ export class PeopleABMComponent implements OnInit, OnChanges {
         placeOfBirth: [null],
         dateDeath: [null],
         placeOfDeath: [null]
-  
+
       });
     }
-    else{
+    else {
       return this.fb.group({
-        firstName: new FormControl(personEdit.FirstName ?? null),
-        secondName: new FormControl(personEdit.SecondName ?? null),
-        firstSurname:new FormControl(personEdit.FirstSurname ?? null),
-        secondSurname: new FormControl(personEdit.SecondSurname ?? null),
-        sex: new FormControl(personEdit.Sex ?? null),
-        order: new FormControl(personEdit.Order ?? null),
-        dateBirth:new FormControl(personEdit.DateBirth ?? null),
-        placeOfBirth:new FormControl(personEdit.PlaceOfBirth ?? null),
-        dateDeath: new FormControl(personEdit.DateDeath ?? null),
-        placeOfDeath: new FormControl(personEdit.PlaceOfDeath ?? null)
-  
+        firstName: new FormControl(personEdit.firstName ?? null),
+        secondName: new FormControl(personEdit.secondName ?? null),
+        firstSurname: new FormControl(personEdit.firstSurname ?? null),
+        secondSurname: new FormControl(personEdit.secondSurname ?? null),
+        sex: new FormControl(personEdit.sex ?? null),
+        order: new FormControl(personEdit.order ?? null),
+        dateBirth: new FormControl(personEdit.dateBirth ?? null),
+        placeOfBirth: new FormControl(personEdit.placeOfBirth ?? null),
+        dateDeath: new FormControl(personEdit.dateDeath ?? null),
+        placeOfDeath: new FormControl(personEdit.placeOfDeath ?? null)
+
       });
     }
-    
-    
   };
 
   ngOnChanges() {
-
-
     if (this.personSelected == null) {
 
       //en teoria ya esta creada el form persona, tal vez lo uso si pongo crear despues de haber seleccionado a alguien
@@ -75,6 +72,8 @@ export class PeopleABMComponent implements OnInit, OnChanges {
 
     } else {
       this.person = this.personSelected;
+      this.buttonAction = "Update";
+      this.people = this.CreateForm(this.personSelected);// this.personSelected;
 
     }
   }

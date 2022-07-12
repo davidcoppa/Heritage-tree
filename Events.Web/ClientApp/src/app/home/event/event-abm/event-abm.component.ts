@@ -38,19 +38,19 @@ export class EventAbmComponent implements OnInit {
         Person2: [null],
         Person3: [null],
         Location: [null],
-        Photos: [null]
+        Media: [null]
       });
     }else{
       return this.fb.group({
-        firstName: new FormControl(eventEdit.Title ?? null),
-        secondName: new FormControl(eventEdit.Description ?? null),
-        firstSurname:new FormControl(eventEdit.EventDate ?? null),
-        secondSurname: new FormControl(eventEdit.EventType ?? null),
-        sex: new FormControl(eventEdit.Person1 ?? null),
-        order: new FormControl(eventEdit.Person2 ?? null),
-        dateBirth:new FormControl(eventEdit.Person3 ?? null),
-        placeOfBirth:new FormControl(eventEdit.Location ?? null),
-        dateDeath: new FormControl(eventEdit.Photos ?? null)
+        Title: new FormControl(eventEdit.Title ?? null),
+        Description: new FormControl(eventEdit.Description ?? null),
+        EventDate:new FormControl(eventEdit.EventDate ?? null),
+        EventType: new FormControl(eventEdit.EventType ?? null),
+        Person1: new FormControl(eventEdit.Person1 ?? null),
+        Person2: new FormControl(eventEdit.Person2 ?? null),
+        Person3:new FormControl(eventEdit.Person3 ?? null),
+        Location:new FormControl(eventEdit.Location ?? null),
+        Media: new FormControl(eventEdit.Media ?? null)
   
       });    }
   

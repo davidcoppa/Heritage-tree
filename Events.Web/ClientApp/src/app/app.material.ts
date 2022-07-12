@@ -37,6 +37,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { A11yModule } from "@angular/cdk/a11y";
 import { CdkStepperModule } from "@angular/cdk/stepper";
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 
 
@@ -82,7 +83,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     FormsModule,
     MatCardModule,
     MatButtonModule,
-    DragDropModule
+    DragDropModule,
+    FlexLayoutModule
 
 
   ],

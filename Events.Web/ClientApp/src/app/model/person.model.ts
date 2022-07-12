@@ -1,17 +1,17 @@
-import { Photos } from "./photos.model";
+import { Media } from "./media.model";
 
 export interface Person {
   Id: number;
-  FirstName: string;
-  SecondName: string;
-  FirstSurname: string;
-  SecondSurname: string;
-  PlaceOfBirth: string;
-  PlaceOfDeath: string;
-  Sex: number;
-  DateBirth: Date;
-  DateDeath: Date;
-  Order: number;
-  Photos: Photos[];
+  firstName: string;
+  secondName: string;
+  firstSurname: string;
+  secondSurname: string;
+  placeOfBirth: string;
+  placeOfDeath: string;
+  sex: number;
+  dateBirth: Date;
+  dateDeath: Date;
+  order: number;
+  media: Media[];
 
 }

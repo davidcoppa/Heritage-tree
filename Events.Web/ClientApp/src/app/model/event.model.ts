@@ -1,5 +1,5 @@
 import { EventType } from "./eventType.model";
-import { Photos } from "./photos.model";
+import { Media } from "./media.model";
 import { Location } from "./location.model";
 import { Person } from "./person.model";
 
@@ -15,7 +15,7 @@ export interface Events {
     Person2:Person,
     Person3:Person,
     Location:Location,
-    Photos:Photos[]
+    Media:Media[]
 
 
 }

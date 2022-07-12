@@ -16,7 +16,7 @@ namespace Events.Core.DTOs
             public Person Person1 { get; set; }
             public Person? Person2 { get; set; }
             public Person? Person3 { get; set; }
-            public List<Photos>? photos { get; set; }
+            public List<Media>? Media { get; set; }
             public Location? Loccation { get; set; }
 
     }

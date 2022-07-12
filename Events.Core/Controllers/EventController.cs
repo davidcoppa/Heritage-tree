@@ -191,25 +191,25 @@ namespace Events.Core.Controllers
 
                 evt.EventType = eventstypes;
             }
-            if (evt.photos != null)
+            if (evt.Media != null)
             {
-                List<Photos> photos = new List<Photos>();
-                foreach (var photo in evt.photos)
+                List<Media> mediaList = new List<Media>();
+                foreach (var media in evt.Media)
                 {
-                    var photoElement = await context.Photos.Where(x => x.Id == photo.Id).FirstOrDefaultAsync();
+                    var photoElement = await context.Photos.Where(x => x.Id == media.Id).FirstOrDefaultAsync();
                     if (photoElement == null)
                     {
-                        if (validator.ValidateObject<Photos>(photo))
+                        if (validator.ValidateObject<Media>(media))
                         {
                             return NotFound("photo");
                         }
-                        context.Add(photo);
-                        photoElement = photo;
+                        context.Add(media);
+                        photoElement = media;
                     }
-                    photos.Add(photoElement);
+                    mediaList.Add(photoElement);
                 }
 
-                evt.photos = photos;
+                evt.Media = mediaList;
             }
 
             context.Add(evento);

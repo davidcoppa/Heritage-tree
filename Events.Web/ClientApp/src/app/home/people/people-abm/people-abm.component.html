@@ -54,7 +54,7 @@
 
     <mat-form-field class="mat-form-field--inline" appearance="standard">
       <mat-label>Date of death</mat-label>
-      <input matInput [matDatepicker]="pickerDeath" formControlName="dateBirth">
+      <input matInput [matDatepicker]="pickerDeath" formControlName="dateDeath">
       <mat-datepicker-toggle matSuffix [for]="pickerDeath">
         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
       </mat-datepicker-toggle>
@@ -67,6 +67,6 @@
       <input matInput inputmode="text" placeholder="Place Of death" formControlName="placeOfDeath" #nameInput>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="!people.valid">Add</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!people.valid">{{buttonAction}}</button>
   </form>
 </div>

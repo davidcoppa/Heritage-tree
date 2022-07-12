@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { BehaviorSubject,of, merge } from 'rxjs';
-import { Photos } from 'src/app/model/photos.model';
+import { Media } from 'src/app/model/media.model';
 import { AppService } from 'src/app/server/app.service';
 import { startWith, switchMap, catchError, map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ export class MediaListComponent implements AfterViewInit {
                                 'Description',
                                 'Date',
                                 'UrlFile'];
-  media: Photos[] = [];
+  media: Media[] = [];
   @ViewChild(MatSort) sort!: MatSort;
   term$ = new BehaviorSubject<string>('');
   resultsLength = 0;
@@ -26,7 +26,7 @@ export class MediaListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   abmMedia: boolean = false;
   constructor(private appService: AppService, private router: Router) { }
-  rowSelected: Photos;
+  rowSelected: Media;
 
 
   ngAfterViewInit() {
@@ -38,7 +38,7 @@ export class MediaListComponent implements AfterViewInit {
       .pipe(
         startWith({}),
         switchMap((searchTerm) => {
-          return this.appService!.getPhotos(this.sort.active, this.sort.direction, this.paginator.pageIndex, this.pageSize, (searchTerm && typeof searchTerm == 'string') ? searchTerm.toString() : '')
+          return this.appService!.getMedia(this.sort.active, this.sort.direction, this.paginator.pageIndex, this.pageSize, (searchTerm && typeof searchTerm == 'string') ? searchTerm.toString() : '')
             .pipe(catchError(() =>
               of(null)
             ));
@@ -57,14 +57,14 @@ export class MediaListComponent implements AfterViewInit {
       ).subscribe(data => this.media = data);
   }
 
-  editMedia(contact: Photos) {
+  editMedia(contact: Media) {
     this.abmMedia = true;
     this.rowSelected = contact;
 
   }
 
 
-  viewMedia(contact: Photos) {
+  viewMedia(contact: Media) {
     let route = '/media/view-media';
     this.router.navigate([route], { queryParams: { id: contact.Id } });
   }

@@ -77,7 +77,7 @@
                                 <button mat-icon-button color="primary" (click)="editEvent(row)" title="Edit">
                                     <mat-icon>edit</mat-icon>
                                     <ng-container *ngIf="abmEvent">
-                                        <app-people-abm [personSelected]=row></app-people-abm>
+                                        <app-event-abm [eventSelected]=row></app-event-abm>
 
                                     </ng-container>
                                 </button>

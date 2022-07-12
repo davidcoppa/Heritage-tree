@@ -17,7 +17,7 @@ namespace Events.Core.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.4")
+                .HasAnnotation("ProductVersion", "6.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -48,6 +48,27 @@ namespace Events.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Location");
+                });
+
+            modelBuilder.Entity("Events.Core.Model.MediaType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MediaType");
                 });
 
             modelBuilder.Entity("EventsManager.Model.Event", b =>
@@ -117,6 +138,49 @@ namespace Events.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EventType");
+                });
+
+            modelBuilder.Entity("EventsManager.Model.Media", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("MediaDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("MediaDateUploaded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MediaTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UrlFile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("MediaTypeId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("EventsManager.Model.ParentPerson", b =>
@@ -194,41 +258,6 @@ namespace Events.Core.Migrations
                     b.ToTable("Person");
                 });
 
-            modelBuilder.Entity("EventsManager.Model.Photos", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PersonId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UrlFile")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("Photos");
-                });
-
             modelBuilder.Entity("EventsManager.Model.Event", b =>
                 {
                     b.HasOne("EventsManager.Model.EventTypes", "EventType")
@@ -266,6 +295,25 @@ namespace Events.Core.Migrations
                     b.Navigation("Person3");
                 });
 
+            modelBuilder.Entity("EventsManager.Model.Media", b =>
+                {
+                    b.HasOne("EventsManager.Model.Event", null)
+                        .WithMany("Media")
+                        .HasForeignKey("EventId");
+
+                    b.HasOne("Events.Core.Model.MediaType", "MediaType")
+                        .WithMany()
+                        .HasForeignKey("MediaTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EventsManager.Model.Person", null)
+                        .WithMany("Photos")
+                        .HasForeignKey("PersonId");
+
+                    b.Navigation("MediaType");
+                });
+
             modelBuilder.Entity("EventsManager.Model.ParentPerson", b =>
                 {
                     b.HasOne("EventsManager.Model.Person", "PersonFather")
@@ -289,20 +337,9 @@ namespace Events.Core.Migrations
                     b.Navigation("PersonMother");
                 });
 
-            modelBuilder.Entity("EventsManager.Model.Photos", b =>
-                {
-                    b.HasOne("EventsManager.Model.Event", null)
-                        .WithMany("Photos")
-                        .HasForeignKey("EventId");
-
-                    b.HasOne("EventsManager.Model.Person", null)
-                        .WithMany("Photos")
-                        .HasForeignKey("PersonId");
-                });
-
             modelBuilder.Entity("EventsManager.Model.Event", b =>
                 {
-                    b.Navigation("Photos");
+                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("EventsManager.Model.Person", b =>

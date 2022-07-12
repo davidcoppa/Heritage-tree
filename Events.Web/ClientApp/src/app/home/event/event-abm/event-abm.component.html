@@ -1,1 +1,58 @@
-<p>event-abm works!</p>
+<div class="mat-card">
+
+    <form class="form mat-card" [formGroup]="event" flex="50" fxLayout="column" (ngSubmit)="SaveEvent(event)">
+  
+  
+      <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput inputmode="text" placeholder="Title *" formControlName="Title" #nameInput>
+      </mat-form-field>
+
+      <mat-form-field class="ml-3 mat-form-field--inline" flex="50" fxLayout="column" appearance="fill">
+        <mat-label>Description</mat-label>
+        <input matInput inputmode="text" placeholder="Description" formControlName="Description" #nameInput>
+      </mat-form-field>
+  
+      <mat-form-field class="mat-form-field--inline" appearance="fill">
+        <mat-label>EventDate</mat-label>
+        <input matInput inputmode="date" [matDatepicker]="EventDate" formControlName="EventDate">
+        <mat-datepicker-toggle matSuffix [for]="EventDate">
+          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #EventDate></mat-datepicker>
+        <mat-hint>DD/MM/YYYY</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="mat-form-field--inline" appearance="fill">
+        <mat-label>EventType</mat-label>
+        <input matInput inputmode="text" placeholder="EventType" formControlName="EventType" #nameInput>
+      </mat-form-field>
+
+      <mat-form-field class="mat-form-field--inline" appearance="fill">
+        <mat-label>Person 1</mat-label>
+        <input matInput inputmode="text" placeholder="Person 1" formControlName="Person1" #nameInput>
+      </mat-form-field>
+
+      <mat-form-field class="mat-form-field--inline" appearance="fill">
+        <mat-label>Person 2</mat-label>
+        <input matInput inputmode="text" placeholder="Person 2" formControlName="Person2" #nameInput>
+      </mat-form-field>
+
+      <mat-form-field class="mat-form-field--inline" appearance="fill">
+        <mat-label>Person 3</mat-label>
+        <input matInput inputmode="text" placeholder="Person 3" formControlName="Person3" #nameInput>
+      </mat-form-field>
+  
+      <mat-form-field class="mat-form-field--inline" appearance="fill">
+        <mat-label>Location</mat-label>
+        <input matInput inputmode="text" placeholder="Location" formControlName="Location" #nameInput>
+      </mat-form-field>
+
+      <mat-form-field class="mat-form-field--inline" appearance="fill">
+        <mat-label>Photos</mat-label>
+        <input matInput inputmode="text" placeholder="Photos" formControlName="Photos" #nameInput>
+      </mat-form-field>
+     
+      <button mat-raised-button color="primary" type="submit" [disabled]="!event.valid">Add</button>
+    </form>
+  </div>

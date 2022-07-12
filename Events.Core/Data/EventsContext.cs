@@ -34,7 +34,7 @@ namespace EventsManager.Data
 
         public DbSet<Event> Event { get; set; }
         public DbSet<EventTypes> EventType { get; set; }
-        public DbSet<Photos> Photos { get; set; }
+        public DbSet<Media> Photos { get; set; }
         public DbSet<Person> Person { get; set; }
         public DbSet<Events.Core.Model.Location> Location { get; set; }
         public DbSet<EventsManager.Model.ParentPerson> ParentPerson { get; set; }
