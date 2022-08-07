@@ -1,1 +1,43 @@
-<p>eventtypelist works!</p>
+<div>
+  <div class="mat-elevation-z8">
+    <div>
+
+      <table mat-table [dataSource]="dataPerson" class="table"
+             matSort matSortActive="Name"
+             matSortDisableClear matSortDirection="desc">
+        <!-- first name Column -->
+        <ng-container matColumnDef="Name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let row">{{row.name}}</td>
+        </ng-container>
+
+        <!-- second name Column -->
+        <ng-container matColumnDef="Description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+          <td mat-cell *matCellDef="let row">{{row.description}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Action">
+          <tr>
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+          </tr>
+          <tr>
+            <td mat-cell *matCellDef="let row" style="width:20%">
+              <button mat-icon-button color="primary" (click)="editEvent(row)" title="Edit">
+                <mat-icon>edit</mat-icon>
+
+              </button>
+            </td>
+          <tr>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [length]="resultsLength" [pageSize]="15"
+                     aria-label="Select page of Event Types search results">
+      </mat-paginator>
+    </div>
+  </div>
+</div>
+

@@ -1,46 +1,53 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { EventType } from 'src/app/model/eventType.model';
 import { AppService } from 'src/app/server/app.service';
+import { ListObject } from '../../../model/listObject.model';
 
 @Component({
   selector: 'app-eventtypelist',
   templateUrl: './eventtypelist.component.html',
   styleUrls: ['./eventtypelist.component.css']
 })
-export class EventtypelistComponent implements OnInit,AfterViewInit {
-  abmEventType:boolean=false;
-  eventData:EventType[]=[];
-  constructor(private appService: AppService,) { }
+export class EventtypelistComponent implements AfterViewInit {
+  displayedColumns: string[] = ['Name',
+    'Description'];
 
-  ngOnInit(): void {
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+
+  @Input() dataPerson: EventType[];
+  resultsLength = 0;
+  listModel: ListObject;
+
+  constructor(private router: Router, private service: AppService,) {
+
   }
+
   ngAfterViewInit() {
-    // this.eventData = this.appService.GetEventType()
-    // .subscribe(
-    //   data => {
-    //     //   console.log(data);
-    //     //  var pp = new Document{ data };
-    //     // this.dataSource = new MatTableDataSource<Clients>();
+    console.log("ctor Event Type list");
 
-    //     // this.GetAll();
+    this.listModel = new ListObject();
+    this.sort.direction = "desc";
+    this.sort.active = "Name";
+    this.sort.disableClear;
+    this.paginator = this.paginator;
 
-    //   //  this.service.sendUpdate();
+    this.listModel.sort = this.sort;
+    this.listModel.paginator = this.paginator;
 
-
-    //     return;
-    //   },
-    //   (err) => {
-
-    //     console.log(err);
-
-    //   });
-
+    this.service.sendUpdateObject(this.listModel);
   }
 
 
   editEvent(contact: EventType) {
-    this.abmEventType=true;   
+    this.listModel.abmperson = true;
+    this.listModel.rowSelected = contact;
 
+    this.service.sendUpdateObject(this.listModel);
   }
+
 }

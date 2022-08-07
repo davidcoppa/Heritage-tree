@@ -33,7 +33,7 @@ namespace Events.Core.Controllers
             this.context = context;
             this.mapper = mapper;
             this.validator = validator;
-            this.messages = messages; 
+            this.messages = messages;
         }
 
         // GET: EventTypes
@@ -46,7 +46,7 @@ namespace Events.Core.Controllers
         }
 
 
-    
+
 
         // GET: EventTypes/Details/5
         [HttpGet("Get/{id:int}")]
@@ -68,7 +68,7 @@ namespace Events.Core.Controllers
             return Ok(eventTypes);
         }
 
-      
+
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -104,35 +104,45 @@ namespace Events.Core.Controllers
         [HttpPost("Edit/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] EventTypes eventTypes)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> Edit(int id, EventTypeEditDTO eventTypes)
         {
             if (id != eventTypes.Id)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return BadRequest(messages.BadRequestModelInvalid);
-            }
 
-            try
-            {
-                context.Update(eventTypes);
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EventTypesExists(eventTypes.Id))
+                EventTypes eventTypesDb = mapper.Map<EventTypes>(eventTypes);
+                EventTypes entity = await context.EventType.FindAsync(id);
+
+                if (entity == null)
                 {
-                    return NotFound();
+                    return NotFound(messages.EventTypeNotFound);
+
                 }
-                else
+                try
                 {
-                    throw;
+                    context.Update(eventTypes);
+                    await context.SaveChangesAsync();
                 }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EventTypesExists(eventTypes.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return Ok(eventTypes);
             }
-            return Ok(eventTypes);
+            return BadRequest(messages.BadRequestModelInvalid);
         }
 
         // GET: EventTypes/Delete/5

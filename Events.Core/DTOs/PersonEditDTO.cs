@@ -6,7 +6,7 @@ namespace Events.Core.DTOs
 {
     public class PersonEditDTO
     {
-        [Required]
+       [Required]
         public int Id { get; set; }
         [Required]
         public string FirstName { get; set; }

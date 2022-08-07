@@ -1,5 +1,5 @@
 export interface EventType{
-    Id:number,
-    Name:string,
-    Description:string
+    id:number,
+    name:string,
+    description:string
 }

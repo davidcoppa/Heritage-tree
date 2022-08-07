@@ -6,16 +6,16 @@ import { Person } from "./person.model";
 
 
 export interface Events {
-    Id:number,
-    Title:string,
-    Description:string,
-    EventDate:Date,
-    EventType:EventType,
-    Person1:Person,
-    Person2:Person,
-    Person3:Person,
-    Location:Location,
-    Media:Media[]
+    id:number,
+    title:string,
+    description:string,
+    eventDate:Date,
+    eventType:EventType,
+    person1:Person,
+    person2:Person,
+    person3:Person,
+    location:Location,
+    media:Media[]
 
 
 }

@@ -5,3 +5,132 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.container {
+  padding-top: 50px;
+  padding-bottom: 10px;
+}
+
+.search-hero {
+  width: 50%;
+  padding: 20px;
+  margin: auto;
+  text-align: center;
+}
+
+.search {
+  height: 30px;
+  padding: 0px;
+  font-size: 25px;
+  margin: 5px 0;
+}
+
+.form-control {
+  box-shadow: 0 10px 40px 0 #B0C1D9;
+}
+
+  .form-control::placeholder {
+    font-family: FontAwesome;
+  }
+
+.table {
+  width: 100%;
+}
+
+
+
+::ng-deep .mat-form-field .mat-input-element {
+  color: slategray;
+}
+
+::ng-deep .mat-form-field .mat-form-field-label {
+  color: slategray !important;
+}
+
+::ng-deep .mat-form-field .mat-form-field-underline {
+  background-color: slategray;
+}
+
+::ng-deep .mat-form-field .mat-form-field-ripple {
+  background-color: slategray;
+}
+
+::ng-deep .mat-form-field .mat-form-field-required-marker {
+  color: slategray;
+}
+
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #ff884d !important;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #ff884d;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-required-marker {
+  color: #ff884d;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-input-element {
+  color: #ff884d;
+}
+
+
+
+::ng-deep .mat-form-field.mat-form-field-invalid .mat-input-element {
+  color: #ff33cc;
+}
+
+::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+  color: #ff33cc !important;
+}
+
+  ::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-label .mat-form-field-required-marker {
+    color: #ff33cc;
+  }
+
+::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-ripple {
+  background-color: #ff33cc;
+}
+
+.mat-form-field--inline {
+  /* display: flex; */
+  flex-direction: row;
+  align-items: center;
+  margin: 1%;
+}
+
+  .mat-form-field--inline .mat-form-field {
+    display: inline-block;
+    width: 80%;
+    vertical-align: middle;
+  }
+
+    .mat-form-field--inline .mat-form-field:nth-child(1) {
+      margin-right: 10px;
+    }
+
+.radio-group {
+  /* display: flex; */
+  flex-direction: column;
+  margin: 15px 0;
+  align-items: flex-start;
+}
+
+.radio-button {
+  margin: 5px;
+}
+
+.numberOnly {
+  width: 50%;
+}
+
+.space-buttons {
+  margin: 8px 8px 8px 0;
+}
+
+.position-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}

@@ -17,6 +17,10 @@ namespace Events.Core.Common
             CreateMap<ParentPerson, ParentPersonCreateDTO>().ReverseMap();
             CreateMap<ParentPerson, ParentPersonEditDTO>().ReverseMap();
 
+            CreateMap<EventTypes, EventTypeCreateDTO>().ReverseMap();
+            CreateMap<EventTypes, EventTypeEditDTO>().ReverseMap();
+
+            
 
 
 

@@ -1,10 +1,11 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, merge, of, startWith, switchMap } from 'rxjs';
 import { Events } from 'src/app/model/event.model';
 import { AppService } from 'src/app/server/app.service';
+import { ListObject } from '../../../model/listObject.model';
 
 @Component({
   selector: 'app-eventlist',
@@ -13,50 +14,48 @@ import { AppService } from 'src/app/server/app.service';
 })
 export class EventlistComponent implements AfterViewInit {
   displayedColumns: string[] = ['Title',
-                                 'Description',
-                                 'EventDate',
-                                 'EventType',
-                                 'Person1',
-                                 'Person2',
-                                 'Person3',
-                                 'Location',
-                                 'Photos'];
+    'Description',
+    'EventDate',
+    'EventType',
+    'Person1',
+    'Person2',
+    'Person3',
+    'Location',
+    'Photos'];
 
-  event: Events[] = [];
-  @ViewChild(MatSort) sort!: MatSort;
-  term$ = new BehaviorSubject<string>('');
+
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+
+  @Input() event: Events[];
   resultsLength = 0;
-  pageSize = 15;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  abmEvent:boolean=false;
-  constructor(private appService: AppService, private router: Router) { }
- 
-  ngAfterViewInit() {
-    // If the user changes the sort order, reset back to the first page.
-     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 1);
- 
-     merge(this.sort.sortChange, this.term$.pipe(debounceTime(1000), distinctUntilChanged()), this.paginator.page)
-      .pipe(
-        startWith({}),
-        switchMap((searchTerm) => {
-          return this.appService!.getEvents(this.sort.active, this.sort.direction, this.paginator.pageIndex,this.pageSize,(searchTerm && typeof searchTerm == 'string') ? searchTerm.toString() : '')
-            .pipe(catchError(() => of(null)));
-        }),
-        map(data => {
-          if (data === null) {
-            return [];
-          }
-          this.resultsLength = data.length;
+  listModel: ListObject;
 
-          return data;
-        })
-      ).subscribe(data => this.event = data);
+  constructor(private service: AppService, private router: Router) { }
+
+  ngAfterViewInit() {
+
+
+    console.log("ctor event list");
+
+    this.listModel = new ListObject();
+    this.sort.direction = "desc";
+    this.sort.active = "Title";
+    this.sort.disableClear;
+    this.paginator = this.paginator;
+
+    this.listModel.sort = this.sort;
+    this.listModel.paginator = this.paginator;
+
+    this.service.sendUpdateObject(this.listModel);
   }
 
   editEvent(contact: Events) {
-    // let route = '/contacts/edit-contact';
-    // this.router.navigate([route], { queryParams: { id: contact.id } });
-    this.abmEvent=true;   
+    this.listModel.abmperson = true;
+    this.listModel.rowSelected = contact;
+
+    this.service.sendUpdateObject(this.listModel);
+
 
   }
 

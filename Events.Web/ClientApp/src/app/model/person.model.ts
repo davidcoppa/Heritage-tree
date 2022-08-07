@@ -1,7 +1,7 @@
 import { Media } from "./media.model";
 
 export interface Person {
-  Id: number;
+  id: number;
   firstName: string;
   secondName: string;
   firstSurname: string;
@@ -9,8 +9,8 @@ export interface Person {
   placeOfBirth: string;
   placeOfDeath: string;
   sex: number;
-  dateBirth: Date;
-  dateDeath: Date;
+  dateOfBirth: Date | undefined;
+  dateOfDeath: Date | undefined;
   order: number;
   media: Media[];
 

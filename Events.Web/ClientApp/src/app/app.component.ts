@@ -1,30 +1,56 @@
-import { Component, OnInit } from '@angular/core';
-import { routes } from './app-routing.module';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { AfterContentInit, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
+import { delay, filter } from 'rxjs/operators';
+//import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { NavigationEnd, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements AfterContentInit {
+  @ViewChild(MatSidenav)
+  sidenav!: MatSidenav;
+
+
   title = 'Heritage Tree';
-  routes = routes;
-  displayNavbar:string;
 
-  ngOnInit() {
-    this.displayNavbar = '1';
+  constructor(
+    private observer: BreakpointObserver,
+    private router: Router) {
+
+  }
+  ngAfterContentInit() {
+    //  console.log("sidenav mode")
+    if (this.sidenav == undefined) { return; }
+    this.observer
+      .observe(['(max-width: 800px)'])
+      //.pipe(delay(1), untilDestroyed(this))
+      .subscribe((val: any) => {
+        if (val.matches) {
+
+          this.sidenav.mode = 'over';
+          this.sidenav.close();
+        } else {
+          this.sidenav.mode = 'side';
+          this.sidenav.open();
+        }
+      });
+
+    this.router.events
+      .pipe(
+        // untilDestroyed(this),
+        filter((e) => e instanceof NavigationEnd)
+      )
+      .subscribe(() => {
+        if (this.sidenav.mode === 'over') {
+          this.sidenav.close();
+        }
+      });
   }
 
-  toggleNavbar() {
 
-    if(this.displayNavbar == '0') {
-        this.displayNavbar = '1';
-      //  alert(this.displayNavbar);
-    } if(this.displayNavbar == '1') {
-    //    alert("1 - Changing to 0");
-        this.displayNavbar = '0';
-    } else {
-        this.displayNavbar = '1';
-    }
-  }
 }

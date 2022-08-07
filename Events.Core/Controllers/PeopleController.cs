@@ -133,7 +133,8 @@ namespace Events.Core.Controllers
 
 
         // POST: People/Edit/5
-        [HttpPost("Edit/{id:int}")]
+        [HttpPost("Edit")]
+        //[HttpPost("Edit/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -151,7 +152,7 @@ namespace Events.Core.Controllers
                 Person entity = await context.Person.FindAsync(id);
                 if (entity == null)
                 {
-                    return NotFound();
+                    return NotFound(messages.PersonNotFound);
                 }
 
                 try

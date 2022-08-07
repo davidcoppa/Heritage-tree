@@ -1,1 +1,22 @@
-<p>eventtype-abm works!</p>
+<div class="mat-card">
+
+  <form class="form mat-card" [formGroup]="eventTypesGroup" flex="50" fxLayout="column" (ngSubmit)="SaveEventType(eventTypesGroup)">
+
+
+    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput inputmode="text" placeholder="Name *" formControlName="name" #nameInput>
+    </mat-form-field>
+
+    <mat-form-field class="ml-3 mat-form-field--inline" flex="50" fxLayout="column" appearance="fill">
+      <mat-label>Description</mat-label>
+      <input matInput inputmode="text" placeholder="Description" formControlName="description" #nameInput>
+    </mat-form-field>
+
+    <div class="clear position-buttons">
+      <button class="space-buttons" mat-raised-button color="primary" type="submit" [disabled]="!eventTypesGroup.valid">{{buttonAction}}</button>
+      <button class="space-buttons" mat-raised-button color="basic" type="button" (click)="ResetForm()">Clean</button>
+      <button class="space-buttons" mat-raised-button color="warn" type="button" (click)="Cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

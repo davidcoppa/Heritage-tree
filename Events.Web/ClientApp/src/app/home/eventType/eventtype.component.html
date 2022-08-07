@@ -1,1 +1,23 @@
-<p>event.type works!</p>
+
+<mat-card class="container">
+  <!-- <mat-card-title>Mat DataTable</mat-card-title> -->
+  <mat-card-content>
+    <div class="search-hero">
+      <input type="text" placeholder="&#61442; Search..." class="search" (input)="term$.next($any($event.target).value)">
+
+      <button mat-icon-button color="primary" (click)="addEventTypes()" title="Add">
+        <mat-icon>add</mat-icon>
+      </button>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<ng-container *ngIf="abmEventType">
+  <app-eventtype-abm [abmEventType]=true [eventTypeSelected]=evenntSelected></app-eventtype-abm>
+</ng-container>
+<ng-container *ngIf="!abmEventType">
+  <app-eventtypelist [dataPerson]=eventType></app-eventtypelist>
+</ng-container>
+
+

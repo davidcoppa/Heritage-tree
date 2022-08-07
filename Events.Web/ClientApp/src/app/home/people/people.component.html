@@ -1,2 +1,23 @@
-<!-- <app-people-abm></app-people-abm> -->
-<app-peoplelist></app-peoplelist>
+
+<mat-card class="container">
+  <!-- <mat-card-title>Mat DataTable</mat-card-title> -->
+  <mat-card-content>
+    <div class="search-hero">
+      <input type="text" placeholder="&#61442; Search..." class="search" (input)="term$.next($any($event.target).value)">
+
+      <button mat-icon-button color="primary" (click)="addPeople()" title="Add">
+        <mat-icon>add</mat-icon>
+      </button>
+    
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<ng-container *ngIf="abmperson">
+  <app-people-abm [abmperson]=true [personSelected]=personSelected></app-people-abm>
+</ng-container>
+<ng-container *ngIf="!abmperson">
+  <app-peoplelist [dataPerson]=person></app-peoplelist>
+</ng-container>
+
+

@@ -37,9 +37,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { A11yModule } from "@angular/cdk/a11y";
 import { CdkStepperModule } from "@angular/cdk/stepper";
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { FlexLayoutModule } from "@angular/flex-layout";
-
-
+import { MatDividerModule } from "@angular/material/divider";
 
 
 
@@ -84,10 +82,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatCardModule,
     MatButtonModule,
     DragDropModule,
-    FlexLayoutModule
-
-
-  ],
+    MatDividerModule
+    ],
   exports: [
     CdkTableModule,
     MatAutocompleteModule,

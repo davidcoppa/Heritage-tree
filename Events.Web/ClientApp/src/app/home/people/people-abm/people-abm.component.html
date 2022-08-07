@@ -38,7 +38,7 @@
 
     <mat-form-field class="mat-form-field--inline" appearance="fill">
       <mat-label>Date of birth</mat-label>
-      <input matInput inputmode="date" [matDatepicker]="pickerBirth" formControlName="dateBirth">
+      <input matInput inputmode="date" [matDatepicker]="pickerBirth" formControlName="dateOfBirth">
       <mat-datepicker-toggle matSuffix [for]="pickerBirth">
         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
       </mat-datepicker-toggle>
@@ -54,7 +54,7 @@
 
     <mat-form-field class="mat-form-field--inline" appearance="standard">
       <mat-label>Date of death</mat-label>
-      <input matInput [matDatepicker]="pickerDeath" formControlName="dateDeath">
+      <input matInput [matDatepicker]="pickerDeath" formControlName="dateOfDeath">
       <mat-datepicker-toggle matSuffix [for]="pickerDeath">
         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
       </mat-datepicker-toggle>
@@ -67,6 +67,10 @@
       <input matInput inputmode="text" placeholder="Place Of death" formControlName="placeOfDeath" #nameInput>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="!people.valid">{{buttonAction}}</button>
+    <div class="clear position-buttons" >
+      <button class="space-buttons" mat-raised-button color="primary" type="submit" [disabled]="!people.valid">{{buttonAction}}</button>
+      <button class="space-buttons" mat-raised-button color="basic" type="button" (click)="ResetForm()">Clean</button>
+      <button class="space-buttons" mat-raised-button color="warn" type="button" (click)="Cancel()">Cancel</button>
+    </div>
   </form>
 </div>

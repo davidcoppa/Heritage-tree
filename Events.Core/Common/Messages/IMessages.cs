@@ -12,6 +12,9 @@
 
         public string EventEmpty { get; }
         public string EventNotFound { get; }
+        public string PersonNotFound { get; }
+        public string EventTypeNotFound { get; }
+        
 
         public string ParentPersonNotFound { get; }
 

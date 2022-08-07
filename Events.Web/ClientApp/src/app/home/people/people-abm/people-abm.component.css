@@ -1,5 +1,5 @@
 
-::ng-deep .mat-form-field .mat-input-element {
+/*::ng-deep .mat-form-field .mat-input-element {
     color: slategray;
 }
 ::ng-deep .mat-form-field .mat-form-field-label {
@@ -44,9 +44,9 @@
     background-color: #ff33cc;
 }
 
-.mat-form-field--inline {
+.mat-form-field--inline {*/
     /* display: flex; */
-    flex-direction: row;
+    /*flex-direction: row;
     align-items: center;
     margin: 1%;
 }
@@ -61,9 +61,9 @@
     margin-right: 10px;
 }
 
-.radio-group {
+.radio-group {*/
     /* display: flex; */
-    flex-direction: column;
+    /*flex-direction: column;
     margin: 15px 0;
     align-items: flex-start;
   }
@@ -75,3 +75,12 @@
   .numberOnly{
       width: 50%;
   }
+
+.space-buttons {
+  margin: 8px 8px 8px 0;
+}
+.position-buttons {
+  display :flex;
+  justify-content:flex-end;
+  align-items:flex-end;
+}*/

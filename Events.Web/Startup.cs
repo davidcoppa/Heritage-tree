@@ -100,9 +100,9 @@ namespace Events.Web
                     //spa.Options.SourcePath = "ClientApp";
 
 
-                       spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                    //   spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
 
-                    //spa.UseAngularCliServer(npmScript: "start");
+                    spa.UseAngularCliServer(npmScript: "start");
                 }
             });
 

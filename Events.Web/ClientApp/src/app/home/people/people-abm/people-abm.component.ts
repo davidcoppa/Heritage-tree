@@ -1,10 +1,13 @@
-import { Component, Inject, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { first } from 'rxjs';
 import { Person } from 'src/app/model/person.model';
 import { AppService } from 'src/app/server/app.service';
 import { Gender } from 'src/app/helpers/enums/gender.enum';
+import { DateAdapter } from '@angular/material/core';
+import { CustomDateAdapterService } from '../../../helpers/dates/CustomDateAdapterService';
+import { ListObject } from '../../../model/listObject.model';
 
 @Component({
   selector: 'app-people-abm',
@@ -15,24 +18,40 @@ import { Gender } from 'src/app/helpers/enums/gender.enum';
 export class PeopleABMComponent implements OnInit, OnChanges {
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Date>;
   @Input() personSelected: Person;
+  @Input() abmperson: boolean;
 
   people: FormGroup;
   fb: FormBuilder;
+
   genderList = Gender;
   person: Person;
   buttonAction: string = "Add";
+  listModel: ListObject;
 
-  constructor(fb: FormBuilder, private appService: AppService) {
+
+  constructor(fb: FormBuilder, private service: AppService, private dateAdapter: DateAdapter<Date>, private dataSer: CustomDateAdapterService) {
+    this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
+
     this.fb = fb;
   }
 
   ngOnInit(): void {
-    //     this.people = this.CreateForm(null);
-    // console.log('abm person');
+
+    //   console.log('abm person');
+
+    if (this.personSelected != undefined) {
+      this.people = this.CreateForm(this.personSelected);
+
+    } else {
+      this.people = this.CreateForm(null);
+
+    }
+
   }
 
   CreateForm(personEdit: Person | null): FormGroup {
     if (personEdit == null) {
+
       return this.fb.group({
         firstName: [null, [Validators.required]],
         secondName: [null],
@@ -40,24 +59,28 @@ export class PeopleABMComponent implements OnInit, OnChanges {
         secondSurname: [null],
         sex: [null],
         order: [null],
-        dateBirth: [null],
+        dateOfBirth: [null],
         placeOfBirth: [null],
-        dateDeath: [null],
+        dateOfDeath: [null],
         placeOfDeath: [null]
 
       });
     }
     else {
+      this.person = this.personSelected;
+      this.buttonAction = "Update";
+
       return this.fb.group({
+        id: new FormControl(this.personSelected.id),
         firstName: new FormControl(personEdit.firstName ?? null),
         secondName: new FormControl(personEdit.secondName ?? null),
         firstSurname: new FormControl(personEdit.firstSurname ?? null),
         secondSurname: new FormControl(personEdit.secondSurname ?? null),
         sex: new FormControl(personEdit.sex ?? null),
         order: new FormControl(personEdit.order ?? null),
-        dateBirth: new FormControl(personEdit.dateBirth ?? null),
+        dateOfBirth: new FormControl(personEdit.dateOfBirth ?? null),
         placeOfBirth: new FormControl(personEdit.placeOfBirth ?? null),
-        dateDeath: new FormControl(personEdit.dateDeath ?? null),
+        dateOfDeath: new FormControl(personEdit.dateOfDeath ?? null),
         placeOfDeath: new FormControl(personEdit.placeOfDeath ?? null)
 
       });
@@ -66,15 +89,10 @@ export class PeopleABMComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.personSelected == null) {
-
       //en teoria ya esta creada el form persona, tal vez lo uso si pongo crear despues de haber seleccionado a alguien
       this.people = this.CreateForm(null);
-
     } else {
-      this.person = this.personSelected;
-      this.buttonAction = "Update";
       this.people = this.CreateForm(this.personSelected);// this.personSelected;
-
     }
   }
 
@@ -82,19 +100,65 @@ export class PeopleABMComponent implements OnInit, OnChanges {
   SavePerson(people: FormGroup) {
     this.person = people.value as Person;
 
-    this.appService.AddPerson(this.person).pipe(first())
-      .subscribe(
-        {
-          next(peson) {
-            console.log('Current Position: ', peson);
+    if (this.person.dateOfBirth != undefined) {
+      this.person.dateOfBirth = this.dataSer.CalibrateDate(this.person.dateOfBirth);
+    }
+    if (this.person.dateOfDeath != undefined) {
+      this.person.dateOfDeath = this.dataSer.CalibrateDate(this.person.dateOfDeath);
+    }
+
+    if (this.buttonAction == "Update") {
+      this.service.UpdatePerson(this.personSelected.id, this.person)
+        .pipe(first())
+        .subscribe(
+          data => {
+            console.log('Current data: ', data);
+            this.ABMPersonFinished();
           },
-          error(msg) {
-            console.log('Error Getting Location: ', msg);
-          }
-        }
-      );
+          error => console.log('Error Getting Position: ', error)
+        );
+    }
+    else {
+
+      this.service.AddPerson(this.person).pipe(first())
+        .subscribe(
+          data => {
+            console.log('Current data: ', data);
+            this.ABMPersonFinished();
+
+          },
+          error => console.log('Error Getting Position: ', error)
+        );
+    }
+
+  }
+
+  ABMPersonFinished() {
+    this.service.sendUpdateObject(true);
+  }
+
+  ResetForm() {
+    this.people = this.CreateForm(null);
+  }
+
+  Cancel() {
+    this.service.sendUpdateObject(true);
   }
 
 
-
 }
+
+
+
+
+//this.appService.UpdatePerson(this.personSelected.id, this.person).pipe(first())
+//  .subscribe(
+//    {
+//      next(peson) {
+//        console.log('Current Position: ', peson);
+//      },
+//      error(msg) {
+//        console.log('Error Getting Position: ', msg);
+//      }
+//    }
+//  );

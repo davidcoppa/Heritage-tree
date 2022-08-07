@@ -1,16 +1,10 @@
-
-<mat-card class="container">
-    <mat-card-title>Mat DataTable</mat-card-title>
-    <mat-card-content>
-        <div class="search-hero">
-            <input type="text" placeholder="&#61442; Search..." class="search" (input)="term$.next($any($event.target).value)">
-        </div>
-
+<div>
         <div class="mat-elevation-z8">
             <div>
 
-                <table mat-table [dataSource]="person" class="table" matSort matSortActive="FirstName"
-                    matSortDisableClear matSortDirection="desc">
+                <table mat-table [dataSource]="dataPerson" class="table"
+                       matSort matSortActive="FirstName"
+                       matSortDisableClear matSortDirection="desc">
                     <!-- first name Column -->
                     <ng-container matColumnDef="FirstName">
                         <th mat-header-cell *matHeaderCellDef>First name</th>
@@ -118,14 +112,9 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
                 <mat-paginator [length]="resultsLength" [pageSize]="15"
-                    aria-label="Select page of GitHub search results">
+                    aria-label="Select page of People search results">
                 </mat-paginator>
             </div>
         </div>
-    </mat-card-content>
-</mat-card>
+    </div>
 
-<ng-container *ngIf="abmperson">
-    <app-people-abm [personSelected]=rowSelected></app-people-abm>
-
-</ng-container>

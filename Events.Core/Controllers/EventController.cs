@@ -223,6 +223,8 @@ namespace Events.Core.Controllers
         [HttpPost("Edit/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
         public async Task<IActionResult> Edit(int id, EventCreateEditDTO eventEdit)
         {
             if (id != eventEdit.ID)
@@ -230,36 +232,35 @@ namespace Events.Core.Controllers
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return BadRequest(messages.BadRequestModelInvalid);
-            }
+                Event evento = mapper.Map<Event>(eventEdit);
+                Event entity = await context.Event.FindAsync(id);
 
-            Event evento = mapper.Map<Event>(eventEdit);
-            Person entity = await context.Person.FindAsync(id);
-
-            if (entity == null)
-            {
-                return NotFound(messages.EventNotFound);
-            }
-            try
-            {
-                context.Entry(entity).CurrentValues.SetValues(evento);
-
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EventExists(evento.Id))
+                if (entity == null)
                 {
-                    return NotFound();
+                    return NotFound(messages.EventNotFound);
                 }
-                else
+                try
                 {
-                    throw;
+                    context.Entry(entity).CurrentValues.SetValues(evento);
+
+                    await context.SaveChangesAsync();
                 }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EventExists(evento.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return Ok(evento);
             }
-            return Ok(evento);
+            return BadRequest(messages.BadRequestModelInvalid);
         }
 
         // GET: Events/Delete/5
