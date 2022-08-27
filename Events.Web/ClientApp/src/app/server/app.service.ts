@@ -16,6 +16,8 @@ export class AppService {
   }
 
   subjectName = new Subject<any>(); //need to create a subject
+  subjectPeople = new Subject<any>(); //need to create a subject
+  subjectEventType = new Subject<any>(); //need to create a subject
 
   sendUpdateObject(file: any) { //the component that wants to update something, calls this fn
     this.subjectName.next({ data: file }); //next() will feed the value in Subject
@@ -27,6 +29,21 @@ export class AppService {
     return this.subjectName.asObservable(); //it returns as an observable to which the receiver funtion will subscribe
   }
 
+  //People filter list
+  getUpdatePeople(): Observable<any> { 
+    return this.subjectPeople.asObservable();
+  }
+  sendUpdatePeople(file: any) { 
+    this.subjectPeople.next({ data: file }); 
+  }
+
+  //EventType filter list
+  getUpdateEventType(): Observable<any> { 
+    return this.subjectEventType.asObservable(); 
+  }
+  sendUpdateEventType(file: any) { 
+    this.subjectEventType.next({ data: file }); 
+  }
 
 
 
@@ -60,12 +77,14 @@ export class AppService {
   }
 
   getEvents(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<Events[]> {
+    console.log('event list');
     let queryParams = new HttpParams();
     queryParams = queryParams.append("sort", sort);//column
     queryParams = queryParams.append("order", order);
     queryParams = queryParams.append("page", page ?? 0);
-    queryParams = queryParams.append("itemsPage", itemsPage ?? 10);
     queryParams = queryParams.append("search", search);
+
+    queryParams = queryParams.append("itemsPage", itemsPage ?? 10);
 
     //?search=${search}&sort=${sort}&order=${order}&page=${page + 1}
     return this.httpClient.get<Events[]>('api/Event/GetFilter', { params: queryParams });

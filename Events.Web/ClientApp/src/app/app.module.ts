@@ -15,7 +15,6 @@ import { EventlistComponent } from './home/event/eventlist/eventlist.component';
 import { EventAbmComponent } from './home/event/event-abm/event-abm.component';
 import { EventComponent } from './home/event/event.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FieldComponent } from './helpers/field.component';
 import { EnumPipe } from './helpers/pipes/enum.pipe';
 import { EventTypeComponent } from './home/eventType/eventtype.component';
 import { EventtypeAbmComponent } from './home/eventType/eventtype-abm/eventtype-abm.component';
@@ -26,6 +25,11 @@ import { MediaAbmComponent } from './home/media/media-abm/media-abm.component';
 import { LayoutComponent } from './home/layout/layout.component';
 import { HeaderComponent } from './home/nav/header/header.component';
 import { SideNavComponent } from './home/nav/side-nav/side-nav.component';
+import { CustomDatePipe } from './helpers/pipes/customDate.pipe';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { FilterPeopleComponent } from './helpers/filters/people/filterPeople.component';
+import { FilterEventTypeComponent } from './helpers/filters/eventType/filterEventType.component';
+
 
 
 
@@ -39,8 +43,8 @@ import { SideNavComponent } from './home/nav/side-nav/side-nav.component';
     EventComponent,
     EventlistComponent,
     EventAbmComponent,
-    FieldComponent,
     EnumPipe,
+    CustomDatePipe,
     EventTypeComponent,
     EventtypeAbmComponent,
     EventtypelistComponent,
@@ -50,6 +54,8 @@ import { SideNavComponent } from './home/nav/side-nav/side-nav.component';
     LayoutComponent,
     HeaderComponent,
     SideNavComponent,
+    FilterPeopleComponent,
+    FilterEventTypeComponent
 
   ],
   imports: [
@@ -62,7 +68,9 @@ import { SideNavComponent } from './home/nav/side-nav/side-nav.component';
     AppMaterial,
 
   ],
-  providers: [AppService, HttpClient],
+  providers: [AppService, HttpClient,
+                  { provide: MAT_DATE_LOCALE, useValue: 'en-ES' },
+  ],
   bootstrap: [AppComponent],
   
 })

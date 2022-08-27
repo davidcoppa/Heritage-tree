@@ -1,0 +1,13 @@
+
+
+
+<mat-form-field class="mat-form-field--inline specialWidth" appearance="fill">
+  <mat-label>EventType</mat-label>
+
+  <input type="text" matInput [formControl]="eventTypesControl" [matAutocomplete]="autoEvent">
+  <mat-autocomplete #autoEvent="matAutocomplete" [displayWith]="displayEventType">
+    <mat-option *ngFor="let optionEvent of EventTypesOptions | async" [value]="optionEvent">
+      {{optionEvent.name}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

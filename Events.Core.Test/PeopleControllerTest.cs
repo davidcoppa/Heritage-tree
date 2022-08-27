@@ -40,14 +40,14 @@ namespace Events.Core.Test
             FirstSurname = "TestSurname",
             Order = 1,
             Photos = null,
-            PlaceOfBirth = "cloud",
-            PlaceOfDeath = "some pc",
+            //PlaceOfBirth = "cloud",
+            //PlaceOfDeath = "some pc",
             SecondName = "secondName",
             SecondSurname = "secondSurname",
             Sex = EventsManager.Enums.Gender.Male
 
         };
-        PersonCreateDTO pCreate = new PersonCreateDTO
+        PersonWithParents pCreate = new PersonWithParents
         {
             FirstName = "TestCreate",
             DateOfBirth = DateTime.Today.AddDays(-1000),
@@ -55,16 +55,16 @@ namespace Events.Core.Test
             FirstSurname = "TestSurname",
             Order = 2,
             Photos = null,
-            PlaceOfBirth = "cloud",
-            PlaceOfDeath = "some pc",
+            //PlaceOfBirth = "cloud",
+            //PlaceOfDeath = "some pc",
             SecondName = "secondName",
             SecondSurname = "secondSurname",
             Sex = EventsManager.Enums.Gender.Male
 
         };
-        PersonCreateDTO pCreateNull = new PersonCreateDTO { };
+        PersonWithParents pCreateNull = new PersonWithParents { };
 
-        PersonEditDTO pEditGood = new PersonEditDTO
+        PersonWithParents pEditGood = new PersonWithParents
         {
             Id = 1,
             FirstName = "NewName",
@@ -73,8 +73,8 @@ namespace Events.Core.Test
             FirstSurname = "TestSurname",
             Order = 1,
             Photos = null,
-            PlaceOfBirth = "cloud",
-            PlaceOfDeath = "some pc",
+            //PlaceOfBirth = "cloud",
+            //PlaceOfDeath = "some pc",
             SecondName = "secondName",
             SecondSurname = "secondSurname",
             Sex = EventsManager.Enums.Gender.Male

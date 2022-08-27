@@ -7,8 +7,8 @@
       <mat-label>First Name</mat-label>
       <input matInput inputmode="text" placeholder="First Name *" formControlName="firstName" #nameInput>
       <!--<mat-error **ngIf="(form.get('firstName')).errors?.required">
-                First Name is required
-            </mat-error>-->
+              First Name is required
+          </mat-error>-->
     </mat-form-field>
     <mat-form-field class="ml-3 mat-form-field--inline" flex="50" fxLayout="column" appearance="fill">
       <mat-label>Second Name</mat-label>
@@ -67,7 +67,10 @@
       <input matInput inputmode="text" placeholder="Place Of death" formControlName="placeOfDeath" #nameInput>
     </mat-form-field>
 
-    <div class="clear position-buttons" >
+    <app-filter-People [dataPeople]="personSelectedData2"></app-filter-People>
+    <app-filter-People [dataPeople]="personSelectedData3"></app-filter-People>
+
+    <div class="clear position-buttons">
       <button class="space-buttons" mat-raised-button color="primary" type="submit" [disabled]="!people.valid">{{buttonAction}}</button>
       <button class="space-buttons" mat-raised-button color="basic" type="button" (click)="ResetForm()">Clean</button>
       <button class="space-buttons" mat-raised-button color="warn" type="button" (click)="Cancel()">Cancel</button>

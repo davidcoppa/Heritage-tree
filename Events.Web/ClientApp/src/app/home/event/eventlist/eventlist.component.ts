@@ -2,7 +2,6 @@ import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/cor
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, merge, of, startWith, switchMap } from 'rxjs';
 import { Events } from 'src/app/model/event.model';
 import { AppService } from 'src/app/server/app.service';
 import { ListObject } from '../../../model/listObject.model';
@@ -21,13 +20,14 @@ export class EventlistComponent implements AfterViewInit {
     'Person2',
     'Person3',
     'Location',
-    'Photos'];
+    'Photos',
+    'Action'  ];
 
 
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-  @Input() event: Events[];
+  @Input() dataEvent: Events[];
   resultsLength = 0;
   listModel: ListObject;
 
@@ -51,7 +51,7 @@ export class EventlistComponent implements AfterViewInit {
   }
 
   editEvent(contact: Events) {
-    this.listModel.abmperson = true;
+    this.listModel.abmObject = true;
     this.listModel.rowSelected = contact;
 
     this.service.sendUpdateObject(this.listModel);

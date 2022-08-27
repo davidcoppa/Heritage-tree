@@ -14,4 +14,9 @@ export interface Person {
   order: number;
   media: Media[];
 
+  father: Person;
+  mother: Person;
+ // eventTypeId: number;
+  eventId: number;
+
 }

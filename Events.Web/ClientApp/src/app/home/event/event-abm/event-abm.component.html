@@ -5,17 +5,17 @@
 
     <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
       <mat-label>Title</mat-label>
-      <input matInput inputmode="text" placeholder="Title *" formControlName="Title" #nameInput>
+      <input matInput inputmode="text" placeholder="Title *" formControlName="title" #nameInput>
     </mat-form-field>
 
     <mat-form-field class="ml-3 mat-form-field--inline" flex="50" fxLayout="column" appearance="fill">
       <mat-label>Description</mat-label>
-      <input matInput inputmode="text" placeholder="Description" formControlName="Description" #nameInput>
+      <input matInput inputmode="text" placeholder="Description" formControlName="description" #nameInput>
     </mat-form-field>
 
     <mat-form-field class="mat-form-field--inline" appearance="fill">
       <mat-label>EventDate</mat-label>
-      <input matInput inputmode="date" [matDatepicker]="EventDate" formControlName="EventDate">
+      <input matInput inputmode="date" [matDatepicker]="EventDate" formControlName="eventDate">
       <mat-datepicker-toggle matSuffix [for]="EventDate">
         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
       </mat-datepicker-toggle>
@@ -23,50 +23,20 @@
       <mat-hint>DD/MM/YYYY</mat-hint>
     </mat-form-field>
 
-    <mat-form-field class="mat-form-field--inline" appearance="fill">
-      <mat-label>EventType</mat-label>
-      <!-- <input matInput inputmode="text" placeholder="EventType" formControlName="EventType" #nameInput>-->
+    <app-filter-EventType [dataEventType]="selectedEventType"></app-filter-EventType>
 
-      <!--<mat-select>
-        <input placeholder="EventType" (keyup)="onKey($event.target)">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let evt of selectedEventType" [value]="evt">{{evt}}</mat-option>
-      </mat-select>-->
-
-
-      <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let option of EventTypesOptions | async" [value]="option">
-          {{option.name}}
-        </mat-option>
-      </mat-autocomplete>
-
-
-    </mat-form-field>
-
-    <mat-form-field class="mat-form-field--inline" appearance="fill">
-      <mat-label>Person 1</mat-label>
-      <input matInput inputmode="text" placeholder="Person 1" formControlName="Person1" #nameInput>
-    </mat-form-field>
-
-    <mat-form-field class="mat-form-field--inline" appearance="fill">
-      <mat-label>Person 2</mat-label>
-      <input matInput inputmode="text" placeholder="Person 2" formControlName="Person2" #nameInput>
-    </mat-form-field>
-
-    <mat-form-field class="mat-form-field--inline" appearance="fill">
-      <mat-label>Person 3</mat-label>
-      <input matInput inputmode="text" placeholder="Person 3" formControlName="Person3" #nameInput>
-    </mat-form-field>
+    <app-filter-People [dataPeople]="personSelectedData1"></app-filter-People>
+    <app-filter-People [dataPeople]="personSelectedData2"></app-filter-People>
+    <app-filter-People [dataPeople]="personSelectedData3"></app-filter-People>
 
     <mat-form-field class="mat-form-field--inline" appearance="fill">
       <mat-label>Location</mat-label>
-      <input matInput inputmode="text" placeholder="Location" formControlName="Location" #nameInput>
+      <input matInput inputmode="text" placeholder="Location" formControlName="location" #nameInput>
     </mat-form-field>
 
     <mat-form-field class="mat-form-field--inline" appearance="fill">
       <mat-label>Photos</mat-label>
-      <input matInput inputmode="text" placeholder="Photos" formControlName="Media" #nameInput>
+      <input matInput inputmode="text" placeholder="Photos" formControlName="media" #nameInput>
     </mat-form-field>
     <div class="clear position-buttons">
 

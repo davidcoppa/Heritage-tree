@@ -3,7 +3,7 @@
   <!-- <mat-card-title>Mat DataTable</mat-card-title> -->
   <mat-card-content>
     <div class="search-hero">
-      <input type="text" placeholder="&#61442; Search..." class="search" (input)="term$.next($any($event.target).value)">
+      <input type="text" placeholder="Search..." class="search" (input)="termEvent$.next($any($event.target).value)">
 
       <button mat-icon-button color="primary" (click)="addEvent()" title="Add">
         <mat-icon>add</mat-icon>
@@ -13,9 +13,9 @@
   </mat-card-content>
 </mat-card>
 
-<ng-container *ngIf="abmEvent">
+<ng-container *ngIf="abmObject">
   <app-event-abm [abmEvent]=true [eventSelected]=eventSelected></app-event-abm>
 </ng-container>
-<ng-container *ngIf="!abmEvent">
-  <app-eventlist [event]=event></app-eventlist>
+<ng-container *ngIf="!abmObject">
+  <app-eventlist [dataEvent]=event></app-eventlist>
 </ng-container>

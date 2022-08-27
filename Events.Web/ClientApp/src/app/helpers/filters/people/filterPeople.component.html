@@ -1,0 +1,14 @@
+
+
+
+<mat-form-field class="mat-form-field--inline specialWidth" appearance="fill">
+  <mat-label>Person</mat-label>
+
+  <input type="text" matInput [formControl]="personControl" [matAutocomplete]="autoPeople">
+  <mat-autocomplete #autoPeople="matAutocomplete" [displayWith]="displayPeople">
+    <mat-option *ngFor="let optionPeopl of personsOptions | async" [value]="optionPeopl">
+      {{optionPeopl.firstName}} {{optionPeopl.secondName| slice:0:1 }} {{optionPeopl.firstSurname}} {{optionPeopl.secondSurname| slice:0:1}} ({{optionPeopl.dateOfBirth |customDatePipe}})
+    </mat-option>
+  </mat-autocomplete>
+
+</mat-form-field>

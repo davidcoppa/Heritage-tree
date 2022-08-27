@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, of, merge, startWith, switchMap, Subscription } from 'rxjs';
@@ -10,10 +10,10 @@ import { AppService } from '../../server/app.service';
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.css']
 })
-export class EventComponent implements OnChanges {
+export class EventComponent implements OnInit, OnChanges, OnDestroy {
 
 
-  @Input() abmEvent: boolean;
+  @Input() abmObject: boolean;
     event: Events[] = [];
   @Input() sort!: MatSort;
   @Input() paginator!: MatPaginator;
@@ -21,37 +21,38 @@ export class EventComponent implements OnChanges {
   private subscriptionName: Subscription; //important to create a subscription
 
 
-  term$ = new BehaviorSubject<string>('');
+  termEvent$ = new BehaviorSubject<string>('');
 
   resultsLength = 0;
   pageSize = 15;
   dataEvent: Events[];
   eventSelected: Events;
-    appService: any;
 
   constructor(private service: AppService) {
     this.subscriptionName = this.service.getUpdate().subscribe
       (data => { //message contains the data sent from service
+        if (data!= undefined) {
+          
+       
         if (data.data == true) {
-          this.abmEvent = false;
+          this.abmObject = false;
 
         }
-        if (data.data.abmperson == true) {
-          this.abmEvent = data.data.abmperson;
+        if (data.data.abmObject == true) {
+          this.abmObject = data.data.abmObject;
           this.eventSelected = data.data.rowSelected;
         }
         else {
           this.sort = data.data.sort;
           this.paginator = data.data.paginator;
 
-       this.ngOnChanges();
+          this.ngOnInit();
         }
-
+        }
       });
   }
-
-  ngOnChanges(): void {
-    console.log("changes");
+  ngOnInit(): void {
+    console.log("changes event");
     if (this.sort == undefined) { return; }
 
     // If the user changes the sort order, reset back to the first page.
@@ -59,7 +60,7 @@ export class EventComponent implements OnChanges {
 
     // console.log(this.gender);
 
-    merge(this.sort.sortChange, this.term$.pipe(debounceTime(1000), distinctUntilChanged()), this.paginator.page)
+    merge(this.sort.sortChange, this.termEvent$.pipe(debounceTime(1000), distinctUntilChanged()), this.paginator.page)
       .pipe(
         startWith({}),
         switchMap((searchTerm) => {
@@ -81,11 +82,18 @@ export class EventComponent implements OnChanges {
         })
       ).subscribe(data => this.event = data);
 
+  }
+  ngOnChanges(): void {
+    
 
   }
 
+  ngOnDestroy() {
+    this.subscriptionName.unsubscribe();
+  }
+
   addEvent() {
-    this.abmEvent = !this.abmEvent;
+    this.abmObject = !this.abmObject;
 
   }
 

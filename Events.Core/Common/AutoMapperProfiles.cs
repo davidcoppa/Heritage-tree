@@ -10,6 +10,8 @@ namespace Events.Core.Common
         {
             CreateMap<Event, EventCreateDTO>().ReverseMap();
             CreateMap<Event, EventCreateEditDTO>().ReverseMap();
+            CreateMap<Event, PersonWithParents>().ReverseMap();
+
 
             CreateMap<Person, PersonCreateDTO>().ReverseMap();
             CreateMap<Person, PersonEditDTO>().ReverseMap();

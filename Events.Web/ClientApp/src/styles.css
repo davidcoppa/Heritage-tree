@@ -126,11 +126,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .space-buttons {
-  margin: 8px 8px 8px 0;
+  margin: 8px 8px 8px 0 !important;
 }
 
 .position-buttons {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
+}
+
+
+.specialWidth{
+    width:350px;
+}
+
+.text-wrap {
+  inline-size: 150px;
+  overflow-wrap: break-word;
 }

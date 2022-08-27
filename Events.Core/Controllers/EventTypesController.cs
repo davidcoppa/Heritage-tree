@@ -89,7 +89,7 @@ namespace Events.Core.Controllers
 
             //TODO: validate if we already have that event
 
-            var events = await context.EventType.Where(x => x.Name == eventType.Name || x.Description == eventType.Description).ToListAsync();
+            List<EventTypes> events = await EventTypeExistByNameOrDescription(eventType);
             if (events.Count > 0)
                 return BadRequest(string.Format(messages.EventTypeExistingDatabase, eventType.Name));
 
@@ -98,6 +98,14 @@ namespace Events.Core.Controllers
             await context.SaveChangesAsync();
 
             return Ok(eventType);
+        }
+
+        [HttpPost("EventTypeExistByNameOrDescription")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<List<EventTypes>> EventTypeExistByNameOrDescription(EventTypes evtt)
+        {
+            return await context.EventType.Where(x => x.Name == evtt.Name || x.Description == evtt.Description).ToListAsync();
         }
 
 

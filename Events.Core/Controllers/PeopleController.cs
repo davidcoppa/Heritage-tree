@@ -26,16 +26,19 @@ namespace Events.Core.Controllers
         private readonly IDataValidator validator;
         private readonly IMessages messages;
 
+        private readonly EventController ctrlEvent;
         public PeopleController(EventsContext context,
             IMapper mapper,
             IDataValidator validator,
-            IMessages messages)
+            IMessages messages
+            )
         {
             this.context = context;
             this.mapper = mapper;
             this.validator = validator;
             this.messages = messages;
 
+            this.ctrlEvent = new EventController(context, mapper, validator, messages);
         }
 
         // GET: People
@@ -55,7 +58,7 @@ namespace Events.Core.Controllers
                 IQueryable<Person> data = context.Person.AsQueryable();
                 if (search == null)
                 {
-                    data = context.Person.AsQueryable<Person>();
+                    data = context.Person.AsQueryable<Person>().Include(x => x.Photos);
                 }
                 else
                 {
@@ -63,8 +66,10 @@ namespace Events.Core.Controllers
                                  || x.SecondName.Contains(search)
                                  || x.FirstSurname.Contains(search)
                                  || x.SecondSurname.Contains(search)
-                                 || x.PlaceOfBirth.Contains(search)
-                                 || x.PlaceOfDeath.Contains(search)).AsQueryable<Person>();
+                                 || x.PlaceOfBirth.stringName.Contains(search)
+                                 || x.PlaceOfDeath.stringName.Contains(search))
+                                    .Include(x => x.Photos)
+                                    .AsQueryable<Person>();
 
                 }
 
@@ -79,9 +84,11 @@ namespace Events.Core.Controllers
 
                 int pageIndex = int.TryParse(page, out int count) ? count : 0;
 
-                var result = data.PagedIndex(pagination, pageIndex).ToList();
+                List<Person> result = data.PagedIndex(pagination, pageIndex).ToList();
 
-                return Ok(data);
+                List<PersonWithParents> retVal = await GetParentList(result);
+
+                return Ok(retVal);
 
 
             }
@@ -92,6 +99,42 @@ namespace Events.Core.Controllers
 
             }
         }
+
+        //[HttpGet("GetParentList")]
+        public async Task<List<PersonWithParents>> GetParentList(List<Person> lstPersons)
+        {
+            var evtFilter = await context.Event.Include(a => a.EventType).Where(x => x.EventType.Name == "Nacimiento").ToListAsync();
+
+            var retVal = new List<PersonWithParents>();
+
+            foreach (var person in lstPersons)
+            {
+                var valEvent = evtFilter.Where(x => x.Person1.Id == person.Id).FirstOrDefault();
+
+                PersonWithParents valToAdd = new PersonWithParents
+                {
+                    Photos = person.Photos,
+                    DateOfBirth = person.DateOfBirth,
+                    DateOfDeath = person.DateOfDeath,
+                    FirstName = person.FirstName,
+                    FirstSurname = person.FirstSurname,
+                    Id = person.Id,
+                    Order = person.Order,
+                    PlaceOfBirth = person.PlaceOfBirth,
+                    PlaceOfDeath = person.PlaceOfDeath,
+                    SecondName = person.SecondName,
+                    SecondSurname = person.SecondSurname,
+                    Sex = person.Sex,
+                    EventId = (valEvent == null) ? null : valEvent.Id,
+                    Father = valEvent?.Person2,
+                    Mother = valEvent?.Person3
+                };
+                retVal.Add(valToAdd);
+            }
+            return retVal;
+        }
+
+
 
         // GET: People/Details/5
         [HttpGet]
@@ -115,7 +158,7 @@ namespace Events.Core.Controllers
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create(PersonCreateDTO personDto)
+        public async Task<IActionResult> Create(PersonWithParents personDto)
         {
             if (ModelState.IsValid)
             {
@@ -124,8 +167,19 @@ namespace Events.Core.Controllers
                 {
                     return BadRequest(messages.BadRequestModelNullOrInvalid);
                 }
+
                 context.Add(person);
                 await context.SaveChangesAsync();
+
+                PersonEventBirth peb = new PersonEventBirth
+                {
+                    PersonSon = person,
+                    PersonFather = personDto.Father,
+                    PersonMother = personDto.Mother,
+                    EventId = personDto.EventId
+                };
+                await ctrlEvent.CreateEventBasedOnNewPerson(peb);
+
                 return Ok(person);
             }
             return BadRequest(messages.BadRequestModelInvalid);
@@ -138,44 +192,57 @@ namespace Events.Core.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Edit(int id, PersonEditDTO person)
+        public async Task<IActionResult> Edit(int id, PersonWithParents person)
         {
             if (id != person.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var personToEdit = mapper.Map<Person>(person);
+                return BadRequest(messages.BadRequestModelInvalid);
+            }
 
-                Person entity = await context.Person.FindAsync(id);
-                if (entity == null)
-                {
-                    return NotFound(messages.PersonNotFound);
-                }
+            var personToEdit = mapper.Map<Person>(person);
 
-                try
-                {
-                    context.Entry(entity).CurrentValues.SetValues(personToEdit);
+            Person entity = await context.Person.FindAsync(id);
+            if (entity == null)
+            {
+                return NotFound(messages.PersonNotFound);
+            }
 
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
+            try
+            {
+                context.Entry(entity).CurrentValues.SetValues(personToEdit);
+                await context.SaveChangesAsync();
+
+
+                //update the event birth!
+                PersonEventBirth peb = new PersonEventBirth
                 {
-                    if (!PersonExists(personToEdit.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return Ok(personToEdit);
+                    PersonSon = personToEdit,
+                    PersonFather = person.Father,
+                    PersonMother = person.Mother,
+                    EventId = person.EventId
+                };
+
+                await ctrlEvent.CreateEventBasedOnNewPerson(peb);
+
 
             }
-            return BadRequest(messages.BadRequestModelInvalid);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PersonExists(personToEdit.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return Ok(personToEdit);
         }
 
         // GET: People/Delete/5

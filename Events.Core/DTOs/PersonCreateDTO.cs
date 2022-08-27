@@ -21,5 +21,7 @@ namespace Events.Core.DTOs
         public Gender Sex { get; set; }
         public List<Media>? Photos { get; set; }
         public int? Order { get; set; }
+        public int? Father { get; set; }
+        public int? Mother { get; set; }
     }
 }

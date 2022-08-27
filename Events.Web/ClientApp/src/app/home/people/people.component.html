@@ -3,7 +3,7 @@
   <!-- <mat-card-title>Mat DataTable</mat-card-title> -->
   <mat-card-content>
     <div class="search-hero">
-      <input type="text" placeholder="&#61442; Search..." class="search" (input)="term$.next($any($event.target).value)">
+      <input type="text" placeholder="Search..." class="search" (input)="termPeople$.next($any($event.target).value)">
 
       <button mat-icon-button color="primary" (click)="addPeople()" title="Add">
         <mat-icon>add</mat-icon>
@@ -13,10 +13,10 @@
   </mat-card-content>
 </mat-card>
 
-<ng-container *ngIf="abmperson">
+<ng-container *ngIf="abmObject">
   <app-people-abm [abmperson]=true [personSelected]=personSelected></app-people-abm>
 </ng-container>
-<ng-container *ngIf="!abmperson">
+<ng-container *ngIf="!abmObject">
   <app-peoplelist [dataPerson]=person></app-peoplelist>
 </ng-container>
 

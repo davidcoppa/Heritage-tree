@@ -2,8 +2,6 @@ import { Component, AfterViewInit, ViewChild, OnInit, Input, Output } from '@ang
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { BehaviorSubject, merge, of } from 'rxjs';
-import { startWith, switchMap, catchError, map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Gender } from 'src/app/helpers/enums/gender.enum';
 import { Person } from 'src/app/model/person.model';
 import { AppService } from 'src/app/server/app.service';
@@ -20,6 +18,8 @@ export class PeoplelistComponent {//implements AfterViewInit {
     'FirstSurname',
     'SecondSurname',
     'Sex', 'Order',
+    'Father',
+    'Mother',
     'DateOfBirth',
     'PlaceOfBirth',
     'DateOfDeath',
@@ -58,7 +58,7 @@ export class PeoplelistComponent {//implements AfterViewInit {
 
 
   editContact(contact: Person) {
-    this.listModel.abmperson = true;
+    this.listModel.abmObject = true;
     this.listModel.rowSelected = contact;
 
     this.service.sendUpdateObject(this.listModel);

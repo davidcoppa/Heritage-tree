@@ -16,6 +16,7 @@ using Events.Core.Common;
 using Events.Core.Common.Validators;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Events.Core.Common.Messages;
+using Events.Core.Controllers;
 
 namespace EventsManager
 {
@@ -35,7 +36,16 @@ namespace EventsManager
             services.AddDataProtection();
             services.AddControllersWithViews();
 
-            services.AddDbContext<EventsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            //DbContextOptions<DbContext> contextOptions = new DbContextOptionsBuilder<DbContext>().UseInMemoryDatabase("Context").Options; services.AddSingleton(contextOptions);
+
+            services.AddDbContext<EventsContext>(
+                options =>
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                   // options.EnableSensitiveDataLogging();
+            //        options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking); ;
+                });
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
@@ -48,9 +58,9 @@ namespace EventsManager
                  config.AddProfile(new AutoMapperProfiles());
              }).CreateMapper()
              );
-           
+
             //add a validator per controller
-            services.AddTransient<IDataValidator, DataValidator>();
+            services.AddSingleton<IDataValidator, DataValidator>();
             services.AddSingleton<IMessages, En_Messages>();
 
             services.AddSwaggerGen(c =>
@@ -134,9 +144,9 @@ namespace EventsManager
                     //spa.Options.SourcePath = "ClientApp";
 
 
-                     //   spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                    //   spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
 
-                      spa.UseAngularCliServer(npmScript: "start");
+                    spa.UseAngularCliServer(npmScript: "start");
                 }
             });
 

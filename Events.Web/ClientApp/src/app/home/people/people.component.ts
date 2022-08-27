@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, of, merge, startWith, switchMap, Subscription } from 'rxjs';
@@ -10,8 +10,8 @@ import { AppService } from 'src/app/server/app.service';
   templateUrl: './people.component.html',
   styleUrls: ['./people.component.css']
 })
-export class PeopleComponent implements OnInit, OnChanges {
-  @Input() abmperson: boolean;
+export class PeopleComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() abmObject: boolean;
   person: Person[] = [];
   @Input() sort!: MatSort;
   @Input() paginator!: MatPaginator;
@@ -19,7 +19,7 @@ export class PeopleComponent implements OnInit, OnChanges {
   private subscriptionName: Subscription; //important to create a subscription
 
 
-  term$ = new BehaviorSubject<string>('');
+  termPeople$ = new BehaviorSubject<string>('');
 
   resultsLength = 0;
   pageSize = 15;
@@ -30,30 +30,25 @@ export class PeopleComponent implements OnInit, OnChanges {
     this.subscriptionName = this.appService.getUpdate().subscribe
       (data => { //message contains the data sent from service
         if (data.data==true) {
-          this.abmperson = false;
+          this.abmObject = false;
 
         }
-        if (data.data.abmperson == true) {
-          this.abmperson = data.data.abmperson;
+        if (data.data.abmObject == true) {
+          this.abmObject = data.data.abmObject;
           this.personSelected = data.data.rowSelected;
         }
         else {
           this.sort = data.data.sort;
           this.paginator = data.data.paginator;
 
-          this.ngOnChanges();
+          this.ngOnInit();
         }
        
       });
   }
 
   ngOnInit(): void {
-  }
-
-
-  //todo: hacer objeto que tenga todo lo necesario y pasarlo
-  ngOnChanges() {
-    console.log("changes");
+    console.log("changes people");
     if (this.sort == undefined) { return; }
 
     // If the user changes the sort order, reset back to the first page.
@@ -61,7 +56,7 @@ export class PeopleComponent implements OnInit, OnChanges {
 
     // console.log(this.gender);
 
-    merge(this.sort.sortChange, this.term$.pipe(debounceTime(1000), distinctUntilChanged()), this.paginator.page)
+    merge(this.sort.sortChange, this.termPeople$.pipe(debounceTime(1000), distinctUntilChanged()), this.paginator.page)
       .pipe(
         startWith({}),
         switchMap((searchTerm) => {
@@ -84,12 +79,20 @@ export class PeopleComponent implements OnInit, OnChanges {
       ).subscribe(data => this.person = data);
 
 
+  }
+
+
+  //todo: hacer objeto que tenga todo lo necesario y pasarlo
+  ngOnChanges() {
+
 
   }
   addPeople() {
-    this.abmperson = !this.abmperson;
+    this.abmObject = !this.abmObject;
 
   }
-
+  ngOnDestroy() {
+    this.subscriptionName.unsubscribe();
+  }
 
 }

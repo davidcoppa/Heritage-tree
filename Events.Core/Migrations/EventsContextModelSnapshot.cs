@@ -17,7 +17,7 @@ namespace Events.Core.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.4")
+                .HasAnnotation("ProductVersion", "6.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -43,6 +43,9 @@ namespace Events.Core.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("lgn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("stringName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -238,11 +241,11 @@ namespace Events.Core.Migrations
                     b.Property<int?>("Order")
                         .HasColumnType("int");
 
-                    b.Property<string>("PlaceOfBirth")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("PlaceOfBirthId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("PlaceOfDeath")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("PlaceOfDeathId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SecondName")
                         .HasColumnType("nvarchar(max)");
@@ -254,6 +257,10 @@ namespace Events.Core.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlaceOfBirthId");
+
+                    b.HasIndex("PlaceOfDeathId");
 
                     b.ToTable("Person");
                 });
@@ -335,6 +342,21 @@ namespace Events.Core.Migrations
                     b.Navigation("PersonFather");
 
                     b.Navigation("PersonMother");
+                });
+
+            modelBuilder.Entity("EventsManager.Model.Person", b =>
+                {
+                    b.HasOne("Events.Core.Model.Location", "PlaceOfBirth")
+                        .WithMany()
+                        .HasForeignKey("PlaceOfBirthId");
+
+                    b.HasOne("Events.Core.Model.Location", "PlaceOfDeath")
+                        .WithMany()
+                        .HasForeignKey("PlaceOfDeathId");
+
+                    b.Navigation("PlaceOfBirth");
+
+                    b.Navigation("PlaceOfDeath");
                 });
 
             modelBuilder.Entity("EventsManager.Model.Event", b =>

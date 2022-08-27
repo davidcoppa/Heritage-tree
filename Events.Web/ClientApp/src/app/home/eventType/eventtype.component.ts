@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, merge, of, startWith, Subscription, switchMap } from 'rxjs';
@@ -10,10 +10,10 @@ import { AppService } from '../../server/app.service';
   templateUrl: './eventtype.component.html',
   styleUrls: ['./eventtype.component.css']
 })
-export class EventTypeComponent implements OnInit {
+export class EventTypeComponent implements OnInit, OnChanges, OnDestroy {
   //addEventTypes
 
-  @Input() abmEventType: boolean;
+  @Input() abmObject: boolean;
   eventType: EventType[] = [];
   @Input() sort!: MatSort;
   @Input() paginator!: MatPaginator;
@@ -33,25 +33,23 @@ export class EventTypeComponent implements OnInit {
     this.subscriptionName = this.service.getUpdate().subscribe
       (data => { //message contains the data sent from service
         if (data.data == true) {
-          this.abmEventType = false;
+          this.abmObject = false;
 
         }
         if (data.data.abmperson == true) {
-          this.abmEventType = data.data.abmperson;
+          this.abmObject = data.data.abmperson;
           this.evenntSelected = data.data.rowSelected;
         }
         else {
           this.sort = data.data.sort;
           this.paginator = data.data.paginator;
 
-         this.ngOnChanges();
+          this.ngOnInit();
         }
 
       }); }
 
   ngOnInit(): void {
-  }
-  ngOnChanges() {
     console.log("changes");
     if (this.sort == undefined) { return; }
 
@@ -80,13 +78,22 @@ export class EventTypeComponent implements OnInit {
 
           return data;
         })
-    ).subscribe(data => this.eventType = data);
+      ).subscribe(data => this.eventType = data);
 
+  }
+  ngOnChanges() {
+   
 
 
   }
+
+  ngOnDestroy() {
+    this.subscriptionName.unsubscribe();
+  }
+
   addEventTypes() {
-    this.abmEventType = !this.abmEventType;
+    this.abmObject = !this.abmObject;
 
   }
+
 }

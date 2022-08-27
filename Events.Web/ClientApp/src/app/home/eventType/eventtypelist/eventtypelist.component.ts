@@ -44,7 +44,7 @@ export class EventtypelistComponent implements AfterViewInit {
 
 
   editEvent(contact: EventType) {
-    this.listModel.abmperson = true;
+    this.listModel.abmObject = true;
     this.listModel.rowSelected = contact;
 
     this.service.sendUpdateObject(this.listModel);

@@ -1,120 +1,134 @@
 <div>
-        <div class="mat-elevation-z8">
-            <div>
+  <div class="mat-elevation-z8">
+    <div>
 
-                <table mat-table [dataSource]="dataPerson" class="table"
-                       matSort matSortActive="FirstName"
-                       matSortDisableClear matSortDirection="desc">
-                    <!-- first name Column -->
-                    <ng-container matColumnDef="FirstName">
-                        <th mat-header-cell *matHeaderCellDef>First name</th>
-                        <td mat-cell *matCellDef="let row">{{row.firstName}}</td>
-                    </ng-container>
+      <table mat-table [dataSource]="dataPerson" class="table"
+             matSort matSortActive="FirstName"
+             matSortDisableClear matSortDirection="desc">
+        <!-- first name Column -->
+        <ng-container matColumnDef="FirstName">
+          <th mat-header-cell *matHeaderCellDef>First name</th>
+          <td mat-cell *matCellDef="let row">{{row.firstName}}</td>
+        </ng-container>
 
-                    <!-- second name Column -->
-                    <ng-container matColumnDef="SecondName">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Second name</th>
-                        <td mat-cell *matCellDef="let row">{{row.secondName}}</td>
-                    </ng-container>
+        <!-- second name Column -->
+        <ng-container matColumnDef="SecondName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Second name</th>
+          <td mat-cell *matCellDef="let row">{{row.secondName}}</td>
+        </ng-container>
 
-                    <!-- first surname Column -->
-                    <ng-container matColumnDef="FirstSurname">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>First surname</th>
-                        <td mat-cell *matCellDef="let row">{{row.firstSurname}}</td>
-                    </ng-container>
-                    <!-- second surname Column -->
-                    <ng-container matColumnDef="SecondSurname">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Second surname</th>
-                        <td mat-cell *matCellDef="let row">{{row.secondSurname}}</td>
-                    </ng-container>
+        <!-- first surname Column -->
+        <ng-container matColumnDef="FirstSurname">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>First surname</th>
+          <td mat-cell *matCellDef="let row">{{row.firstSurname}}</td>
+        </ng-container>
+        <!-- second surname Column -->
+        <ng-container matColumnDef="SecondSurname">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Second surname</th>
+          <td mat-cell *matCellDef="let row">{{row.secondSurname}}</td>
+        </ng-container>
 
-                    <!-- sex Column -->
-                    <ng-container matColumnDef="Sex">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sex</th>
+        <!-- sex Column -->
+        <ng-container matColumnDef="Sex">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sex</th>
 
-                        <td mat-cell *matCellDef="let row">
-                            <p *ngFor="let enum of gender | enumPipe">
+          <td mat-cell *matCellDef="let row">
+            <p *ngFor="let enum of gender | enumPipe">
 
-                                <ng-template [ngIf]="row.sex==enum[0]">
-                                    {{enum[1]}}
-                                </ng-template>
+              <ng-template [ngIf]="row.sex==enum[0]">
+                {{enum[1]}}
+              </ng-template>
 
-                            </p>
+            </p>
 
-                        </td>
-                    </ng-container>
+          </td>
+        </ng-container>
 
-                    <!-- order Column -->
-                    <ng-container matColumnDef="Order">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Order</th>
-                        <td mat-cell *matCellDef="let row">{{row.order}}</td>
-                    </ng-container>
+        <!-- order Column -->
+        <ng-container matColumnDef="Order">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Order</th>
+          <td mat-cell *matCellDef="let row">{{row.order}}</td>
+        </ng-container>
 
-                    <!-- date of birth Column -->
-                    <ng-container matColumnDef="DateOfBirth">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
-                            Date of birth
-                        </th>
-                        <td mat-cell *matCellDef="let row">{{row.dateOfBirth | date}}</td>
-                    </ng-container>
+        <!-- Father -->
 
-                    <!-- place of birth Column -->
-                    <ng-container matColumnDef="PlaceOfBirth">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Place of birth</th>
-                        <td mat-cell *matCellDef="let row">{{row.placeOfBirth}}</td>
-                    </ng-container>
+        <ng-container matColumnDef="Father">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Father</th>
+          <td mat-cell *matCellDef="let row">{{row.father?.firstName}} {{row.father?.secondName| slice:0:1 }} {{row.father?.firstSurname}}</td>
+        </ng-container>
 
-                    <!-- date of death Column -->
-                    <ng-container matColumnDef="DateOfDeath">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
-                            Date of death
-                        </th>
-                        <td mat-cell *matCellDef="let row">{{row.dateOfDeath | date}}</td>
-                    </ng-container>
+        <!-- Mother -->
+        <ng-container matColumnDef="Mother">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Mother</th>
+          <td mat-cell *matCellDef="let row">{{row.mother?.firstName}} {{row.mother?.secondName| slice:0:1 }} {{row.mother?.firstSurname}}</td>
+        </ng-container>
 
-                    <!-- place of death Column -->
-                    <ng-container matColumnDef="PlaceOfDeath">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            Place of death
-                        </th>
-                        <td mat-cell *matCellDef="let row">{{row.placeOfDeath}}</td>
-                    </ng-container>
 
-                    <!-- media Column -->
-                    <ng-container matColumnDef="Photos">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Media</th>
-                        <td mat-cell *matCellDef="let row">
-                            <button mat-icon-button color="primary" (click)="viewMedia(row)" title="Photos">
-                                <mat-icon>search</mat-icon>
-                                {{row.media?.length}}
-                            </button>
-                        </td>
-                    </ng-container>
+        <!-- date of birth Column -->
+        <ng-container matColumnDef="DateOfBirth">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+            Date of birth
+          </th>
+          <td mat-cell *matCellDef="let row">{{row.dateOfBirth | date}}</td>
+        </ng-container>
 
-                    <ng-container matColumnDef="Action">
-                        <tr>
-                            <th mat-header-cell *matHeaderCellDef> Action </th>
-                        </tr>
-                        <tr>
-                            <td mat-cell *matCellDef="let row" style="width:20%">
-                                <button mat-icon-button color="primary" (click)="viewContact(row)" title="View">
-                                    <mat-icon>preview</mat-icon>
-                                </button>
-                                <button mat-icon-button color="primary" (click)="editContact(row)" title="Edit">
-                                    <mat-icon>edit</mat-icon>
-                                    
-                                </button>
-                            </td>
-                        <tr>
-                    </ng-container>
+        <!-- place of birth Column -->
+        <ng-container matColumnDef="PlaceOfBirth">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Place of birth</th>
+          <td mat-cell *matCellDef="let row">{{row.placeOfBirth}}</td>
+        </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
-                <mat-paginator [length]="resultsLength" [pageSize]="15"
-                    aria-label="Select page of People search results">
-                </mat-paginator>
-            </div>
-        </div>
+        <!-- date of death Column -->
+        <ng-container matColumnDef="DateOfDeath">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+            Date of death
+          </th>
+          <td mat-cell *matCellDef="let row">{{row.dateOfDeath | date}}</td>
+        </ng-container>
+
+        <!-- place of death Column -->
+        <ng-container matColumnDef="PlaceOfDeath">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Place of death
+          </th>
+          <td mat-cell *matCellDef="let row">{{row.placeOfDeath}}</td>
+        </ng-container>
+
+        <!-- media Column -->
+        <ng-container matColumnDef="Photos">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Media</th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button color="primary" (click)="viewMedia(row)" title="Photos">
+              <mat-icon>search</mat-icon>
+              <!--   {{row.media?.length}}-->
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Action">
+          <tr>
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+          </tr>
+          <tr>
+            <td mat-cell *matCellDef="let row" style="width:20%">
+              <button mat-icon-button color="primary" (click)="viewContact(row)" title="View">
+                <mat-icon>preview</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" (click)="editContact(row)" title="Edit">
+                <mat-icon>edit</mat-icon>
+
+              </button>
+            </td>
+          <tr>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [length]="resultsLength" [pageSize]="15"
+                     aria-label="Select page of People search results">
+      </mat-paginator>
     </div>
+  </div>
+</div>
 

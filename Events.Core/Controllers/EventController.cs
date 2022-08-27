@@ -20,6 +20,7 @@ namespace Events.Core.Controllers
         private readonly IDataValidator validator;
         private readonly IMessages messages;
 
+        // private readonly EventTypesController ctrlEventType;
 
 
         public EventController(EventsContext context,
@@ -33,6 +34,8 @@ namespace Events.Core.Controllers
             this.validator = validator;
             this.messages = messages;
 
+            //    this.ctrlEventType = new EventTypesController(context, mapper, validator, messages);
+
         }
 
         // GET: Events
@@ -45,7 +48,7 @@ namespace Events.Core.Controllers
 
         // GET: Event
         [HttpGet("GetFilter")]
-        public async Task<IActionResult> GetFilter([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page, [FromQuery] string itemsPage, [FromQuery] string search)
+        public async Task<IActionResult> GetFilter([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page, [FromQuery] string itemsPage, [FromQuery] string? search)
         {
             try
             {
@@ -53,12 +56,22 @@ namespace Events.Core.Controllers
                 IQueryable<Event> data = context.Event.AsQueryable();
                 if (search == null)
                 {
-                    data = context.Event.AsQueryable<Event>();
+                    data = context.Event.AsQueryable<Event>().Include(x => x.Person1)
+                                                              .Include(x => x.Person2)
+                                                              .Include(x => x.Person3)
+                                                              .Include(x => x.EventType)
+                                                              .Include(x => x.Media);
                 }
                 else
                 {
                     data = context.Event.Where(x => x.Title.Contains(search)
-                                 || x.Description.Contains(search)).AsQueryable<Event>();
+                                 || x.Description.Contains(search))
+                                        .Include(x => x.Person1)
+                                        .Include(x => x.Person2)
+                                        .Include(x => x.Person3)
+                                        .Include(x => x.EventType)
+                                        .Include(x => x.Media)
+                                        .AsQueryable<Event>();
 
                 }
 
@@ -73,9 +86,9 @@ namespace Events.Core.Controllers
 
                 int pageIndex = int.TryParse(page, out int count) ? 0 : count;
 
-                var result = data.PagedIndex(pagination, pageIndex).ToList();
+                List<Event>? result = data.PagedIndex(pagination, pageIndex).ToList();
 
-                return Ok(data);
+                return Ok(result);
 
 
             }
@@ -110,123 +123,139 @@ namespace Events.Core.Controllers
 
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Create(EventCreateDTO evt)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create(EventCreateDTO evento)
         {
-
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(messages.BadRequestModelInvalid);
-            }
-
-            Event evento = mapper.Map<Event>(evt);
-
-            if (validator.ValidateObject<Event>(evento))
-            {
-                return BadRequest(messages.BadRequestModelNullOrInvalid);
-            }
-
-            if (evt.Person1 == null)
-            {
-                return BadRequest(messages.EventEmpty);
-            }
-            else
-            {
-                Person son = await context.Person.Where(x => x.Id == evt.Person1.Id).FirstOrDefaultAsync();
-                if (son == null)
+                if (!ModelState.IsValid)
                 {
-                    if (validator.ValidateObject<Person>(evt.Person1))
-                    {
-                        return NotFound("Person1");
-                    }
-                    context.Add(evt.Person1);
-                    son = evt.Person1;
-
-                }
-                evt.Person1 = son;
-
-            }
-            if (evt.Person2 != null)
-            {
-                Person mom = await context.Person.Where(x => x.Id == evt.Person2.Id).FirstOrDefaultAsync();
-                if (mom == null)
-                {
-                    if (validator.ValidateObject<Person>(evt.Person2))
-                    {
-                        return NotFound("Person2");
-                    }
-                    context.Add(evt.Person2);
-                    mom = evt.Person2;
-                }
-                evt.Person2 = mom;
-
-            }
-            if (evt.Person3 != null)
-            {
-                Person dad = await context.Person.Where(x => x.Id == evt.Person3.Id).FirstOrDefaultAsync();
-                if (dad == null)
-                {
-                    if (validator.ValidateObject<Person>(evt.Person3))
-                    {
-                        return NotFound("Person3");
-                    }
-                    context.Add(evt.Person3);
-                    dad = evt.Person3;
-                }
-                evt.Person3 = dad;
-
-            }
-            if (evt.EventType != null)
-            {
-                EventTypes eventstypes = await context.EventType.Where(x => x.Id == evt.EventType.Id).FirstOrDefaultAsync();
-                if (eventstypes == null)
-                {
-                    if (validator.ValidateObject<EventTypes>(evt.EventType))
-                    {
-                        return NotFound("Event");
-                    }
-                    context.Add(evt.EventType);
-                    eventstypes = evt.EventType;
+                    return BadRequest(messages.BadRequestModelInvalid);
                 }
 
-                evt.EventType = eventstypes;
-            }
-            if (evt.Media != null)
-            {
-                List<Media> mediaList = new List<Media>();
-                foreach (var media in evt.Media)
+                Event evt = mapper.Map<Event>(evento);
+
+                if (validator.ValidateObject<Event>(evt))
                 {
-                    var photoElement = await context.Photos.Where(x => x.Id == media.Id).FirstOrDefaultAsync();
-                    if (photoElement == null)
+                    return BadRequest(messages.BadRequestModelNullOrInvalid);
+                }
+
+                if (evt.Person1 == null)
+                {
+                    return BadRequest(messages.EventEmpty);
+                }
+
+
+                else
+                {
+                    Person son = await context.Person.Where(x => x.Id == evt.Person1.Id).FirstOrDefaultAsync();
+                    if (son == null)
                     {
-                        if (validator.ValidateObject<Media>(media))
+                        if (validator.ValidateObject<Person>(evt.Person1))
                         {
-                            return NotFound("photo");
+                            return NotFound("Son");
                         }
-                        context.Add(media);
-                        photoElement = media;
+                        context.Add(evt.Person1);
+
+                        son = evt.Person1;
+
                     }
-                    mediaList.Add(photoElement);
+                    evt.Person1 = son;
+
+                }
+                if (evt.Person2 != null)
+                {
+                    Person mom = await context.Person.Where(x => x.Id == evt.Person2.Id).FirstOrDefaultAsync();
+                    if (mom == null)
+                    {
+                        if (validator.ValidateObject<Person>(evt.Person2))
+                        {
+                            return NotFound("Father");
+                        }
+                        mom = evt.Person2;
+                        context.Add(evt.Person2);
+
+                    }
+                    evt.Person2 = mom;
+
+
+                }
+                if (evt.Person3 != null)
+                {
+                    Person dad = await context.Person.Where(x => x.Id == evt.Person3.Id).FirstOrDefaultAsync();
+                    if (dad == null)
+                    {
+                        if (validator.ValidateObject<Person>(evt.Person3))
+                        {
+                            return NotFound("Mother");
+                        }
+                        dad = evt.Person3;
+                        context.Add(evt.Person3);
+
+                    }
+                    evt.Person3 = dad;
+
+
+                }
+                if (evt.EventType != null)
+                {
+                    EventTypes eventstypes = await context.EventType.Where(x => x.Id == evt.EventType.Id).FirstOrDefaultAsync();
+                    if (eventstypes == null)
+                    {
+                        if (validator.ValidateObject<EventTypes>(evt.EventType))
+                        {
+                            return NotFound("Event type");
+                        }
+                        eventstypes = evt.EventType;
+                        context.Add(evt.EventType);
+
+                    }
+                    evt.EventType = eventstypes;
+
+                }
+                if (evt.Media != null)
+                {
+                    List<Media> mediaList = new List<Media>();
+                    foreach (var media in evt.Media)
+                    {
+
+                        var photoElement = await context.Photos.Where(x => x.Id == media.Id).FirstOrDefaultAsync();
+                        if (photoElement == null)
+                        {
+                            if (validator.ValidateObject<Media>(media))
+                            {
+                                return NotFound("photo");
+                            }
+                            context.Add(media);
+                            photoElement = media;
+                        }
+                        mediaList.Add(photoElement);
+                    }
+
+                    evt.Media = mediaList;
                 }
 
-                evt.Media = mediaList;
-            }
+                context.Event.Add(evt);
+                await context.SaveChangesAsync();
+                return Ok(evt);
 
-            context.Add(evento);
-            await context.SaveChangesAsync();
-            return Ok(evento);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
 
-
-
         // POST: Events/Edit/5
-        [HttpPost("Edit/{id:int}")]
+        [HttpPost("Edit")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
         public async Task<IActionResult> Edit(int id, EventCreateEditDTO eventEdit)
         {
+          //  var pp = eventEdit as ;
             if (id != eventEdit.ID)
             {
                 return NotFound();
@@ -244,6 +273,57 @@ namespace Events.Core.Controllers
                 try
                 {
                     context.Entry(entity).CurrentValues.SetValues(evento);
+
+                    if (evento.Person1!= null)
+                    {
+                        Person pp = await context.Person.Where(x => x.Id == evento.Person1.Id).FirstOrDefaultAsync();
+                        entity.Person1 = pp;
+                        if (entity.Person1 == null)
+                        {
+                            entity.Person1 = pp;
+                            context.Event.Update(entity);
+                        }
+                        else
+                        {
+                            context.Entry(entity.Person1).CurrentValues.SetValues(evento.Person1);
+
+                        }
+
+                    }
+
+                    if (evento.Person2 != null)
+                    {
+                        Person pp = await context.Person.Where(x => x.Id == evento.Person2.Id).FirstOrDefaultAsync();
+                        entity.Person2 = pp;
+                        if (entity.Person2 == null)
+                        {
+                            entity.Person2 = pp;
+                            context.Event.Update(entity);
+                        }
+                        else
+                        {
+                            context.Entry(entity.Person2).CurrentValues.SetValues(evento.Person2);
+
+                        }
+
+                    }
+                    if (evento.Person3 != null)
+                    {
+                        Person pp = await context.Person.Where(x => x.Id == evento.Person3.Id).FirstOrDefaultAsync();
+                        entity.Person3 = pp;
+                        if (entity.Person3 == null)
+                        {
+                            entity.Person3 = pp;
+                            context.Event.Update(entity);
+                        }
+                        else
+                        {
+                            context.Entry(entity.Person3).CurrentValues.SetValues(evento.Person3);
+
+                        }
+
+                    }
+
 
                     await context.SaveChangesAsync();
                 }
@@ -287,5 +367,107 @@ namespace Events.Core.Controllers
         {
             return context.Event.Any(e => e.Id == id);
         }
+
+        [HttpPost("CreateEventBasedOnNewPerson")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateEventBasedOnNewPerson(PersonEventBirth personEventBirth)
+        {
+            var evtToModify = new Event
+            {
+                Person1 = personEventBirth.PersonSon,
+                EventDate = personEventBirth.PersonSon.DateOfBirth,
+                Description = "Nacimiento",
+                EventType = GetDataEventType(),
+                Title = "Nacimiento",
+                Loccation = personEventBirth.PersonSon.PlaceOfBirth,
+                Person2 = personEventBirth.PersonFather,
+                Person3 = personEventBirth.PersonMother
+            };
+            try
+            {
+                if (personEventBirth.EventId != null)
+                {
+                    Event newEvt = await context.Event.Where(x => x.Id == personEventBirth.EventId).Include(x=>x.Person3).Include(x => x.Person2).Include(x => x.Person1).FirstOrDefaultAsync();
+
+                    evtToModify.Id = newEvt.Id;
+                    evtToModify.Title = newEvt.Title;
+                    evtToModify.Description = newEvt.Description;
+                    
+                    evtToModify.EventType = newEvt.EventType;
+
+                    context.Entry(newEvt).State = EntityState.Modified;
+
+                    context.Entry(newEvt).CurrentValues.SetValues(evtToModify);
+                    context.Event.Update(newEvt);
+
+                    if (personEventBirth.PersonFather != null)
+                    {
+                        Person pp = await context.Person.Where(x => x.Id == personEventBirth.PersonFather.Id).FirstOrDefaultAsync();
+                        evtToModify.Person2 = pp;
+                        if (newEvt.Person2==null)
+                        {
+                            newEvt.Person2 = pp;
+                            context.Event.Update(newEvt);
+                        }
+                        else
+                        {
+                            context.Entry(newEvt.Person2).CurrentValues.SetValues(evtToModify.Person2);
+
+                        }
+
+                    }
+                    if (personEventBirth.PersonMother != null)
+                    {
+                        Person pp = await context.Person.Where(x => x.Id == personEventBirth.PersonMother.Id).FirstOrDefaultAsync();
+                        evtToModify.Person3 = pp;
+                        if (newEvt.Person3 == null)
+                        {
+                            newEvt.Person3 = pp;
+                            context.Event.Update(newEvt);
+                        }
+                        else
+                        {
+                            context.Entry(newEvt.Person3).CurrentValues.SetValues(evtToModify.Person3);
+
+                        }
+
+                    }
+
+
+
+                }
+                else
+                {
+                    context.Event.Add(evtToModify);
+                }
+
+                await context.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
+
+            return Ok(evtToModify);
+        }
+
+        private EventTypes GetDataEventType()
+        {
+            EventTypes? entityList = context.EventType.Where(x => x.Name == "Nacimiento" || x.Description == "Nacimiento").FirstOrDefault();
+
+            EventTypes entity = entityList ?? new EventTypes
+            {
+                Description = "Nacimiento",
+                Name = "Nacimiento"
+            };
+
+            return entity;
+
+        }
+
     }
 }
