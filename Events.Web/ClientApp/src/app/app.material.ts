@@ -82,7 +82,7 @@ import { MatDividerModule } from "@angular/material/divider";
     MatCardModule,
     MatButtonModule,
     DragDropModule,
-    MatDividerModule
+    MatDividerModule,
     ],
   exports: [
     CdkTableModule,
@@ -127,6 +127,7 @@ import { MatDividerModule } from "@angular/material/divider";
     DragDropModule
 
 
-  ]
+  ],
+ 
 })
 export class AppMaterial { }

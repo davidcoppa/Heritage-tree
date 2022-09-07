@@ -1,0 +1,13 @@
+
+
+
+<mat-form-field class="mat-form-field--inline specialWidth" appearance="fill">
+  <mat-label>City</mat-label>
+
+  <input type="text" matInput [formControl]="statesControl" [matAutocomplete]="autoCity">
+  <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="displayCity">
+    <mat-option *ngFor="let optionCity of citiesOptions | async" [value]="optionCity">
+      {{optionCity.name}} ({{optionCity.code}})
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

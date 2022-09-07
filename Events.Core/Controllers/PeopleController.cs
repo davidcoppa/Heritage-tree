@@ -66,8 +66,9 @@ namespace Events.Core.Controllers
                                  || x.SecondName.Contains(search)
                                  || x.FirstSurname.Contains(search)
                                  || x.SecondSurname.Contains(search)
-                                 || x.PlaceOfBirth.stringName.Contains(search)
-                                 || x.PlaceOfDeath.stringName.Contains(search))
+                                 //|| x.PlaceOfBirth.stringName.Contains(search)
+                                 //|| x.PlaceOfDeath.stringName.Contains(search)
+                                 )
                                     .Include(x => x.Photos)
                                     .AsQueryable<Person>();
 
@@ -100,8 +101,8 @@ namespace Events.Core.Controllers
             }
         }
 
-        //[HttpGet("GetParentList")]
-        public async Task<List<PersonWithParents>> GetParentList(List<Person> lstPersons)
+  //      [HttpGet("GetParentList")]
+        private async Task<List<PersonWithParents>> GetParentList(List<Person> lstPersons)
         {
             var evtFilter = await context.Event.Include(a => a.EventType).Where(x => x.EventType.Name == "Nacimiento").ToListAsync();
 
@@ -160,35 +161,35 @@ namespace Events.Core.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(PersonWithParents personDto)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var person = mapper.Map<Person>(personDto);
-                if (validator.ValidateObject<Person>(person))
-                {
-                    return BadRequest(messages.BadRequestModelNullOrInvalid);
-                }
-
-                context.Add(person);
-                await context.SaveChangesAsync();
-
-                PersonEventBirth peb = new PersonEventBirth
-                {
-                    PersonSon = person,
-                    PersonFather = personDto.Father,
-                    PersonMother = personDto.Mother,
-                    EventId = personDto.EventId
-                };
-                await ctrlEvent.CreateEventBasedOnNewPerson(peb);
-
-                return Ok(person);
+                return BadRequest(messages.BadRequestModelInvalid);
             }
-            return BadRequest(messages.BadRequestModelInvalid);
+
+            var person = mapper.Map<Person>(personDto);
+            if (validator.ValidateObject<Person>(person))
+            {
+                return BadRequest(messages.BadRequestModelNullOrInvalid);
+            }
+
+            context.Add(person);
+            await context.SaveChangesAsync();
+
+            PersonEventBirth peb = new PersonEventBirth
+            {
+                PersonSon = person,
+                PersonFather = personDto.Father,
+                PersonMother = personDto.Mother,
+                EventId = personDto.EventId
+            };
+            await ctrlEvent.CreateEventBasedOnNewPerson(peb);
+
+            return Ok(person);
         }
 
 
         // POST: People/Edit/5
         [HttpPost("Edit")]
-        //[HttpPost("Edit/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

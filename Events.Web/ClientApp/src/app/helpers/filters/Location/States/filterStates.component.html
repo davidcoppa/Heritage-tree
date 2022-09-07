@@ -1,0 +1,13 @@
+
+
+
+<mat-form-field class="mat-form-field--inline specialWidth" appearance="fill">
+  <mat-label>States</mat-label>
+
+  <input type="text" matInput [formControl]="statesControl" [matAutocomplete]="autoState">
+  <mat-autocomplete #autoState="matAutocomplete" [displayWith]="displayStates">
+    <mat-option *ngFor="let optionState of statesOptions | async" [value]="optionState">
+      {{optionState.name}} ({{optionState.code}})
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

@@ -17,12 +17,12 @@ namespace Events.Core.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Events.Core.Model.Location", b =>
+            modelBuilder.Entity("Events.Core.Model.City", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,27 +30,67 @@ namespace Events.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("City")
+                    b.Property<string>("Capital")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Country")
+                    b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Town")
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("lat")
+                    b.Property<string>("Region")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("lgn")
+                    b.Property<int?>("StatesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StatesId");
+
+                    b.ToTable("City");
+                });
+
+            modelBuilder.Entity("Events.Core.Model.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Capital")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("stringName")
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Region")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Location");
+                    b.ToTable("Country");
                 });
 
             modelBuilder.Entity("Events.Core.Model.MediaType", b =>
@@ -72,6 +112,44 @@ namespace Events.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MediaType");
+                });
+
+            modelBuilder.Entity("Events.Core.Model.States", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Capital")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Region")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("State");
                 });
 
             modelBuilder.Entity("EventsManager.Model.Event", b =>
@@ -265,6 +343,20 @@ namespace Events.Core.Migrations
                     b.ToTable("Person");
                 });
 
+            modelBuilder.Entity("Events.Core.Model.City", b =>
+                {
+                    b.HasOne("Events.Core.Model.States", null)
+                        .WithMany("Cities")
+                        .HasForeignKey("StatesId");
+                });
+
+            modelBuilder.Entity("Events.Core.Model.States", b =>
+                {
+                    b.HasOne("Events.Core.Model.Country", null)
+                        .WithMany("States")
+                        .HasForeignKey("CountryId");
+                });
+
             modelBuilder.Entity("EventsManager.Model.Event", b =>
                 {
                     b.HasOne("EventsManager.Model.EventTypes", "EventType")
@@ -273,7 +365,7 @@ namespace Events.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Events.Core.Model.Location", "Loccation")
+                    b.HasOne("Events.Core.Model.Country", "Loccation")
                         .WithMany()
                         .HasForeignKey("LoccationId");
 
@@ -346,17 +438,27 @@ namespace Events.Core.Migrations
 
             modelBuilder.Entity("EventsManager.Model.Person", b =>
                 {
-                    b.HasOne("Events.Core.Model.Location", "PlaceOfBirth")
+                    b.HasOne("Events.Core.Model.Country", "PlaceOfBirth")
                         .WithMany()
                         .HasForeignKey("PlaceOfBirthId");
 
-                    b.HasOne("Events.Core.Model.Location", "PlaceOfDeath")
+                    b.HasOne("Events.Core.Model.Country", "PlaceOfDeath")
                         .WithMany()
                         .HasForeignKey("PlaceOfDeathId");
 
                     b.Navigation("PlaceOfBirth");
 
                     b.Navigation("PlaceOfDeath");
+                });
+
+            modelBuilder.Entity("Events.Core.Model.Country", b =>
+                {
+                    b.Navigation("States");
+                });
+
+            modelBuilder.Entity("Events.Core.Model.States", b =>
+                {
+                    b.Navigation("Cities");
                 });
 
             modelBuilder.Entity("EventsManager.Model.Event", b =>

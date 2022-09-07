@@ -30,7 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\helpers\enums\location.enum.ts" />
     <None Remove="ClientApp\src\app\helpers\enums\Person.enum.ts" />
+    <None Remove="ClientApp\src\app\home\location\location.component.ts" />
+    <None Remove="ClientApp\src\app\model\listSubObject.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,7 +41,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\helpers\enums\location.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\enums\person.enum.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\home\location\location.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\listSubObject.ts" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

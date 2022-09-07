@@ -35,8 +35,8 @@ namespace Events.Core.Test
             EventDate = DateTime.Now,
             EventType=  new EventTypes { Id=1,Description="test", Name="test"},
             Id=1,
-            Loccation=new Model.Location { Id=1,Country="US"},
-            Person1=new Person {Id=1,FirstName="pepe" },
+            //        Loccation=new Model.Location { Id=1,Country="US"},
+            Person1 = new Person {Id=1,FirstName="pepe" },
             Title="the test"
             
         };
@@ -48,7 +48,7 @@ namespace Events.Core.Test
             Description = "event test full",
             EventDate = DateTime.Now,
             EventType = new EventTypes { Id = 1, Description = "test", Name = "test" },
-            Loccation = new Model.Location { Id = 1, Country = "US" },
+            //     Loccation = new Model.Location { Id = 1, Country = "US" },
             Person1 = new Person { Id = 1, FirstName = "son" },
             Person2 = new Person { Id = 2, FirstName = "ana" },
             Person3 = new Person { Id = 3, FirstName = "juan" },
@@ -66,7 +66,7 @@ namespace Events.Core.Test
             Description = "event test full",
             EventDate = DateTime.Now,
             EventType = new EventTypes { Id = 1, Description = "test", Name = "test" },
-            Loccation = new Model.Location { Id = 1, Country = "US" },
+            //    Loccation = new Model.Location { Id = 1, Country = "US" },
             Person1 = new Person { Id = 1, FirstName = "son" },
             Person2 = new Person { Id = 2, FirstName = "ana" },
             Person3 = new Person { Id = 3, FirstName = "juan" },
@@ -83,8 +83,8 @@ namespace Events.Core.Test
             Description = "event test full",
             EventDate = DateTime.Now,
             EventType = new EventTypes { Id = 1, Description = "test", Name = "test" },
-            Loccation = new Model.Location { Id = 1, Country = "US" },
-           // Person1 = new Person { ID = 1, FirstName = "son" },
+            //     Loccation = new Model.Location { Id = 1, Country = "US" },
+            // Person1 = new Person { ID = 1, FirstName = "son" },
             Person2 = new Person { Id = 2, FirstName = "ana" },
             Person3 = new Person { Id= 3, FirstName = "juan" },
             Title = "the test",
@@ -100,7 +100,7 @@ namespace Events.Core.Test
         Person pSonBad = new() { Id = 1};
         Person pMother = new() { Id = 2, FirstName = "ana" };
         Person pFather = new() { Id = 3, FirstName = "juan" };
-        Model.Location location = new Model.Location() { Id = 1, Country = "US" };
+     //   Model.Location location = new Model.Location() { Id = 1, Country = "US" };
         Media photo1 = new Media { Id = 1, MediaDate = DateTime.Now, Name = "1.jpg", Description = "photo1", UrlFile = "c:/data1" };
         Media photo2 = new Media { Id = 2, MediaDate = DateTime.Now, Name = "2.jpg", Description = "photo2", UrlFile = "c:/data2" };
         EventTypes eventypes = new EventTypes { Id = 1, Description = "test", Name = "test" };
@@ -111,7 +111,7 @@ namespace Events.Core.Test
             Description = "Edit event test full",
             EventDate = DateTime.Now,
             EventType = new EventTypes { Id = 1, Description = "test", Name = "test" },
-            Loccation = new Model.Location { Id = 1, Country = "US" },
+            //   Loccation = new Model.Location { Id = 1, Country = "US" },
             Person1 = new PersonWithParents { Id = 1, FirstName = "son" },
             Person2 = new PersonWithParents { Id = 2, FirstName = "ana" },
             Person3 = new PersonWithParents { Id = 3, FirstName = "juan" },

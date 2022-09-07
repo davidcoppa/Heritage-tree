@@ -20,8 +20,8 @@ namespace EventsManager.Model
         public string? SecondName { get; set; }
         public string? FirstSurname { get; set; }
         public string? SecondSurname { get; set; }
-        public Location? PlaceOfBirth { get; set; }
-        public Location? PlaceOfDeath { get; set; }
+        public Country? PlaceOfBirth { get; set; }
+        public Country? PlaceOfDeath { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }

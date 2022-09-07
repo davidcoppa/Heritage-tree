@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Events.Core.DTOs;
+using Events.Core.Model;
 using EventsManager.Model;
 
 namespace Events.Core.Common
@@ -22,9 +23,11 @@ namespace Events.Core.Common
             CreateMap<EventTypes, EventTypeCreateDTO>().ReverseMap();
             CreateMap<EventTypes, EventTypeEditDTO>().ReverseMap();
 
-            
 
-
+            CreateMap<CountryCreateDTO, Country>().ReverseMap();
+            CreateMap<CountryEditDTO, Country>().ReverseMap();
+          //  CreateMap<CountryReturnDTO, Country>().ReverseMap();
+           
 
         }
 

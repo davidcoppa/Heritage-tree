@@ -29,6 +29,10 @@ import { CustomDatePipe } from './helpers/pipes/customDate.pipe';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { FilterPeopleComponent } from './helpers/filters/people/filterPeople.component';
 import { FilterEventTypeComponent } from './helpers/filters/eventType/filterEventType.component';
+import { LocationComponent } from './home/location/location.component';
+import { FilterCountriesComponent } from './helpers/filters/Location/Countries/filterCountries.component';
+import { CountryAbmComponent } from './home/location/Country/Country-abm/country-abm.component';
+import { CountrylistComponent } from './home/location/Country/CountryList/countrylist.component';
 
 
 
@@ -55,8 +59,11 @@ import { FilterEventTypeComponent } from './helpers/filters/eventType/filterEven
     HeaderComponent,
     SideNavComponent,
     FilterPeopleComponent,
-    FilterEventTypeComponent
-
+    FilterEventTypeComponent,
+    LocationComponent,
+    FilterCountriesComponent,
+    CountryAbmComponent,
+    CountrylistComponent
   ],
   imports: [
     BrowserModule,
@@ -72,6 +79,7 @@ import { FilterEventTypeComponent } from './helpers/filters/eventType/filterEven
                   { provide: MAT_DATE_LOCALE, useValue: 'en-ES' },
   ],
   bootstrap: [AppComponent],
+  entryComponents: [CountrylistComponent]
   
 })
 export class AppModule { }

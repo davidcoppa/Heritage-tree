@@ -6,6 +6,9 @@ import { Person } from "../model/person.model";
 import { Events } from "../model/event.model";
 import { EventType } from "../model/eventType.model";
 import { Media } from "../model/media.model";
+import { Country } from "../model/country.model";
+import { State } from "../model/state.model";
+import { City } from "../model/city.model";
 
 @Injectable()
 export class AppService {
@@ -16,8 +19,11 @@ export class AppService {
   }
 
   subjectName = new Subject<any>(); //need to create a subject
-  subjectPeople = new Subject<any>(); //need to create a subject
-  subjectEventType = new Subject<any>(); //need to create a subject
+  subjectPeople = new Subject<any>(); 
+  subjectEventType = new Subject<any>(); 
+  subjectCountry = new Subject<any>(); 
+  subjectInnerState = new Subject<any>(); 
+  subjectInnerCity = new Subject<any>(); 
 
   sendUpdateObject(file: any) { //the component that wants to update something, calls this fn
     this.subjectName.next({ data: file }); //next() will feed the value in Subject
@@ -45,6 +51,30 @@ export class AppService {
     this.subjectEventType.next({ data: file }); 
   }
 
+  //Country filter lisr
+  getUpdateCountry(): Observable<any> {
+    return this.subjectCountry.asObservable();
+  }
+  sendUpdateCountry(file: any) {
+    this.subjectCountry.next({ data: file });
+  }
+
+  //state filter
+  getUpdateInnerTableState(): Observable<any> {
+    return this.subjectInnerState.asObservable();
+  }
+  sendUpdateInnerTableState(file: any) {
+    this.subjectInnerState.next({ data: file });
+  }
+
+  //sendUpdateInnerTableCity
+
+  getsendUpdateInnerTableCity(): Observable<any> {
+    return this.subjectInnerCity.asObservable();
+  }
+  sendUpdateInnerTableCity(file: any) {
+    this.subjectInnerCity.next({ data: file });
+  }
 
 
   getPeople(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<Person[]> {
@@ -153,5 +183,106 @@ export class AppService {
   AddMedia(media: Media): Observable<Media> {
     return this.httpClient.post<Media>('api/Media/Create', media);
   }
+
+
+  //GetCountries
+
+  GetCountries(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<Country[]> {
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("sort", sort);//column
+    queryParams = queryParams.append("order", order);
+    queryParams = queryParams.append("page", page ?? 0);
+    queryParams = queryParams.append("itemsPage", itemsPage ?? 10);
+    queryParams = queryParams.append("search", search);
+
+
+    return this.httpClient.get<Country[]>('api/Location/GetFilter', { params: queryParams });
+  }
+
+
+  UpdateCountries(id: number, newLocation: Country): Observable<Country> {
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("id", id);
+
+    return this.httpClient.post<Country>('api/Location/Edit'
+      , newLocation
+      , { params: queryParams });
+
+  }
+  AddCountries(newLocation: Country): Observable<Country> {
+
+    return this.httpClient.post<Country>('api/Location/Create', newLocation);
+
+  }
+
+  //GetStates
+
+  GetStates(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<State[]> {
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("sort", sort);//column
+    queryParams = queryParams.append("order", order);
+    queryParams = queryParams.append("page", page ?? 0);
+    queryParams = queryParams.append("itemsPage", itemsPage ?? 10);
+    queryParams = queryParams.append("search", search);
+
+
+    return this.httpClient.get<State[]>('api/LocationState/GetFilterState', { params: queryParams });
+  }
+
+
+  UpdateStates(id: number, newLocation: State): Observable<State> {
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("id", id);
+
+    return this.httpClient.post<State>('api/LocationState/EditState'
+      , newLocation
+      , { params: queryParams });
+
+  }
+  AddStates(newLocation: State): Observable<State> {
+
+    return this.httpClient.post<State>('api/LocationState/CreateState', newLocation);
+
+  }
+
+
+  //GetCities
+
+  GetCities(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<City[]> {
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("sort", sort);//column
+    queryParams = queryParams.append("order", order);
+    queryParams = queryParams.append("page", page ?? 0);
+    queryParams = queryParams.append("itemsPage", itemsPage ?? 10);
+    queryParams = queryParams.append("search", search);
+
+
+    return this.httpClient.get<City[]>('api/LocationCity/GetFilterState', { params: queryParams });
+  }
+
+
+  UpdateCity(id: number, newLocation: City): Observable<City> {
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("id", id);
+
+    return this.httpClient.post<City>('api/LocationCity/EditState'
+      , newLocation
+      , { params: queryParams });
+
+  }
+  AddCity(newLocation: City): Observable<City> {
+
+    return this.httpClient.post<City>('api/LocationCity/CreateState', newLocation);
+
+  }
+
+
+
 
 }

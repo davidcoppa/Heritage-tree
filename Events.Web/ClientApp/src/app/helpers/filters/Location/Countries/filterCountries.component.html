@@ -1,0 +1,13 @@
+
+
+
+<mat-form-field class="mat-form-field--inline specialWidth" appearance="fill">
+  <mat-label>Countries</mat-label>
+
+  <input type="text" matInput [formControl]="countriesControl" [matAutocomplete]="autoCountry">
+  <mat-autocomplete #autoCountry="matAutocomplete" [displayWith]="displayCountries">
+    <mat-option *ngFor="let optionCountry of CountriesOptions | async" [value]="optionCountry">
+      {{optionCountry.name}} ({{optionCountry.code}})
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

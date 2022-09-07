@@ -1,0 +1,213 @@
+<div>
+
+  <div class="mat-elevation-z8">
+    <div>
+
+      <table mat-table [dataSource]="dataCountry" class="table"
+             matSort matSortActive="Name"
+             matSortDisableClear matSortDirection="desc"
+             multiTemplateDataRows>
+
+        <ng-container matColumnDef="Name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let row">{{row.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Code" class="text-wrap">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+          <td mat-cell *matCellDef="let row">{{row.code}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Capital" class="text-wrap">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Capital</th>
+          <td mat-cell *matCellDef="let row">{{row.capital}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Region" class="text-wrap">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Region</th>
+          <td mat-cell *matCellDef="let row">{{row.region}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Latitude" class="text-wrap">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Latitude</th>
+          <td mat-cell *matCellDef="let row">{{row.lat}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Longitude" class="text-wrap">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Longitude</th>
+          <td mat-cell *matCellDef="let row">{{row.lgn}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="FullName">
+          <th mat-header-cell *matHeaderCellDef>FullName</th>
+          <td mat-cell *matCellDef="let row">{{row.fullName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="State">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
+          <td mat-cell *matCellDef="let row">{{row.state?.data?.length}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let row" [attr.colspan]="stateDisplaedColumns.length">
+            <div class="example-element-detail" *ngIf="row.state?.data?.length"
+                 [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+              <div class="inner-table mat-elevation-z8" *ngIf="expandedElement">
+
+                <table #innerTablesState mat-table #innerSortState="matSort"
+                       [dataSource]="row.state"
+                       matSort multiTemplateDataRows
+                       class="table">
+
+                  <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let row">{{row.name}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Code" class="text-wrap">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+                    <td mat-cell *matCellDef="let row">{{row.code}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Capital" class="text-wrap">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Capital</th>
+                    <td mat-cell *matCellDef="let row">{{row.capital}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Region" class="text-wrap">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Region</th>
+                    <td mat-cell *matCellDef="let row">{{row.region}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Latitude" class="text-wrap">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Latitude</th>
+                    <td mat-cell *matCellDef="let row">{{row.lat}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Longitude" class="text-wrap">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Longitude</th>
+                    <td mat-cell *matCellDef="let row">{{row.lgn}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="FullName">
+                    <th mat-header-cell *matHeaderCellDef>FullName</th>
+                    <td mat-cell *matCellDef="let row">{{row.fullName}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="City">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>City</th>
+                    <td mat-cell *matCellDef="let row">{{row.cities?.data?.length}}</td>
+                    <!--<td mat-cell *matCellDef="let row">{{row.cities?.data?.length}}</td>-->
+                  </ng-container>
+
+                  <ng-container matColumnDef="expandedDetailCity">
+                    <td mat-cell *matCellDef="let city" [attr.colspan]="cityDisplaedColumns.length">
+                      <div class="example-element-detail" *ngIf="city.cities?.data.length"
+                           [@detailExpand]="city == expandedElementCity ? 'expanded' : 'collapsed'">
+                        <div class="inner-table mat-elevation-z8" *ngIf="expandedElementCity">
+
+                          <table innerTablesCity mat-table #innerSortCity="matSort"
+                                 [dataSource]="city.cities" matSort
+                                 multiTemplateDataRows
+                                 class="table">
+
+                            <ng-container matColumnDef="Name">
+                              <th mat-header-cell *matHeaderCellDef>Name</th>
+                              <td mat-cell *matCellDef="let row">{{city.name}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Code" class="text-wrap">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+                              <td mat-cell *matCellDef="let row">{{city.code}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Capital" class="text-wrap">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Capital</th>
+                              <td mat-cell *matCellDef="let row">{{city.capital}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Region" class="text-wrap">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Region</th>
+                              <td mat-cell *matCellDef="let row">{{city.region}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Latitude" class="text-wrap">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Latitude</th>
+                              <td mat-cell *matCellDef="let row">{{city.lat}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Longitude" class="text-wrap">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Longitude</th>
+                              <td mat-cell *matCellDef="let row">{{city.lgn}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="FullName">
+                              <th mat-header-cell *matHeaderCellDef>FullName</th>
+                              <td mat-cell *matCellDef="let row">{{city.fullName}}</td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="cityDisplaedColumns"></tr>
+
+                            <tr mat-row *matRowDef="let city; columns: cityDisplaedColumns;"
+                                [class.example-element-rowCity]="city.data?.length"
+                                [class.example-expanded-rowCity]="expandedElementCity === city"></tr>
+
+                          </table>
+
+                        </div>
+                      </div>
+                    </td>
+                  </ng-container>
+
+
+                  <tr mat-header-row *matHeaderRowDef="stateDisplaedColumns"></tr>
+
+                  <tr mat-row *matRowDef="let state; columns: stateDisplaedColumns;"
+                      [class.example-element-row]="state.cities?.data?.length"
+                      [class.example-expanded-row]="expandedElementCity === state"
+                      (click)="toggleRowCity(state)"></tr>
+
+                  <tr mat-row *matRowDef="let row; columns: ['expandedDetailCity']" class="example-detail-rowCity"></tr>
+
+                </table>
+
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="Action">
+          <tr>
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+          </tr>
+          <tr>
+            <td mat-cell *matCellDef="let row" style="width:20%">
+              <button mat-icon-button color="primary" (click)="viewCountry(row)" title="View">
+                <mat-icon>preview</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" (click)="editCountry(row)" title="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+          <tr>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            [class.example-element-row]="row.state?.data?.length"
+            [class.example-expanded-row]="expandedElement === row"
+            (click)="toggleRowState(row)"></tr>
+
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+
+
+      </table>
+      <mat-paginator [length]="resultsLength" [pageSize]="15"
+                     aria-label="Select page">
+      </mat-paginator>
+    </div>
+  </div>
+</div>
