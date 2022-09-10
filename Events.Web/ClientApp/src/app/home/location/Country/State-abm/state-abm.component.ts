@@ -23,12 +23,11 @@ export class StateAbmComponent implements OnInit, OnDestroy {
   private subscriptionStateFilter: Subscription;
 
   constructor(fb: FormBuilder, private service: AppService) {
-
     this.fb = fb;
 
     this.subscriptionStateFilter = this.service.getUpdateState().subscribe
-      (data => { //message contains the data sent from service
-        console.log("---sendUpdate state: " + data.data);
+      (data => { 
+        console.log("sendUpdate state: " + data.data);
         this.stateSelected = data.data;
       });
   }
@@ -38,18 +37,14 @@ export class StateAbmComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log("state edit init: ");
-
     if (this.stateSelected != undefined) {
       this.state = this.CreateForm(this.stateSelected);
     } else {
       this.state = this.CreateForm(null);
     }
-
   }
 
   CreateForm(stateEdit: State | null): FormGroup {
-
 
     if (stateEdit == null) {
 
@@ -80,8 +75,6 @@ export class StateAbmComponent implements OnInit, OnDestroy {
   }
 
   ngOnChanges() {
-    console.log("state on changes: ");
-
     if (this.stateSelected == null) {
       this.state = this.CreateForm(null);
     } else {
@@ -91,7 +84,6 @@ export class StateAbmComponent implements OnInit, OnDestroy {
 
   saveState(stateABM: FormGroup) {
     this.evt = stateABM.value as State;
-
 
     console.log('Current State abm: ', this.evt);
 

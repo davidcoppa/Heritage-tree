@@ -28,13 +28,9 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
     this.fb = fb;
 
     this.subscriptionCountryFilter = this.service.getUpdateCountry().subscribe
-      (data => { //message contains the data sent from service
-        console.log("sendUpdate country: " + data.data);
+      (data => {
+        // console.log("sendUpdate country: " + data.data);
         this.countrySelected = data.data;
-
-      
-
-
       });
   }
 
@@ -50,12 +46,9 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
     } else {
       this.country = this.CreateForm(null);
     }
-
   }
 
   CreateForm(countryEdit: Country | null): FormGroup {
-
-
     if (countryEdit == null) {
 
       this.buttonAction = "Add";

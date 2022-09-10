@@ -26,9 +26,9 @@ export class LocationComponent implements OnChanges, OnDestroy {
   @Input() sort!: MatSort;
   @Input() paginator!: MatPaginator;
 
-  private subscriptionCountry: Subscription; 
-  private subscriptionState: Subscription; 
-  private subscriptionCity: Subscription; 
+  private subscriptionCountry: Subscription;
+  private subscriptionState: Subscription;
+  private subscriptionCity: Subscription;
 
   termEvent$ = new BehaviorSubject<string>('');
 
@@ -46,81 +46,20 @@ export class LocationComponent implements OnChanges, OnDestroy {
   constructor(private service: AppService,
     private cd: ChangeDetectorRef
   ) {
-    //this.subscriptionCountry = this.service.getUpdateCountry().subscribe
-    //  (data => { //message contains the data sent from service
-    //    if (data != undefined) {
-    //      if (data.data == true) {
-    //        this.abmObject = false;
-    //        this.abmCountry = false;
-    //        this.abmState == false;
-    //        this.abmCity = false;
-    //      }
-    //      if (data.data.abmObject == true) {
-    //        this.abmObject = data.data.abmObject;
-    //        this.countrySelected = data.data.rowSelected;
-    //        if (data.data.type != undefined) {
-    //          switch (data.data.type) {
-    //            case LocationEnum.country:
-    //              {
-    //                this.abmCountry = true;
-    //                this.abmState == false;
-    //                this.abmCity = false;
-    //                break;
-    //              }
-    //            case LocationEnum.state:
-    //              {
-    //                this.abmCountry = false;
-    //                this.abmState == true;
-    //                this.abmCity = false;
-    //                break;
-    //              }
-    //            case LocationEnum.city:
-    //              {
-    //                this.abmCountry = false;
-    //                this.abmState == false;
-    //                this.abmCity = true;
-    //                break;
-    //              } default: { }
-    //          }
-    //        }
-    //      }
-    //      else {
-    //        this.sort = data.data.sort;
-    //        this.paginator = data.data.paginator;
-    //        this.LoadData();
-    //      }
-    //    }
-    //  });
-
-
-    this.abmObject = false;
-    this.abmCountry = false;
-    this.abmState == false;
-    this.abmCity = false;
 
     this.subscriptionCountry = this.service.getUpdateCountry().subscribe
-      (data => { //message contains the data sent from service
+      (data => { 
         if (data != undefined) {
 
           if (data.data.abmObject == true) {
             this.abmObject = data.data.abmObject;
             this.countrySelected = data.data.rowSelected;
 
-            if (data.data.type != undefined) {
-
-              switch (data.data.type) {
-                case LocationEnum.country:
-                  {
-                    this.abmCountry = true;
-                    this.abmState == false;
-                    this.abmCity = false;
-                    break;
-                  }
-                default: { }
-              }
-
+            if (data.data.type != undefined && data.data.type == LocationEnum.country) {
+              this.abmCountry = true;
+              this.abmState = false;
+              this.abmCity = false;
             }
-
           }
           else {
             this.sort = data.data.sort;
@@ -130,30 +69,19 @@ export class LocationComponent implements OnChanges, OnDestroy {
         }
       });
 
-
-    console.log("changes dfadfas");
-
     this.subscriptionState = this.service.getUpdateState().subscribe
-      (data => { //message contains the data sent from service
+      (data => { 
         if (data != undefined) {
 
           if (data.data.abmObject == true) {
             this.abmObject = data.data.abmObject;
             this.stateSelected = data.data.rowSelected;
 
-            if (data.data.type != undefined) {
+            if (data.data.type != undefined && data.data.type == LocationEnum.state) {
 
-              switch (data.data.type) {
-                case LocationEnum.state:
-                  {
-                    this.abmCountry = false;
-                    this.abmState == true;
-                    this.abmCity = false;
-
-                    break;
-                  }
-                default: { }
-              }
+              this.abmCountry = false;
+              this.abmState = true;
+              this.abmCity = false;
             }
           }
         }
@@ -161,26 +89,17 @@ export class LocationComponent implements OnChanges, OnDestroy {
 
 
     this.subscriptionCity = this.service.getUpdateCity().subscribe
-      (data => { //message contains the data sent from service
+      (data => { 
         if (data != undefined) {
 
           if (data.data.abmObject == true) {
             this.abmObject = data.data.abmObject;
             this.citySelected = data.data.rowSelected;
 
-            if (data.data.type != undefined) {
-
-              switch (data.data.type) {
-                case LocationEnum.city:
-                  {
-                    this.abmCountry = false;
-                    this.abmState == false;
-                    this.abmCity = true;
-
-                    break;
-                  }
-                default: { }
-              }
+            if (data.data.type != undefined && data.data.type == LocationEnum.city) {
+              this.abmCountry = false;
+              this.abmState = false;
+              this.abmCity = true;
             }
           }
         }
@@ -188,14 +107,9 @@ export class LocationComponent implements OnChanges, OnDestroy {
   }
 
   LoadData(): void {
-    console.log("changes event");
     if (this.sort == undefined) { return; }
 
-    // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 1);
-
-    // console.log(this.gender);
-
 
     merge(this.sort.sortChange, this.termEvent$.pipe(debounceTime(1000), distinctUntilChanged()), this.paginator.page)
       .pipe(
@@ -246,10 +160,7 @@ export class LocationComponent implements OnChanges, OnDestroy {
 
   }
 
-
   ngOnChanges(): void {
-
-
   }
 
   ngOnDestroy() {
@@ -260,7 +171,5 @@ export class LocationComponent implements OnChanges, OnDestroy {
 
   addEvent() {
     this.abmObject = !this.abmObject;
-
   }
-
 }
