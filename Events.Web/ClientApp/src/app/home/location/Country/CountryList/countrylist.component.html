@@ -146,6 +146,26 @@
                               <td mat-cell *matCellDef="let row">{{city.fullName}}</td>
                             </ng-container>
 
+
+
+                            <ng-container matColumnDef="Action">
+                              <tr>
+                                <th mat-header-cell *matHeaderCellDef> Action </th>
+                              </tr>
+                              <tr>
+                                <td mat-cell *matCellDef="let city" style="width:20%">
+                                  <button mat-icon-button color="primary" (click)="viewCity(city)" title="View">
+                                    <mat-icon>preview</mat-icon>
+                                  </button>
+                                  <button mat-icon-button color="primary" (click)="editCity(city)" title="Edit">
+                                    <mat-icon>edit</mat-icon>
+                                  </button>
+                                </td>
+                              <tr>
+                            </ng-container>
+
+
+
                             <tr mat-header-row *matHeaderRowDef="cityDisplaedColumns"></tr>
 
                             <tr mat-row *matRowDef="let city; columns: cityDisplaedColumns;"
@@ -158,6 +178,26 @@
                       </div>
                     </td>
                   </ng-container>
+
+
+                  <ng-container matColumnDef="Action">
+                    <tr>
+                      <th mat-header-cell *matHeaderCellDef> Action </th>
+                    </tr>
+                    <tr>
+                      <td mat-cell *matCellDef="let state" style="width:20%">
+                        <button mat-icon-button color="primary" (click)="viewState(state)" title="View">
+                          <mat-icon>preview</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" (click)="editState(state)" title="Edit">
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                      </td>
+                    <tr>
+                  </ng-container>
+
+
+
 
 
                   <tr mat-header-row *matHeaderRowDef="stateDisplaedColumns"></tr>

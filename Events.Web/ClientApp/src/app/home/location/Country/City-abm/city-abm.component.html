@@ -1,0 +1,43 @@
+<div class="mat-card">
+
+  <form class="form mat-card" [formGroup]="city" flex="50" fxLayout="column" (ngSubmit)="SaveCity(city)">
+
+
+    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput inputmode="text" placeholder="Name *" formControlName="name" #nameInput>
+    </mat-form-field>
+
+    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+      <mat-label>Code</mat-label>
+      <input matInput inputmode="text" placeholder="Code *" formControlName="code" #nameInput>
+    </mat-form-field>
+
+    <mat-form-field class="ml-3 mat-form-field--inline" flex="50" fxLayout="column" appearance="fill">
+      <mat-label>Capital</mat-label>
+      <input matInput inputmode="text" placeholder="Capital" formControlName="capital" #nameInput>
+    </mat-form-field>
+
+    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+      <mat-label>Region</mat-label>
+      <input matInput inputmode="text" placeholder="Region *" formControlName="region" #nameInput>
+    </mat-form-field>
+
+    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+      <mat-label>Latitude</mat-label>
+      <input matInput inputmode="text" placeholder="Latitude *" formControlName="latitude" #nameInput>
+    </mat-form-field>
+
+    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+      <mat-label>Longitude</mat-label>
+      <input matInput inputmode="text" placeholder="Longitude *" formControlName="longitude" #nameInput>
+    </mat-form-field>
+
+    <div class="clear position-buttons">
+
+      <button class="space-buttons" mat-raised-button color="primary" type="submit" [disabled]="!city.valid">Add</button>
+      <button class="space-buttons" mat-raised-button color="basic" type="button" (click)="ResetForm()">Clean</button>
+      <button class="space-buttons" mat-raised-button color="warn" type="button" (click)="Cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

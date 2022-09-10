@@ -3,6 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, of, merge, startWith, switchMap, Subscription } from 'rxjs';
+import { LocationEnum } from '../../helpers/enums/location.enum';
+import { City } from '../../model/city.model';
 import { Country } from '../../model/country.model';
 import { State } from '../../model/state.model';
 import { AppService } from '../../server/app.service';
@@ -15,12 +17,18 @@ export class LocationComponent implements OnChanges, OnDestroy {
 
 
   @Input() abmObject: boolean;
+  @Input() abmCountry: boolean;
+  @Input() abmState: boolean;
+  @Input() abmCity: boolean;
+
   countries: Country[] = [];
   states: State[] = [];
   @Input() sort!: MatSort;
   @Input() paginator!: MatPaginator;
 
-  private subscriptionName: Subscription; //important to create a subscription
+  private subscriptionCountry: Subscription; 
+  private subscriptionState: Subscription; 
+  private subscriptionCity: Subscription; 
 
   termEvent$ = new BehaviorSubject<string>('');
 
@@ -28,38 +36,155 @@ export class LocationComponent implements OnChanges, OnDestroy {
   pageSize = 15;
   dataCountry: Country[];
   countrySelected: Country;
+  stateSelected: State;
+  citySelected: City;
 
   expandedElement: Country | null;
   expandedElementCity: State | null;
-  ;
+
 
   constructor(private service: AppService,
     private cd: ChangeDetectorRef
   ) {
-    this.subscriptionName = this.service.getUpdateCountry().subscribe
+    //this.subscriptionCountry = this.service.getUpdateCountry().subscribe
+    //  (data => { //message contains the data sent from service
+    //    if (data != undefined) {
+    //      if (data.data == true) {
+    //        this.abmObject = false;
+    //        this.abmCountry = false;
+    //        this.abmState == false;
+    //        this.abmCity = false;
+    //      }
+    //      if (data.data.abmObject == true) {
+    //        this.abmObject = data.data.abmObject;
+    //        this.countrySelected = data.data.rowSelected;
+    //        if (data.data.type != undefined) {
+    //          switch (data.data.type) {
+    //            case LocationEnum.country:
+    //              {
+    //                this.abmCountry = true;
+    //                this.abmState == false;
+    //                this.abmCity = false;
+    //                break;
+    //              }
+    //            case LocationEnum.state:
+    //              {
+    //                this.abmCountry = false;
+    //                this.abmState == true;
+    //                this.abmCity = false;
+    //                break;
+    //              }
+    //            case LocationEnum.city:
+    //              {
+    //                this.abmCountry = false;
+    //                this.abmState == false;
+    //                this.abmCity = true;
+    //                break;
+    //              } default: { }
+    //          }
+    //        }
+    //      }
+    //      else {
+    //        this.sort = data.data.sort;
+    //        this.paginator = data.data.paginator;
+    //        this.LoadData();
+    //      }
+    //    }
+    //  });
+
+
+    this.abmObject = false;
+    this.abmCountry = false;
+    this.abmState == false;
+    this.abmCity = false;
+
+    this.subscriptionCountry = this.service.getUpdateCountry().subscribe
       (data => { //message contains the data sent from service
         if (data != undefined) {
 
-
-          if (data.data == true) {
-            this.abmObject = false;
-
-          }
           if (data.data.abmObject == true) {
             this.abmObject = data.data.abmObject;
             this.countrySelected = data.data.rowSelected;
+
+            if (data.data.type != undefined) {
+
+              switch (data.data.type) {
+                case LocationEnum.country:
+                  {
+                    this.abmCountry = true;
+                    this.abmState == false;
+                    this.abmCity = false;
+                    break;
+                  }
+                default: { }
+              }
+
+            }
+
           }
           else {
-
             this.sort = data.data.sort;
             this.paginator = data.data.paginator;
-
             this.LoadData();
-
           }
         }
       });
- 
+
+
+    console.log("changes dfadfas");
+
+    this.subscriptionState = this.service.getUpdateState().subscribe
+      (data => { //message contains the data sent from service
+        if (data != undefined) {
+
+          if (data.data.abmObject == true) {
+            this.abmObject = data.data.abmObject;
+            this.stateSelected = data.data.rowSelected;
+
+            if (data.data.type != undefined) {
+
+              switch (data.data.type) {
+                case LocationEnum.state:
+                  {
+                    this.abmCountry = false;
+                    this.abmState == true;
+                    this.abmCity = false;
+
+                    break;
+                  }
+                default: { }
+              }
+            }
+          }
+        }
+      });
+
+
+    this.subscriptionCity = this.service.getUpdateCity().subscribe
+      (data => { //message contains the data sent from service
+        if (data != undefined) {
+
+          if (data.data.abmObject == true) {
+            this.abmObject = data.data.abmObject;
+            this.citySelected = data.data.rowSelected;
+
+            if (data.data.type != undefined) {
+
+              switch (data.data.type) {
+                case LocationEnum.city:
+                  {
+                    this.abmCountry = false;
+                    this.abmState == false;
+                    this.abmCity = true;
+
+                    break;
+                  }
+                default: { }
+              }
+            }
+          }
+        }
+      });
   }
 
   LoadData(): void {
@@ -120,13 +245,17 @@ export class LocationComponent implements OnChanges, OnDestroy {
       });
 
   }
+
+
   ngOnChanges(): void {
 
 
   }
 
   ngOnDestroy() {
-    this.subscriptionName.unsubscribe();
+    this.subscriptionCountry.unsubscribe();
+    this.subscriptionState.unsubscribe();
+    this.subscriptionCity.unsubscribe();
   }
 
   addEvent() {

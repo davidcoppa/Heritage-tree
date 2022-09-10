@@ -22,8 +22,8 @@ export class AppService {
   subjectPeople = new Subject<any>(); 
   subjectEventType = new Subject<any>(); 
   subjectCountry = new Subject<any>(); 
-  subjectInnerState = new Subject<any>(); 
-  subjectInnerCity = new Subject<any>(); 
+  subjectState = new Subject<any>(); 
+  subjectCity = new Subject<any>(); 
 
   sendUpdateObject(file: any) { //the component that wants to update something, calls this fn
     this.subjectName.next({ data: file }); //next() will feed the value in Subject
@@ -60,20 +60,20 @@ export class AppService {
   }
 
   //state filter
-  getUpdateInnerTableState(): Observable<any> {
-    return this.subjectInnerState.asObservable();
+  getUpdateState(): Observable<any> {
+    return this.subjectState.asObservable();
   }
-  sendUpdateInnerTableState(file: any) {
-    this.subjectInnerState.next({ data: file });
+  sendUpdateState(file: any) {
+    this.subjectState.next({ data: file });
   }
 
   //sendUpdateInnerTableCity
 
-  getsendUpdateInnerTableCity(): Observable<any> {
-    return this.subjectInnerCity.asObservable();
+  getUpdateCity(): Observable<any> {
+    return this.subjectCity.asObservable();
   }
-  sendUpdateInnerTableCity(file: any) {
-    this.subjectInnerCity.next({ data: file });
+  sendUpdateCity(file: any) {
+    this.subjectCity.next({ data: file });
   }
 
 
@@ -229,7 +229,7 @@ export class AppService {
     queryParams = queryParams.append("search", search);
 
 
-    return this.httpClient.get<State[]>('api/LocationState/GetFilterState', { params: queryParams });
+    return this.httpClient.get<State[]>('api/Location/GetFilterState', { params: queryParams });
   }
 
 
@@ -238,14 +238,14 @@ export class AppService {
     let queryParams = new HttpParams();
     queryParams = queryParams.append("id", id);
 
-    return this.httpClient.post<State>('api/LocationState/EditState'
+    return this.httpClient.post<State>('api/Location/EditState'
       , newLocation
       , { params: queryParams });
 
   }
   AddStates(newLocation: State): Observable<State> {
 
-    return this.httpClient.post<State>('api/LocationState/CreateState', newLocation);
+    return this.httpClient.post<State>('api/Location/CreateState', newLocation);
 
   }
 
@@ -262,7 +262,7 @@ export class AppService {
     queryParams = queryParams.append("search", search);
 
 
-    return this.httpClient.get<City[]>('api/LocationCity/GetFilterState', { params: queryParams });
+    return this.httpClient.get<City[]>('api/Location/GetFilterState', { params: queryParams });
   }
 
 
@@ -271,14 +271,14 @@ export class AppService {
     let queryParams = new HttpParams();
     queryParams = queryParams.append("id", id);
 
-    return this.httpClient.post<City>('api/LocationCity/EditState'
+    return this.httpClient.post<City>('api/Location/EditState'
       , newLocation
       , { params: queryParams });
 
   }
   AddCity(newLocation: City): Observable<City> {
 
-    return this.httpClient.post<City>('api/LocationCity/CreateState', newLocation);
+    return this.httpClient.post<City>('api/Location/CreateState', newLocation);
 
   }
 

@@ -1,9 +1,10 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit,  Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { AppService } from 'src/app/server/app.service';
+import { LocationEnum } from '../../../../helpers/enums/location.enum';
 import { City } from '../../../../model/city.model';
 import { Country } from '../../../../model/country.model';
 import { ListObject } from '../../../../model/listObject.model';
@@ -21,7 +22,7 @@ import { State } from '../../../../model/state.model';
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
-  
+
 })
 export class CountrylistComponent implements AfterViewInit {
   displayedColumns = ['Name',
@@ -42,7 +43,8 @@ export class CountrylistComponent implements AfterViewInit {
     'Latitude',
     'Longitude',
     'FullName',
-    'City'
+    'City',
+    'Action'
   ];
 
   cityDisplaedColumns = ['Name',
@@ -51,14 +53,15 @@ export class CountrylistComponent implements AfterViewInit {
     'Region',
     'Latitude',
     'Longitude',
-    'FullName'
+    'FullName',
+    'Action'
   ];
 
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   @ViewChildren('innerTablesState') innerTablesState: QueryList<MatTable<Object>>;
-  @ViewChildren('innerSortState' ) innerSortState: QueryList<MatSort>;
+  @ViewChildren('innerSortState') innerSortState: QueryList<MatSort>;
 
   @ViewChildren('innerTablesCity') innerTablesCity: QueryList<MatTable<Object>>;
   @ViewChildren('innerSortCity') innerSortCity: QueryList<MatSort>;
@@ -120,20 +123,38 @@ export class CountrylistComponent implements AfterViewInit {
   }
 
 
-
+  viewCountry(contact: Country) {
+    //idea: open on maps
+  }
+  viewState(contact: State) {
+    //idea: open on maps
+  }
+  viewCity(contact: City) {
+    //idea: open on maps
+  }
 
   editCountry(contact: Country) {
     this.listModel.abmObject = true;
     this.listModel.rowSelected = contact;
-
+    this.listModel.type = LocationEnum.country;
     this.service.sendUpdateCountry(this.listModel);
-
-
   }
 
-  viewCountry(contact: Country) {
-    // let route = '/contacts/view-contact';
-    // this.router.navigate([route], { queryParams: { id: contact.id } });
+  editState(contact: State) {
+
+    this.listModel.abmObject = true;
+    this.listModel.rowSelected = contact;
+    this.listModel.type = LocationEnum.state;
+    this.service.sendUpdateState(this.listModel);
   }
+
+  editCity(contact: City) {
+    this.listModel.abmObject = true;
+    this.listModel.rowSelected = contact;
+    this.listModel.type = LocationEnum.city;
+    this.service.sendUpdateCity(this.listModel);
+  }
+
+
 
 }

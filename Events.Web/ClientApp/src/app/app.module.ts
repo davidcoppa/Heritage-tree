@@ -33,6 +33,8 @@ import { LocationComponent } from './home/location/location.component';
 import { FilterCountriesComponent } from './helpers/filters/Location/Countries/filterCountries.component';
 import { CountryAbmComponent } from './home/location/Country/Country-abm/country-abm.component';
 import { CountrylistComponent } from './home/location/Country/CountryList/countrylist.component';
+import { CityAbmComponent } from './home/location/Country/City-abm/city-abm.component';
+import { StateAbmComponent } from './home/location/Country/State-abm/state-abm.component';
 
 
 
@@ -63,7 +65,9 @@ import { CountrylistComponent } from './home/location/Country/CountryList/countr
     LocationComponent,
     FilterCountriesComponent,
     CountryAbmComponent,
-    CountrylistComponent
+    CountrylistComponent,
+    CityAbmComponent,
+    StateAbmComponent
   ],
   imports: [
     BrowserModule,

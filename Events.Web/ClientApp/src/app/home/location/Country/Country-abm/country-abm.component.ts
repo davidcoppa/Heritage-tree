@@ -32,23 +32,7 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
         console.log("sendUpdate country: " + data.data);
         this.countrySelected = data.data;
 
-        switch (data.type) {
-          case LocationEnum.country:
-            {
-
-              break;
-            }
-          case LocationEnum.state:
-            {
-
-              break;
-            }
-          case LocationEnum.city:
-            {
-
-              break;
-            } default: { }
-        }
+      
 
 
       });
