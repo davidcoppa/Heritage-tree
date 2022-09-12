@@ -81,7 +81,7 @@ namespace Events.Core.Controllers
             }
             return retValList;
         }
-
+        //joining to master
         private object GenerateReturnValuesCountry(List<Country> countryLocation)
         {
             List<CountryReturnDTO> retValList = new List<CountryReturnDTO>();
