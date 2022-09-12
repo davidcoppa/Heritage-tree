@@ -38,8 +38,6 @@ namespace Events.Core.Controllers
 
         }
 
-
-
         // GET: Locations
         [HttpGet("Get")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -47,12 +45,44 @@ namespace Events.Core.Controllers
         {
             List<Country> countryLocation = await context.Country.Include(x => x.States).ThenInclude(c => c.Cities).ToListAsync();
 
-            var ret = GenerateReturnValues(countryLocation);
+            var ret = GenerateReturnValuesCountry(countryLocation);
 
             return Ok(ret);
         }
 
-        private object GenerateReturnValues(List<Country> countryLocation)
+       
+        private object GenerateReturnValuesStates(List<States> stateLocation)
+        {
+            List<StateReturnDTO> retValList = new List<StateReturnDTO>();
+
+
+            foreach (var states in stateLocation ?? Enumerable.Empty<States>())
+            {
+                string strnName = states.Name;
+
+                foreach (var cities in states.Cities ?? Enumerable.Empty<City>())
+                {
+                    strnName = strnName + ", " + cities.Name;
+                }
+
+                StateReturnDTO retval = new StateReturnDTO
+                {
+                    Capital = states.Capital,
+                    Code = states.Code,
+                    Id = states.Id,
+                    Latitude = states.Latitude,
+                    Longitude = states.Longitude,
+                    Name = states.Name,
+                    Region = states.Region,
+                    FullName = strnName
+                };
+
+                retValList.Add(retval);
+            }
+            return retValList;
+        }
+
+        private object GenerateReturnValuesCountry(List<Country> countryLocation)
         {
             List<CountryReturnDTO> retValList = new List<CountryReturnDTO>();
 
@@ -68,7 +98,6 @@ namespace Events.Core.Controllers
                     }
                 }
 
-                // CountryReturnDTO retval = mapper.Map<CountryReturnDTO>(countryLocation);
                 CountryReturnDTO retval = new CountryReturnDTO
                 {
                     Capital = country.Capital,
@@ -109,18 +138,38 @@ namespace Events.Core.Controllers
         }
 
 
-        [HttpGet("GetFilter")]
+
+        private List<T> GetFilter<T>(string sort, string order, string page, string itemsPage, IQueryable<T> data) where T : class
+        {
+
+            data = OrderByExtension.OrderBy<T>(data, sort, order);
+
+            int itemsPageInt = int.TryParse(itemsPage, out int items) ? items : Int32.MaxValue;
+            Pagination pagination = new Pagination(data.Count(), itemsPageInt);
+
+            int pageIndex = int.TryParse(page, out int count) ? count : 0;
+
+            List<T> result = data.PagedIndex(pagination, pageIndex).ToList();
+
+            return result;
+
+
+
+        }
+
+
+
+        [HttpGet("GetFilterCountry")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetFilter([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page, [FromQuery] string itemsPage, [FromQuery] string search)
+        public async Task<IActionResult> GetFilterCountry([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page, [FromQuery] string itemsPage, [FromQuery] string search)
         {
             try
             {
-
                 IQueryable<Country> data = context.Country.AsQueryable();
                 if (search == null)
                 {
-                    data = context.Country.AsQueryable<Country>().Include(x => x.States).ThenInclude(c => c.Cities) ;
+                    data = context.Country.AsQueryable<Country>().Include(x => x.States).ThenInclude(c => c.Cities);
                 }
                 else
                 {
@@ -136,17 +185,11 @@ namespace Events.Core.Controllers
                 {
                     return Ok(null);
                 }
-                data = OrderByExtension.OrderBy(data, sort, order);
-
-                int itemsPageInt = int.TryParse(itemsPage, out int items) ? items : Int32.MaxValue;
-                Pagination pagination = new Pagination(data.Count(), itemsPageInt);
-
-                int pageIndex = int.TryParse(page, out int count) ? count : 0;
-
-                List<Country> result = data.PagedIndex(pagination, pageIndex).ToList();
 
 
-                var ret = GenerateReturnValues(result);
+                var result = GetFilter<Country>(sort, order, page, itemsPage, data);
+
+                var ret = GenerateReturnValuesCountry(result);
 
                 return Ok(ret);
 
@@ -161,12 +204,95 @@ namespace Events.Core.Controllers
         }
 
 
-
-        // POST: Locations/Create
-        [HttpPost("Create")]
+        [HttpGet("GetFilterState")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Create(CountryCreateDTO location)
+        public async Task<IActionResult> GetFilterState([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page, [FromQuery] string itemsPage, [FromQuery] string search)
+        {
+            try
+            {
+                IQueryable<States> data = context.State.AsQueryable();
+                if (search == null)
+                {
+                    data = context.State.AsQueryable<States>().Include(x => x.Cities);
+                }
+                else
+                {
+                    data = context.State.Where(x => x.Code.Contains(search)
+                                 || x.Name.Contains(search))
+                                    .Include(x => x.Cities)
+                                    .AsQueryable<States>();
+
+                }
+
+                if (!data.Any())
+                {
+                    return Ok(null);
+                }
+
+
+                var result = GetFilter<States>(sort, order, page, itemsPage, data);
+
+                var ret = GenerateReturnValuesStates(result);
+
+                return Ok(ret);
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return BadRequest(ex.Message);
+
+            }
+        }
+
+        [HttpGet("GetFilterCity")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetFilterCity([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page, [FromQuery] string itemsPage, [FromQuery] string search)
+        {
+            try
+            {
+                IQueryable<City> data = context.City.AsQueryable();
+                if (search == null)
+                {
+                    data = context.City.AsQueryable<City>();
+                }
+                else
+                {
+                    data = context.City.Where(x => x.Code.Contains(search)
+                                 || x.Name.Contains(search))
+                                    .AsQueryable<City>();
+
+                }
+
+                if (!data.Any())
+                {
+                    return Ok(null);
+                }
+
+                var result = GetFilter<City>(sort, order, page, itemsPage, data);
+
+                var ret = mapper.Map<CityReturnDTO>(result);
+
+                return Ok(ret);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+        // POST: Locations/Create
+        [HttpPost("CreateCountry")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> CreateCountry(CountryCreateDTO location)
         {
             if (!ModelState.IsValid)
             {
@@ -185,10 +311,10 @@ namespace Events.Core.Controllers
 
 
         // POST: Locations/Edit/5
-        [HttpPost("Edit")]
+        [HttpPost("EditCountry")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Edit(int id, CountryEditDTO location)
+        public async Task<IActionResult> EditCountry(int id, CountryEditDTO location)
         {
             if (id != location.Id)
             {

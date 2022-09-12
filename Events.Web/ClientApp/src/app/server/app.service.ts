@@ -13,8 +13,6 @@ import { City } from "../model/city.model";
 @Injectable()
 export class AppService {
 
-
-
   constructor(private httpClient: HttpClient) {
   }
 
@@ -31,8 +29,8 @@ export class AppService {
   sendUpdate() {
     this.subjectName.next({});
   }
-  getUpdate(): Observable<any> { //the receiver component calls this function 
-    return this.subjectName.asObservable(); //it returns as an observable to which the receiver funtion will subscribe
+  getUpdate(): Observable<any> {  
+    return this.subjectName.asObservable(); 
   }
 
   //People filter list
@@ -100,9 +98,7 @@ export class AppService {
     let queryParams = new HttpParams();
     queryParams = queryParams.append("id", id);
 
-    return this.httpClient.post<Person>('api/People/Edit'
-                                                       , newPerson
-                                                        ,{ params: queryParams });
+    return this.httpClient.post<Person>('api/People/Edit',newPerson,{ params: queryParams });
 
   }
 
@@ -163,10 +159,6 @@ export class AppService {
 
   }
 
-
-
-
-
   //TODO: add media type
   getMedia(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<Media[]> {
     let queryParams = new HttpParams();
@@ -186,7 +178,6 @@ export class AppService {
 
 
   //GetCountries
-
   GetCountries(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<Country[]> {
 
     let queryParams = new HttpParams();
@@ -196,8 +187,7 @@ export class AppService {
     queryParams = queryParams.append("itemsPage", itemsPage ?? 10);
     queryParams = queryParams.append("search", search);
 
-
-    return this.httpClient.get<Country[]>('api/Location/GetFilter', { params: queryParams });
+    return this.httpClient.get<Country[]>('api/Location/GetFilterCountry', { params: queryParams });
   }
 
 
@@ -206,18 +196,15 @@ export class AppService {
     let queryParams = new HttpParams();
     queryParams = queryParams.append("id", id);
 
-    return this.httpClient.post<Country>('api/Location/Edit'
-      , newLocation
-      , { params: queryParams });
+    return this.httpClient.post<Country>('api/Location/EditCountry', newLocation, { params: queryParams });
 
   }
+
   AddCountries(newLocation: Country): Observable<Country> {
-
-    return this.httpClient.post<Country>('api/Location/Create', newLocation);
-
+    return this.httpClient.post<Country>('api/Location/CreateCountry', newLocation);
   }
 
-  //GetStates
+  //GetStates ---> TODO: create StateController
 
   GetStates(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<State[]> {
 
@@ -250,7 +237,7 @@ export class AppService {
   }
 
 
-  //GetCities
+  //GetCities ---> TODO: create CityController
 
   GetCities(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<City[]> {
 
@@ -262,7 +249,7 @@ export class AppService {
     queryParams = queryParams.append("search", search);
 
 
-    return this.httpClient.get<City[]>('api/Location/GetFilterState', { params: queryParams });
+    return this.httpClient.get<City[]>('api/Location/GetFilterCity', { params: queryParams });
   }
 
 
@@ -271,14 +258,14 @@ export class AppService {
     let queryParams = new HttpParams();
     queryParams = queryParams.append("id", id);
 
-    return this.httpClient.post<City>('api/Location/EditState'
+    return this.httpClient.post<City>('api/Location/EditCity'
       , newLocation
       , { params: queryParams });
 
   }
   AddCity(newLocation: City): Observable<City> {
 
-    return this.httpClient.post<City>('api/Location/CreateState', newLocation);
+    return this.httpClient.post<City>('api/Location/CreateCity', newLocation);
 
   }
 

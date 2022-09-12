@@ -26,7 +26,10 @@ namespace Events.Core.Common
 
             CreateMap<CountryCreateDTO, Country>().ReverseMap();
             CreateMap<CountryEditDTO, Country>().ReverseMap();
-          //  CreateMap<CountryReturnDTO, Country>().ReverseMap();
+
+            CreateMap<CountryReturnDTO, Country>().ReverseMap();
+            CreateMap<StateReturnDTO, States>().ReverseMap();
+            CreateMap<CityReturnDTO, City>().ReverseMap();
            
 
         }

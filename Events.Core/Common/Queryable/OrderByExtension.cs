@@ -63,7 +63,11 @@ namespace Events.Core.Common.Queryable
         {
             return OrderingHelper(source, propertyName, true, true);
         }
-        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, string propertyName, string order, bool thenBy = false)
+       // public static IOrderedQueryable<T> OrderBy<T>( IQueryable<T> source, 
+        public static IOrderedQueryable<T> OrderBy<T>( IQueryable<T> source, 
+                                                    string propertyName,
+                                                    string order, 
+                                                    bool thenBy = false) where T : class
         {
             order ??= "asc";
             propertyName ??= "Id";
