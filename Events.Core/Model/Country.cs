@@ -7,8 +7,7 @@
         public string Capital { get; set; }
         public string? Code { get; set; }
         public string? Region { get; set; }
-        public double? Latitude { get; set; }
-        public double? Longitude { get; set; }
+        public string? Coordinates { get; set; }
         public List<States>? States { get; set; }
     }
 }

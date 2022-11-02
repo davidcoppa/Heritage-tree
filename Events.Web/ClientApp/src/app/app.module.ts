@@ -35,6 +35,10 @@ import { CountryAbmComponent } from './home/location/Country/Country-abm/country
 import { CountrylistComponent } from './home/location/Country/CountryList/countrylist.component';
 import { CityAbmComponent } from './home/location/Country/City-abm/city-abm.component';
 import { StateAbmComponent } from './home/location/Country/State-abm/state-abm.component';
+import { LocationAbmComponent } from './home/location/Country/location-abm/location-abm.component';
+import { FilterCityComponent } from './helpers/filters/Location/Cities/filterCity.component';
+import { FilterStatesComponent } from './helpers/filters/Location/States/filterStates.component';
+import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.component';
 
 
 
@@ -64,10 +68,14 @@ import { StateAbmComponent } from './home/location/Country/State-abm/state-abm.c
     FilterEventTypeComponent,
     LocationComponent,
     FilterCountriesComponent,
+    FilterStatesComponent,
+    FilterCityComponent,
     CountryAbmComponent,
     CountrylistComponent,
     CityAbmComponent,
-    StateAbmComponent
+    StateAbmComponent,
+    LocationAbmComponent,
+    SunburstComponent
   ],
   imports: [
     BrowserModule,

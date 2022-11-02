@@ -22,9 +22,18 @@
       "es2020",
       "dom"
     ],
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "allowJs": true,
+    "esModuleInterop": true
+
+
 
   },
+  "include": [
+    "src/**/*",
+    "src/assets/Js/*" 
+  ],
+
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

@@ -17,8 +17,10 @@ namespace Events.Core.Test.Helpers
         public string EventNotFound { get => "We couldn't find the event"; }
         public string ParentPersonNotFound { get => "We couldn't find the parent person"; }
 
-        public string PersonNotFound => throw new NotImplementedException();
+        public string PersonNotFound { get => "We couldn't find the person"; }
 
-        public string EventTypeNotFound => throw new NotImplementedException();
+        public string EventTypeNotFound { get => "We couldn't find the Event Type"; }
+
+        public string CountryEmpty { get => "We couldn't find the Country"; }
     }
 }

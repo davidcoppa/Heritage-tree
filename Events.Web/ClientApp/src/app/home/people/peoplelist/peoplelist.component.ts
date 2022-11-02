@@ -36,6 +36,9 @@ export class PeoplelistComponent {//implements AfterViewInit {
 
   gender = Gender;
 
+  itemToVisualize = false;
+  personToShow: Person;
+
   constructor(private router: Router, private service: AppService) {
 
   }
@@ -65,8 +68,12 @@ export class PeoplelistComponent {//implements AfterViewInit {
   }
 
   viewContact(contact: Person) {
-    //let route = '/contacts/view-contact';
-    //this.router.navigate([route], { queryParams: { id: contact.id } });
+    this.itemToVisualize = true;
+    this.personToShow = contact;
+  }
+
+  reset() {
+    this.itemToVisualize = false;
   }
   viewMedia(contact: Person) {
     //let route = '/contacts/view-media';

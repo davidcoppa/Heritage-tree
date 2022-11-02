@@ -1,7 +1,8 @@
 <div class="mat-card">
 
-  <form class="form mat-card" [formGroup]="country" flex="50" fxLayout="column" (ngSubmit)="SaveCountry(country)">
+  <app-filter-countries></app-filter-countries>
 
+  <form class="form mat-card" [formGroup]="country" flex="50" fxLayout="column" (ngSubmit)="SaveCountry(country)">
 
     <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
       <mat-label>Name</mat-label>
@@ -24,28 +25,13 @@
     </mat-form-field>
 
     <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
-      <mat-label>Latitude</mat-label>
-      <input matInput inputmode="text" placeholder="Latitude *" formControlName="latitude" #nameInput>
+      <mat-label>Coordinates</mat-label>
+      <input matInput inputmode="text" placeholder="Coordinates *" formControlName="coordinates" #nameInput>
     </mat-form-field>
 
-    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
-      <mat-label>Longitude</mat-label>
-      <input matInput inputmode="text" placeholder="Longitude *" formControlName="longitude" #nameInput>
-    </mat-form-field>
+       <div class="clear position-buttons">
 
-    <!--<mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
-      <mat-label>State</mat-label>
-      <input matInput inputmode="text" placeholder="State *" formControlName="state" #nameInput>
-    </mat-form-field>
-
-    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
-      <mat-label>City</mat-label>
-      <input matInput inputmode="text" placeholder="City *" formControlName="city" #nameInput>
-    </mat-form-field>-->
-
-    <div class="clear position-buttons">
-
-      <button class="space-buttons" mat-raised-button color="primary" type="submit" [disabled]="!country.valid">Add</button>
+      <button class="space-buttons" mat-raised-button color="primary" type="submit" [disabled]="!country.valid">{{buttonAction}}</button>
       <button class="space-buttons" mat-raised-button color="basic" type="button" (click)="ResetForm()">Clean</button>
       <button class="space-buttons" mat-raised-button color="warn" type="button" (click)="Cancel()">Cancel</button>
     </div>

@@ -31,7 +31,10 @@
               "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "./src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "./src/assets/Js/d3js-4.13.0.min.js",
+              "./src/assets/Js/lodash-4.17.4.min.js"
+            ],
 
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json",

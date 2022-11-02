@@ -29,7 +29,7 @@ export class FilterStatesComponent implements OnInit {
   GetAllCountries() {
     console.log('event type list');
 
-    this.service.GetStates('Title', 'desc', 0, 10000, '')
+    this.service.GetStates('Name', 'desc', 0, 10000, '')
       .pipe(first())
       .subscribe(
         data => {
@@ -50,7 +50,7 @@ export class FilterStatesComponent implements OnInit {
       );
   }
 
-  displayCountries = (user: State): string => {
+  displayStates = (user: State): string => {
 
     if (this.dataState != undefined) {
       if (user.id != undefined) {

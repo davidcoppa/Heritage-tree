@@ -101,7 +101,7 @@ namespace Events.Core.Controllers
             }
         }
 
-  //      [HttpGet("GetParentList")]
+        //      [HttpGet("GetParentList")]
         private async Task<List<PersonWithParents>> GetParentList(List<Person> lstPersons)
         {
             var evtFilter = await context.Event.Include(a => a.EventType).Where(x => x.EventType.Name == "Nacimiento").ToListAsync();
@@ -175,14 +175,18 @@ namespace Events.Core.Controllers
             context.Add(person);
             await context.SaveChangesAsync();
 
-            PersonEventBirth peb = new PersonEventBirth
+            var peb = new EventCreateDTO
             {
-                PersonSon = person,
-                PersonFather = personDto.Father,
-                PersonMother = personDto.Mother,
-                EventId = personDto.EventId
+                Person1 = person,
+                EventDate = person.DateOfBirth,
+                Description = "Nacimiento",
+                EventType = ctrlEvent.GetDataEventType(),
+                Title = "Nacimiento",
+                Loccation = person.PlaceOfBirth,
+                Person2 = personDto.Father,
+                Person3 = personDto.Mother
             };
-            await ctrlEvent.CreateEventBasedOnNewPerson(peb);
+            await ctrlEvent.Create(peb);
 
             return Ok(person);
         }
@@ -205,45 +209,81 @@ namespace Events.Core.Controllers
                 return BadRequest(messages.BadRequestModelInvalid);
             }
 
-            var personToEdit = mapper.Map<Person>(person);
-
-            Person entity = await context.Person.FindAsync(id);
-            if (entity == null)
-            {
-                return NotFound(messages.PersonNotFound);
-            }
-
             try
             {
+                var personToEdit = mapper.Map<Person>(person);
+
+                Person entity = await context.Person.FindAsync(id);
+                if (entity == null)
+                {
+                    return NotFound(messages.PersonNotFound);
+                }
+
+
                 context.Entry(entity).CurrentValues.SetValues(personToEdit);
                 await context.SaveChangesAsync();
 
 
-                //update the event birth!
-                PersonEventBirth peb = new PersonEventBirth
+
+
+              
+                if (person.EventId!=null)
                 {
-                    PersonSon = personToEdit,
-                    PersonFather = person.Father,
-                    PersonMother = person.Mother,
-                    EventId = person.EventId
-                };
+                    var evtToModify = new EventCreateEditDTO
+                    {
+                        ID= (int)person.EventId,
+                        Person1 = personToEdit,
+                        EventDate = personToEdit.DateOfBirth,
+                        Description = "Nacimiento",
+                        EventType = ctrlEvent.GetDataEventType(),
+                        Title = "Nacimiento",
+                        Loccation = personToEdit.PlaceOfBirth,
+                        Person2 = person.Father,
+                        Person3 = person.Mother
+                    };
 
-                await ctrlEvent.CreateEventBasedOnNewPerson(peb);
+                    var pp= await ctrlEvent.Edit(person.EventId.Value, evtToModify);
 
-
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PersonExists(personToEdit.Id))
-                {
-                    return NotFound();
                 }
                 else
                 {
-                    throw;
+                    var evtToCreate= new EventCreateDTO
+                    {
+                        
+                        Person1 = personToEdit,
+                        EventDate = personToEdit.DateOfBirth,
+                        Description = "Nacimiento",
+                        EventType = ctrlEvent.GetDataEventType(),
+                        Title = "Nacimiento",
+                        Loccation = personToEdit.PlaceOfBirth,
+                        Person2 = person.Father,
+                        Person3 = person.Mother
+                    };
+                    var pp = await ctrlEvent.Create(evtToCreate);
                 }
+
+
+              
+
+                return Ok(personToEdit);
+
             }
-            return Ok(personToEdit);
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!PersonExists(personToEdit.Id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest();
+            }
         }
 
         // GET: People/Delete/5

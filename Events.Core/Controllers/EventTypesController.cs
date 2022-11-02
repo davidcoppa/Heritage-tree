@@ -124,7 +124,7 @@ namespace Events.Core.Controllers
             if (ModelState.IsValid)
             {
 
-                EventTypes eventTypesDb = mapper.Map<EventTypes>(eventTypes);
+               // EventTypes eventTypesDb = mapper.Map<EventTypes>(eventTypes);
                 EventTypes entity = await context.EventType.FindAsync(id);
 
                 if (entity == null)

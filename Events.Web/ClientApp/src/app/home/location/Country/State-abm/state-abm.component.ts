@@ -27,7 +27,7 @@ export class StateAbmComponent implements OnInit, OnDestroy {
 
     this.subscriptionStateFilter = this.service.getUpdateState().subscribe
       (data => { 
-        console.log("sendUpdate state: " + data.data);
+     //   console.log("sendUpdate state: " + data.data);
         this.stateSelected = data.data;
       });
   }
@@ -55,8 +55,7 @@ export class StateAbmComponent implements OnInit, OnDestroy {
         code: [null],
         capital: [null],
         region: [null],
-        latitude: [null],
-        longitude: [null]
+        coordinates: [null]
       });
     } else {
       this.evt = this.stateSelected;
@@ -67,8 +66,7 @@ export class StateAbmComponent implements OnInit, OnDestroy {
         code: new FormControl(stateEdit.code ?? null),
         capital: new FormControl(stateEdit.capital ?? null),
         region: new FormControl(stateEdit.region ?? null),
-        latitude: new FormControl(stateEdit.lat ?? null),
-        longitude: new FormControl(stateEdit.lgn ?? null)
+        coordinates: new FormControl(stateEdit.coordinates ?? null)
       });
     }
 

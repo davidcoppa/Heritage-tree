@@ -12,6 +12,8 @@
         public string EventTypeNotFound { get => "We couldn't find the event type"; }
         public string ParentPersonNotFound{ get => "We couldn't find the parent person"; }
 
+        public string CountryEmpty { get => "We couldn't get the data of the Country"; }
+
 
         //
 

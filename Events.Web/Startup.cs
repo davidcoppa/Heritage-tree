@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Events.Core.Common;
+using Events.Core.Common.Helpers;
 using Events.Core.Common.Messages;
 using Events.Core.Common.Validators;
 using EventsManager.Data;
@@ -41,10 +42,9 @@ namespace Events.Web
             //add a validator per controller
             services.AddSingleton<IDataValidator, DataValidator>();
             services.AddSingleton<IMessages, En_Messages>();
-            //    >((ServiceProvider) =>
-            //{
-            //    var env=ServiceProvider.GetRequiredService<Iwe>
-            //});
+            services.AddSingleton<IHelper, Helper>();
+           
+           
 
 
 

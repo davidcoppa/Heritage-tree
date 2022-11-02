@@ -31,187 +31,160 @@ namespace Events.Core.Controllers
             this.messages = messages;
         }
 
-        // GET: ParentPersons
+        //[HttpGet("GetAllFilter2")]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //public async Task<IActionResult> GetAllFilter2(int? idPerson)
+        //{
+        //    if (idPerson == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-        [HttpGet("Get")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Index()
-        {
-            var parent = await context.ParentPerson.ToListAsync();
-            return Ok(parent);
-        }
+        //    Person personSon = await context.Person.FirstOrDefaultAsync(m => m.Id == idPerson);
+        //    //  Person personSon = GetPersonAsync(idPerson??-1);
 
-        // GET: ParentPersons/Details/5
-        [HttpGet]
+        //    if (personSon == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var eventsList = await GetEventListPersonAsync(personSon);
+
+        //    if (eventsList == null)
+        //    {
+        //        return NotFound("son");
+        //    }
+
+        //    PersonWithParentsDTO pwp = CreatePersonWithParent(personSon);
+
+        //    if (eventsList.Person2 != null)
+        //    {
+        //        Event eventListPerson = await GetEventListPersonAsync(eventsList.Person2);
+        //        PersonWithParentsDTO pwp2 = CreatePersonWithParent(eventsList.Person2);
+        //        pwp.children.Add(pwp2);
+        //    }
+        //    if (eventsList.Person3 != null)
+        //    {
+        //        Event eventListPerson = await GetEventListPersonAsync(eventsList.Person3);
+        //        PersonWithParentsDTO pwp3 = CreatePersonWithParent(eventsList.Person3);
+        //        pwp.children.Add(pwp3);
+        //    }
+
+        //    return Ok(pwp);
+        //}
+
+        [HttpGet("GetAllFilter")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> GetAllFilter(int idPerson)
         {
-            if (id == null)
+            if (idPerson == 0)
             {
                 return NotFound();
             }
 
-            var parentPerson = await context.ParentPerson.FirstOrDefaultAsync(m => m.Id == id);
-            if (parentPerson == null)
+            var person = await context.Person.FirstOrDefaultAsync(m => m.Id == idPerson);
+            if (person == null)
             {
                 return NotFound();
             }
+            var events = await context.Event.Where(m => m.Description == "Nacimiento"
+                                                              && (m.Person1.Id.Equals(idPerson)
+                                                                //|| m.Person2.Id.Equals(idPerson)
+                                                                //|| m.Person3.Id.Equals(idPerson)
+                                                                ))
+                                                      .Include(x => x.Person1)
+                                                      .Include(x => x.Person2)
+                                                      .Include(x => x.Person3)
+                                                      .FirstOrDefaultAsync();
 
-            return Ok(parentPerson);
+            if (events == null)
+            {
+                return NotFound("event person");
+            }
+
+            var retValue = new RetValue
+            {
+                Name = person.FirstName ?? "No name",
+                Value = person.Order ?? 1,
+                children = new List<RetValue>()
+            };
+
+            //get sons
+
+
+
+
+            //get parents
+            if (events.Person2 != null)
+            {
+                Person personFather = await context.Person.FirstOrDefaultAsync(m => m.Id == events.Person2.Id);
+
+                var ss = await GetParents(personFather);
+                retValue.children.Add(ss);
+
+            }
+            if (events.Person3 != null)
+            {
+                Person personMother = await context.Person.FirstOrDefaultAsync(m => m.Id == events.Person3.Id);
+
+                var ss = await GetParents(personMother);
+                retValue.children.Add(ss);
+
+            }
+
+
+
+            return Ok(retValue);
         }
 
 
-        // POST: ParentPersons/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost("Create")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Create(ParentPersonCreateDTO parentPerson)
+        private async Task<RetValue> GetParents(Person p)
         {
-            if (!ModelState.IsValid)
+            var retValue = new RetValue();
+
+            if (p == null)
             {
-                return BadRequest(messages.BadRequestModelInvalid);
+                return retValue;
             }
 
-            ParentPerson person = mapper.Map<ParentPerson>(parentPerson);
-            if (validator.ValidateObject<ParentPerson>(person))
+            var events = await context.Event.Where(m => m.Description == "Nacimiento"
+                                                                && (m.Person1.Id.Equals(p.Id)
+                                                                  ))
+                                                        .Include(x => x.Person1)
+                                                        .Include(x => x.Person2)
+                                                        .Include(x => x.Person3)
+                                                        .FirstOrDefaultAsync();
+
+            if (events == null)
             {
-                return BadRequest(messages.BadRequestModelInvalid);
+                return retValue;
+                
             }
 
-            //validate existence of the person if not create (if it's valid)
-            if (parentPerson.Person != null)
-            {
-                Person son = await context.Person.Where(x => x.Id == parentPerson.Person.Id).FirstOrDefaultAsync();
-                if (son == null)
-                {
-                    if (validator.ValidateObject<Person>(parentPerson.Person))
-                    {
-                        return NotFound("son");
-                    }
-                    context.Add(parentPerson.Person);
-                    son = parentPerson.Person;
+            retValue.Name = events.Person1.FirstName ?? "No name";
+            retValue.Value = events.Person1.Order ?? 1;
+            retValue.children = new List<RetValue>();
 
-                }
-                person.Person = son;
+            if (events.Person2 != null)
+            {
+                Person personFather = await context.Person.FirstOrDefaultAsync(m => m.Id == events.Person2.Id);
+
+                var ss = await GetParents(personFather);
+                retValue.children.Add(ss);
 
             }
-            if (parentPerson.PersonMother != null)
+            if (events.Person3 != null)
             {
-                Person mom = await context.Person.Where(x => x.Id == parentPerson.PersonMother.Id).FirstOrDefaultAsync();
-                if (mom == null)
-                {
-                    if (validator.ValidateObject<Person>(parentPerson.PersonMother))
-                    {
-                        return NotFound("mom");
-                    }
-                    context.Add(parentPerson.PersonMother);
-                    mom = parentPerson.PersonMother;
-                }
-                person.PersonMother = mom;
+                Person personMother = await context.Person.FirstOrDefaultAsync(m => m.Id == events.Person3.Id);
 
-            }
-            if (parentPerson.PersonFather != null)
-            {
-                Person dad = await context.Person.Where(x => x.Id == parentPerson.PersonFather.Id).FirstOrDefaultAsync();
-                if (dad == null)
-                {
-                    if (validator.ValidateObject<Person>(parentPerson.PersonFather))
-                    {
-                        return NotFound("dad");
-                    }
-                    context.Add(parentPerson.PersonFather);
-                    dad = parentPerson.PersonFather;
-                }
-                person.PersonFather = dad;
+                var ss = await GetParents(personMother);
+                retValue.children.Add(ss);
 
             }
 
-
-            context.Add(person);
-            await context.SaveChangesAsync();
-            return Ok(person);
-
+            return retValue;
         }
 
-        // POST: ParentPersons/Edit/5
-        [HttpPost("Edit/{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Edit(int id, ParentPersonEditDTO parentPerson)
-        {
-
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(messages.BadRequestModelInvalid);
-            }
-
-            if (id != parentPerson.Id)
-            {
-                return NotFound();
-            }
-
-            ParentPerson person = mapper.Map<ParentPerson>(parentPerson);
-            if (validator.ValidateObject<ParentPerson>(person))
-            {
-                return BadRequest(messages.BadRequestModelInvalid);
-            }
-
-            Person entity = await context.Person.FindAsync(id);
-            if (entity == null)
-            {
-                return NotFound(messages.ParentPersonNotFound);
-            }
-            try
-            {
-                context.Entry(entity).CurrentValues.SetValues(person);
-
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ParentPersonExists(person.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return Ok(person);
-
-
-
-
-        }
-
-        // GET: ParentPersons/Delete/5
-        [HttpPost("Delete/{id:int}")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var parentPerson = await context.ParentPerson.FirstOrDefaultAsync(m => m.Id == id);
-            if (parentPerson == null)
-            {
-                return NotFound();
-            }
-            context.ParentPerson.Remove(parentPerson);
-            await context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ParentPersonExists(int id)
-        {
-            return context.ParentPerson.Any(e => e.Id == id);
-        }
     }
 }

@@ -17,6 +17,7 @@ using Events.Core.Common.Validators;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Events.Core.Common.Messages;
 using Events.Core.Controllers;
+using Events.Core.Common.Helpers;
 
 namespace EventsManager
 {
@@ -62,6 +63,7 @@ namespace EventsManager
             //add a validator per controller
             services.AddSingleton<IDataValidator, DataValidator>();
             services.AddSingleton<IMessages, En_Messages>();
+            services.AddSingleton<IHelper, Helper>();
 
             services.AddSwaggerGen(c =>
             {

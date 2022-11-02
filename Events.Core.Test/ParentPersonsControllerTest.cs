@@ -133,7 +133,7 @@ namespace Events.Core.Test
                 context.SaveChanges();
 
                 var testResul = new ParentPersonsController(context, mapper, validator, messages);
-                IActionResult countResult = await testResul.Details(1);
+                IActionResult countResult = await testResul.GetAllFilter(1);
 
                 var contentResult = countResult as OkObjectResult;
 
@@ -161,7 +161,7 @@ namespace Events.Core.Test
             using (var context = CreateContext(options))
             {
                 var testResul = new ParentPersonsController(context, mapper, validator, messages);
-                IActionResult countResult = await testResul.Details(5);
+                IActionResult countResult = await testResul.GetAllFilter(5);
 
 
                 Assert.IsInstanceOfType(countResult, typeof(NotFoundResult));

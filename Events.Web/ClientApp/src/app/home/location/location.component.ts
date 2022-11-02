@@ -3,9 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, of, merge, startWith, switchMap, Subscription } from 'rxjs';
-import { LocationEnum } from '../../helpers/enums/location.enum';
-import { City } from '../../model/city.model';
 import { Country } from '../../model/country.model';
+import { ListObject } from '../../model/listObject.model';
 import { State } from '../../model/state.model';
 import { AppService } from '../../server/app.service';
 
@@ -15,29 +14,23 @@ import { AppService } from '../../server/app.service';
 })
 export class LocationComponent implements OnChanges, OnDestroy {
 
-
   @Input() abmObject: boolean;
-  @Input() abmCountry: boolean;
-  @Input() abmState: boolean;
-  @Input() abmCity: boolean;
-
+ 
   countries: Country[] = [];
   states: State[] = [];
   @Input() sort!: MatSort;
   @Input() paginator!: MatPaginator;
 
+  private subscriptionABMLocation: Subscription;
   private subscriptionCountry: Subscription;
-  private subscriptionState: Subscription;
-  private subscriptionCity: Subscription;
 
   termEvent$ = new BehaviorSubject<string>('');
 
   resultsLength = 0;
   pageSize = 15;
   dataCountry: Country[];
-  countrySelected: Country;
-  stateSelected: State;
-  citySelected: City;
+
+  abmLocation: ListObject;
 
   expandedElement: Country | null;
   expandedElementCity: State | null;
@@ -48,18 +41,11 @@ export class LocationComponent implements OnChanges, OnDestroy {
   ) {
 
     this.subscriptionCountry = this.service.getUpdateCountry().subscribe
-      (data => { 
+      (data => {
         if (data != undefined) {
 
           if (data.data.abmObject == true) {
             this.abmObject = data.data.abmObject;
-            this.countrySelected = data.data.rowSelected;
-
-            if (data.data.type != undefined && data.data.type == LocationEnum.country) {
-              this.abmCountry = true;
-              this.abmState = false;
-              this.abmCity = false;
-            }
           }
           else {
             this.sort = data.data.sort;
@@ -69,38 +55,15 @@ export class LocationComponent implements OnChanges, OnDestroy {
         }
       });
 
-    this.subscriptionState = this.service.getUpdateState().subscribe
-      (data => { 
+    this.subscriptionABMLocation = this.service.getUpdateABMLocation().subscribe
+      (data => {
+  //      console.log("new part data: "+ data);
         if (data != undefined) {
-
+          
           if (data.data.abmObject == true) {
+
             this.abmObject = data.data.abmObject;
-            this.stateSelected = data.data.rowSelected;
-
-            if (data.data.type != undefined && data.data.type == LocationEnum.state) {
-
-              this.abmCountry = false;
-              this.abmState = true;
-              this.abmCity = false;
-            }
-          }
-        }
-      });
-
-
-    this.subscriptionCity = this.service.getUpdateCity().subscribe
-      (data => { 
-        if (data != undefined) {
-
-          if (data.data.abmObject == true) {
-            this.abmObject = data.data.abmObject;
-            this.citySelected = data.data.rowSelected;
-
-            if (data.data.type != undefined && data.data.type == LocationEnum.city) {
-              this.abmCountry = false;
-              this.abmState = false;
-              this.abmCity = true;
-            }
+            this.abmLocation = data.data;
           }
         }
       });
@@ -164,11 +127,9 @@ export class LocationComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.subscriptionABMLocation.unsubscribe();
     this.subscriptionCountry.unsubscribe();
-    this.subscriptionState.unsubscribe();
-    this.subscriptionCity.unsubscribe();
   }
-
   addEvent() {
     this.abmObject = !this.abmObject;
   }

@@ -29,7 +29,7 @@ export class FilterCountriesComponent implements OnInit {
   GetAllCountries() {
     console.log('event type list');
 
-    this.service.GetCountries('Title', 'desc', 0, 10000, '')
+    this.service.GetCountries('Name', 'desc', 0, 10000, '')
       .pipe(first())
       .subscribe(
         data => {

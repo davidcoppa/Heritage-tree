@@ -21,26 +21,33 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
 
   listModel: ListObject;
 
-  private subscriptionCountryFilter: Subscription;
+  private subscriptionABMLocation: Subscription;
 
   constructor(fb: FormBuilder, private service: AppService) {
-
+    //console.log("country abm ctor");
     this.fb = fb;
 
-    this.subscriptionCountryFilter = this.service.getUpdateCountry().subscribe
+    this.subscriptionABMLocation = this.service.getUpdateABMLocation().subscribe
       (data => {
-        // console.log("sendUpdate country: " + data.data);
-        this.countrySelected = data.data;
+ //       console.log("country abm ctor -- data: "+data);
+        if (data != undefined) {
+
+          if (data.data.abmObject == true) {
+            this.countrySelected = data.data.rowSelected;
+
+            if (data.data.type != undefined && data.data.type == LocationEnum.country) {
+              this.abmCountry = true;
+            }
+          }
+        }
       });
   }
 
   ngOnDestroy() {
-    this.subscriptionCountryFilter.unsubscribe();
+    this.subscriptionABMLocation.unsubscribe();
   }
 
   ngOnInit(): void {
-    console.log("country edit init: ");
-
     if (this.countrySelected != undefined) {
       this.country = this.CreateForm(this.countrySelected);
     } else {
@@ -58,8 +65,7 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
         code: [null],
         capital: [null],
         region: [null],
-        latitude: [null],
-        longitude: [null]
+        coordinates: [null]
       });
     } else {
       this.evt = this.countrySelected;
@@ -70,15 +76,14 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
         code: new FormControl(countryEdit.code ?? null),
         capital: new FormControl(countryEdit.capital ?? null),
         region: new FormControl(countryEdit.region ?? null),
-        latitude: new FormControl(countryEdit.lat ?? null),
-        longitude: new FormControl(countryEdit.lgn ?? null)
+        coordinates: new FormControl(countryEdit.coordinates ?? null)
       });
     }
 
   }
 
   ngOnChanges() {
-    console.log("country on changes: ");
+    //console.log("country on changes: ");
 
     if (this.countrySelected == null) {
       this.country = this.CreateForm(null);
@@ -89,9 +94,7 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
 
   SaveCountry(CountryABM: FormGroup) {
     this.evt = CountryABM.value as Country;
-
-
-    console.log('Current country abm: ', this.evt);
+    console.log('Current data: ', CountryABM);
 
     if (this.buttonAction == "Update") {
 
@@ -101,7 +104,6 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
         .pipe(first())
         .subscribe(
           data => {
-            console.log('Current data: ', data);
             this.ABMCountryFinished();
           },
           error => console.log('Error Getting Position: ', error)
@@ -112,7 +114,7 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
       this.service.AddCountries(this.evt).pipe(first())
         .subscribe(
           data => {
-            console.log('Current data: ', data);
+       //     console.log('Current data: ', data);
             this.ABMCountryFinished();
 
           },

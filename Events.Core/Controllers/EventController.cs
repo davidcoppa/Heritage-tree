@@ -33,9 +33,6 @@ namespace Events.Core.Controllers
             this.mapper = mapper;
             this.validator = validator;
             this.messages = messages;
-
-            //    this.ctrlEventType = new EventTypesController(context, mapper, validator, messages);
-
         }
 
         // GET: Events
@@ -144,8 +141,6 @@ namespace Events.Core.Controllers
                 {
                     return BadRequest(messages.EventEmpty);
                 }
-
-
                 else
                 {
                     Person son = await context.Person.Where(x => x.Id == evt.Person1.Id).FirstOrDefaultAsync();
@@ -255,7 +250,7 @@ namespace Events.Core.Controllers
 
         public async Task<IActionResult> Edit(int id, EventCreateEditDTO eventEdit)
         {
-          //  var pp = eventEdit as ;
+            //  var pp = eventEdit as ;
             if (id != eventEdit.ID)
             {
                 return NotFound();
@@ -274,7 +269,7 @@ namespace Events.Core.Controllers
                 {
                     context.Entry(entity).CurrentValues.SetValues(evento);
 
-                    if (evento.Person1!= null)
+                    if (evento.Person1 != null)
                     {
                         Person pp = await context.Person.Where(x => x.Id == evento.Person1.Id).FirstOrDefaultAsync();
                         entity.Person1 = pp;
@@ -343,6 +338,9 @@ namespace Events.Core.Controllers
             return BadRequest(messages.BadRequestModelInvalid);
         }
 
+     
+     
+      
         // GET: Events/Delete/5
         [HttpPost("Delete/{id:int}")]
         public async Task<IActionResult> Delete(int? id)
@@ -363,99 +361,7 @@ namespace Events.Core.Controllers
             return NoContent();
         }
 
-        private bool EventExists(int id)
-        {
-            return context.Event.Any(e => e.Id == id);
-        }
-
-        [HttpPost("CreateEventBasedOnNewPerson")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateEventBasedOnNewPerson(PersonEventBirth personEventBirth)
-        {
-            var evtToModify = new Event
-            {
-                Person1 = personEventBirth.PersonSon,
-                EventDate = personEventBirth.PersonSon.DateOfBirth,
-                Description = "Nacimiento",
-                EventType = GetDataEventType(),
-                Title = "Nacimiento",
-                Loccation = personEventBirth.PersonSon.PlaceOfBirth,
-                Person2 = personEventBirth.PersonFather,
-                Person3 = personEventBirth.PersonMother
-            };
-            try
-            {
-                if (personEventBirth.EventId != null)
-                {
-                    Event newEvt = await context.Event.Where(x => x.Id == personEventBirth.EventId).Include(x=>x.Person3).Include(x => x.Person2).Include(x => x.Person1).FirstOrDefaultAsync();
-
-                    evtToModify.Id = newEvt.Id;
-                    evtToModify.Title = newEvt.Title;
-                    evtToModify.Description = newEvt.Description;
-                    
-                    evtToModify.EventType = newEvt.EventType;
-
-                    context.Entry(newEvt).State = EntityState.Modified;
-
-                    context.Entry(newEvt).CurrentValues.SetValues(evtToModify);
-                    context.Event.Update(newEvt);
-
-                    if (personEventBirth.PersonFather != null)
-                    {
-                        Person pp = await context.Person.Where(x => x.Id == personEventBirth.PersonFather.Id).FirstOrDefaultAsync();
-                        evtToModify.Person2 = pp;
-                        if (newEvt.Person2==null)
-                        {
-                            newEvt.Person2 = pp;
-                            context.Event.Update(newEvt);
-                        }
-                        else
-                        {
-                            context.Entry(newEvt.Person2).CurrentValues.SetValues(evtToModify.Person2);
-
-                        }
-
-                    }
-                    if (personEventBirth.PersonMother != null)
-                    {
-                        Person pp = await context.Person.Where(x => x.Id == personEventBirth.PersonMother.Id).FirstOrDefaultAsync();
-                        evtToModify.Person3 = pp;
-                        if (newEvt.Person3 == null)
-                        {
-                            newEvt.Person3 = pp;
-                            context.Event.Update(newEvt);
-                        }
-                        else
-                        {
-                            context.Entry(newEvt.Person3).CurrentValues.SetValues(evtToModify.Person3);
-
-                        }
-
-                    }
-
-
-
-                }
-                else
-                {
-                    context.Event.Add(evtToModify);
-                }
-
-                await context.SaveChangesAsync();
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                throw;
-            }
-
-            return Ok(evtToModify);
-        }
-
-        private EventTypes GetDataEventType()
+        public EventTypes GetDataEventType()
         {
             EventTypes? entityList = context.EventType.Where(x => x.Name == "Nacimiento" || x.Description == "Nacimiento").FirstOrDefault();
 
@@ -467,6 +373,11 @@ namespace Events.Core.Controllers
 
             return entity;
 
+        }
+
+        private bool EventExists(int id)
+        {
+            return context.Event.Any(e => e.Id == id);
         }
 
     }

@@ -28,14 +28,9 @@
           <td mat-cell *matCellDef="let row">{{row.region}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="Latitude" class="text-wrap">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Latitude</th>
-          <td mat-cell *matCellDef="let row">{{row.lat}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Longitude" class="text-wrap">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Longitude</th>
-          <td mat-cell *matCellDef="let row">{{row.lgn}} </td>
+        <ng-container matColumnDef="Coordinates" class="text-wrap">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Coordinates</th>
+          <td mat-cell *matCellDef="let row">{{row.coordinates}} </td>
         </ng-container>
 
         <ng-container matColumnDef="FullName">
@@ -79,14 +74,9 @@
                     <td mat-cell *matCellDef="let row">{{row.region}} </td>
                   </ng-container>
 
-                  <ng-container matColumnDef="Latitude" class="text-wrap">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Latitude</th>
-                    <td mat-cell *matCellDef="let row">{{row.lat}} </td>
-                  </ng-container>
-
-                  <ng-container matColumnDef="Longitude" class="text-wrap">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Longitude</th>
-                    <td mat-cell *matCellDef="let row">{{row.lgn}} </td>
+                  <ng-container matColumnDef="Coordinates" class="text-wrap">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Coordinates</th>
+                    <td mat-cell *matCellDef="let row">{{row.coordinates}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="FullName">
@@ -131,14 +121,9 @@
                               <td mat-cell *matCellDef="let row">{{city.region}} </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="Latitude" class="text-wrap">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Latitude</th>
-                              <td mat-cell *matCellDef="let row">{{city.lat}} </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="Longitude" class="text-wrap">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Longitude</th>
-                              <td mat-cell *matCellDef="let row">{{city.lgn}} </td>
+                            <ng-container matColumnDef="Coordinates" class="text-wrap">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Coordinates</th>
+                              <td mat-cell *matCellDef="let row">{{city.coordinates}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="FullName">

@@ -29,8 +29,7 @@ export class CountrylistComponent implements AfterViewInit {
     'Code',
     'Capital',
     'Region',
-    'Latitude',
-    'Longitude',
+    'Coordinates',
     'FullName',
     'State',
     'Action'
@@ -40,8 +39,7 @@ export class CountrylistComponent implements AfterViewInit {
     'Code',
     'Capital',
     'Region',
-    'Latitude',
-    'Longitude',
+    'Coordinates',
     'FullName',
     'City',
     'Action'
@@ -51,8 +49,7 @@ export class CountrylistComponent implements AfterViewInit {
     'Code',
     'Capital',
     'Region',
-    'Latitude',
-    'Longitude',
+    'Coordinates',
     'FullName',
     'Action'
   ];
@@ -67,6 +64,8 @@ export class CountrylistComponent implements AfterViewInit {
   @ViewChildren('innerSortCity') innerSortCity: QueryList<MatSort>;
 
   @Input() dataCountry: Country[];
+  @Input() abmObject: boolean;
+
   resultsLength = 0;
   listModel: ListObject;
   listSubObject: ListSubObject;
@@ -134,25 +133,31 @@ export class CountrylistComponent implements AfterViewInit {
   }
 
   editCountry(contact: Country) {
+
+    this.abmObject = true;
     this.listModel.abmObject = true;
     this.listModel.rowSelected = contact;
     this.listModel.type = LocationEnum.country;
-    this.service.sendUpdateCountry(this.listModel);
+   // this.service.sendUpdateCountry();
+    this.service.sendUpdateABMLocation(this.listModel);
   }
 
   editState(contact: State) {
+    this.abmObject = true;
 
     this.listModel.abmObject = true;
     this.listModel.rowSelected = contact;
     this.listModel.type = LocationEnum.state;
-    this.service.sendUpdateState(this.listModel);
+    this.service.sendUpdateABMLocation(this.listModel);
   }
 
   editCity(contact: City) {
+    this.abmObject = true;
+
     this.listModel.abmObject = true;
     this.listModel.rowSelected = contact;
     this.listModel.type = LocationEnum.city;
-    this.service.sendUpdateCity(this.listModel);
+    this.service.sendUpdateABMLocation(this.listModel);
   }
 
 
