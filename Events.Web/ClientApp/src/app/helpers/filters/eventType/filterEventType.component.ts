@@ -65,7 +65,7 @@ export class FilterEventTypeComponent implements OnInit {
       }
     }
 
-  //  this.service.sendUpdateEventType(user);
+    this.service.sendUpdateEventType(user);
 
     return user && user.name ? user.name : '';
   }
