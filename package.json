@@ -2,8 +2,11 @@
   "dependencies": {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "d3-dtree": "^2.4.1",
 =======
+=======
+>>>>>>> parent of 126bc0d (update to angular 14)
 =======
 >>>>>>> parent of 126bc0d (update to angular 14)
     "d3-dtree": "^1.3.2",
