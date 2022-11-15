@@ -48,7 +48,7 @@ export class PeopleComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log("changes people");
+  //  console.log("changes people");
     if (this.sort == undefined) { return; }
 
     // If the user changes the sort order, reset back to the first page.

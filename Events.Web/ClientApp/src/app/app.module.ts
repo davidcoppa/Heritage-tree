@@ -39,6 +39,10 @@ import { LocationAbmComponent } from './home/location/Country/location-abm/locat
 import { FilterCityComponent } from './helpers/filters/Location/Cities/filterCity.component';
 import { FilterStatesComponent } from './helpers/filters/Location/States/filterStates.component';
 import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.component';
+import { MediaDetailsComponent } from './home/media/media-view/media-details/media-details.component';
+import { GalleryComponent } from './home/media/media-view/media-gallery.component';
+import { FilterimagesPipe } from './helpers/pipes/tag.filter.images.pipe';
+import { NgxGalleryModule } from 'ngx-gallery';
 
 
 
@@ -66,6 +70,8 @@ import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.com
     SideNavComponent,
     FilterPeopleComponent,
     FilterEventTypeComponent,
+
+    //location
     LocationComponent,
     FilterCountriesComponent,
     FilterStatesComponent,
@@ -75,7 +81,14 @@ import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.com
     CityAbmComponent,
     StateAbmComponent,
     LocationAbmComponent,
-    SunburstComponent
+
+    //tree view
+    SunburstComponent,
+
+    //media
+    MediaDetailsComponent,
+    GalleryComponent,
+    FilterimagesPipe
   ],
   imports: [
     BrowserModule,
@@ -85,6 +98,7 @@ import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.com
     FormsModule,
     ReactiveFormsModule,
     AppMaterial,
+    NgxGalleryModule
 
   ],
   providers: [AppService, HttpClient,

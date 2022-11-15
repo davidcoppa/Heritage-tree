@@ -2,8 +2,8 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@
 import { Media } from 'src/app/model/media.model';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AppService } from 'src/app/server/app.service';
 import { first } from 'rxjs';
+import { AppMediaService } from '../../../server/app.media.service';
 
 
 @Component({
@@ -18,7 +18,9 @@ export class MediaAbmComponent implements OnInit, OnChanges {
   mediaGroup: FormGroup;
   fb: FormBuilder;
   media: Media;
-  constructor(fb: FormBuilder, private appService: AppService) {
+  constructor(
+    fb: FormBuilder,
+    private appMediaService: AppMediaService) {
     this.fb = fb;
   }
 
@@ -48,7 +50,9 @@ CreateForm(mediaEdit:Media| null): FormGroup {
         MediaDate: [null],
         MediaDateUploaded:[null],
         MediaType: [null],
-        UrlFile: [null]
+        UrlFile: [null],
+        Tags:[null]
+
       });
     }else{
       return this.fb.group({
@@ -57,16 +61,17 @@ CreateForm(mediaEdit:Media| null): FormGroup {
         MediaDate:new FormControl(mediaEdit.MediaDate ?? null),
         MediaDateUploaded:new FormControl(mediaEdit.MediaDateUploaded ?? null),
         MediaType: new FormControl(mediaEdit.MediaType ?? null),
-        UrlFile: new FormControl(mediaEdit.UrlFile ?? null)
-        
-      });    }
+        UrlFile: new FormControl(mediaEdit.UrlFile ?? null),
+        Tags: new FormControl(mediaEdit.Tags ?? null)
+      });
+    }
   
   }
 
   SaveMedia(MeidaABM: FormGroup) {
     this.media = MeidaABM.value as Media;
 
-    this.appService.AddMedia(this.media).pipe(first())
+    this.appMediaService.AddMedia(this.media).pipe(first())
       .subscribe(
         {
           next(data) {
