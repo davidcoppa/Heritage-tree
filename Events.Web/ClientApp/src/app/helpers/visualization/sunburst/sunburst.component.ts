@@ -1,46 +1,31 @@
-import { AfterViewInit, Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, Input, NgZone, OnInit, HostListener, ViewChild, ViewChildren } from '@angular/core';
 import { first } from 'rxjs';
 import { Person } from '../../../model/person.model';
 import { PersonWithParents } from '../../../model/PersonWithParents.model';
 import { AppService } from '../../../server/app.service';
 
-import * as dTree from 'd3-dtree';
+import * as dTree from '../../../../assets/Js/dtree';
 
-//declare var dTree1: any;
-//declare function GetTree(data:any): any;
+
 function tree(data: any, options: any) {
 
-  //treeJson =
-    d3.json(data, function (error: any, treeData: any) {
-   dTree.default.init(data,
+
+
+  dTree.default.init(data, options);
+
+}
+function callAngularFunction(name: any, extra: any, objectId: any) {
+
+  var event = new CustomEvent("get.tree",
     {
-      target: "#graph",
-      debug: true,
-      hideMarriageNodes: false,
-      marriageNodeSize: 5,
-      height: 800,
-      width: 1200,
-      callbacks: {
-        nodeClick: function (name: any, extra: any) {
-          alert('Click: ' + name);
-        },
-        nodeRightClick: function (name: any, extra: any) {
-          alert('Right-click: ' + name);
-        },
-        textRenderer: function (name: any, extra: any, textClass: any) {
-          if (extra && extra.nickname)
-            name = name + " (" + extra.nickname + ")";
-          return "<p align='center' class='" + textClass + "'>" + name + "</p>";
-        },
-        marriageClick: function (extra: any, id: any) {
-          alert('Clicked marriage node' + id);
-        },
-        marriageRightClick: function (extra: any, id: any) {
-          alert('Right-clicked marriage node' + id);
-        },
-      }
-     });
-  });
+      detail: objectId,
+      bubbles: true,
+      cancelable: true
+    }
+  );
+  window.dispatchEvent(event);
+
+  
 }
 
 @Component({
@@ -48,22 +33,35 @@ function tree(data: any, options: any) {
   templateUrl: './sunburst.component.html',
   styleUrls: ['./sunburst.component.css'],
 })
-export class SunburstComponent implements AfterViewInit {
+export class SunburstComponent implements AfterViewInit, OnInit{
 
   dataChart: PersonWithParents;
 
   @Input() dataPersonToShow: Person;
   dataReturned = dTree;
 
+  
   constructor(private service: AppService,
   ) {
-    // this.dataReturned = datas;
+   
+  }
+
+  @HostListener("window:get.tree", ['$event'])
+  onPaymentSuccess(event: any): void {
+   // alert('Angular 2+ function is called: ' + event.detail);
+    this.GetData(event.detail);
+
+  }
+
+
+  ngOnInit() {
+    
   }
 
   ngAfterViewInit() {
 
     if (this.dataPersonToShow != undefined) {
-      this.GetData()
+      this.GetData(this.dataPersonToShow.id);
     } else {
       console.log("no person selected.")
     }
@@ -71,34 +69,13 @@ export class SunburstComponent implements AfterViewInit {
   }
 
 
-
-  GetData() {
-    this.service.GetDataToVisualize(this.dataPersonToShow.id)
+  GetData(personTofind: number) {
+    this.service.GetDataToVisualize(personTofind)
       .pipe(first())
       .subscribe(
         data => {
-    //      console.log("data: " + data);
-      //    this.dataReturned = datas;
-
-          //   dTree.init(datas, options)
-
-
-        //  (function ($:any) {
-            //$(document).ready(function () {
-            //  console.log("Hello from jQuery!");
-            //  tree(data, options);
-            //});
-         tree(datas, options);
-        //  });
-          //(dTree)
-          //    var treeData = data;// dTree.init(data, options);
-
-          //  this.myChart
-          //    .data(data)
-          ////    .size('value')
-          ////    .color('red')
-          // //   .radiusScaleExponent(1)
-          //    (document.getElementById('chart') ?? new HTMLElement());
+          //  console.log("data: " + JSON.stringify(data));
+          tree(data, options);
         },
         error => console.log('Error Getting Position: ', error)
       );
@@ -106,7 +83,7 @@ export class SunburstComponent implements AfterViewInit {
 
 
 }
-//npm install d3-dtree
+
 const datas =
   [{
     "name": "Niclas Superlongsurname",
@@ -158,6 +135,10 @@ const datas =
     }]
   }];
 
+
+
+
+
 const options =
 {
   target: '#graph',
@@ -165,12 +146,36 @@ const options =
   width: 600,
   height: 600,
   hideMarriageNodes: true,
-  marriageNodeSize: 10,
+  marriageNodeSize: 1,
   callbacks: {
-    /*
-      Callbacks should only be overwritten on a need to basis.
-      See the section about callbacks below.
-    */
+    nodeClick: function (name: any, extra: any, id: any, objectId: any) {
+    //  alert('Click objectId: ' + objectId);
+      if (objectId!=0) {
+        callAngularFunction(name, extra, objectId);
+      }
+    },
+    nodeRightClick: function (name: any, extra: any) {
+      alert('Right-click: ' + name);
+    },
+    textRenderer: function (name: any, extra: any, textClass: any) {
+      if (extra && extra.nickname)
+        name = name + " (" + extra.nickname + ")";
+      return "<p align='center' class='" + textClass + "'>" + name + "</p>";
+    },
+    marriageClick: function (name: any, extra: any, id: any, objectId: any) {
+
+    //  alert('Clicked marriage node' + objectId);
+
+
+      if (objectId != 0) {
+        callAngularFunction(name, extra, objectId);
+      }
+
+
+    },
+    marriageRightClick: function (extra: any, id: any) {
+      alert('Right-clicked marriage node' + id);
+    },
   },
   margin: {
     top: 0,
