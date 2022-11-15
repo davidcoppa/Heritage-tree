@@ -44,7 +44,7 @@ namespace Events.Core.Test
             //PlaceOfDeath = "some pc",
             SecondName = "secondName",
             SecondSurname = "secondSurname",
-            Sex = EventsManager.Enums.Gender.man
+            Sex = EventsManager.Enums.Gender.Male
 
         };
         PersonWithParents pCreate = new PersonWithParents
@@ -59,7 +59,7 @@ namespace Events.Core.Test
             //PlaceOfDeath = "some pc",
             SecondName = "secondName",
             SecondSurname = "secondSurname",
-            Sex = EventsManager.Enums.Gender.man
+            Sex = EventsManager.Enums.Gender.Male
 
         };
         PersonWithParents pCreateNull = new PersonWithParents { };
@@ -77,7 +77,7 @@ namespace Events.Core.Test
             //PlaceOfDeath = "some pc",
             SecondName = "secondName",
             SecondSurname = "secondSurname",
-            Sex = EventsManager.Enums.Gender.man
+            Sex = EventsManager.Enums.Gender.Male
 
         };
 

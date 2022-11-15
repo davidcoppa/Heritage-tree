@@ -1,10 +1,13 @@
-var dTree = {
+//import TreeBuilder from './builder.js';
+
+
+
+const dTree = {
 
   //VERSION: '/* @echo DTREE_VERSION */',
 
   init: function(data, options = {}) {
 
-    
     var opts = options;
     _.defaultsDeep(options || {}, {
       target: '#graph',
@@ -13,17 +16,16 @@ var dTree = {
       height: 600,
       hideMarriageNodes: true,
       callbacks: {
-        nodeClick: function (name, extra, id, objectId) {},
+        nodeClick: function(name, extra, id) {},
         nodeRightClick: function(name, extra, id) {},
-        marriageClick: function (name, extra, id, objectId) {},
-      //  marriageClick: function(extra, id) {},
+        marriageClick: function(extra, id) {},
         marriageRightClick: function(extra, id) {},
         nodeHeightSeperation: function(nodeWidth, nodeMaxHeight) {
           return TreeBuilder._nodeHeightSeperation(nodeWidth, nodeMaxHeight);
         },
-        nodeRenderer: function (name, x, y, height, width, extra, id, objectId,nodeClass, textClass, textRenderer) {
+        nodeRenderer: function(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
           return TreeBuilder._nodeRenderer(name, x, y, height, width, extra,
-            id,objectId,nodeClass, textClass, textRenderer);
+            id,nodeClass, textClass, textRenderer);
         },
         nodeSize: function(nodes, width, textRenderer) {
           return TreeBuilder._nodeSize(nodes, width, textRenderer);
@@ -84,14 +86,12 @@ var dTree = {
           )
       },
       zoomTo: _zoomTo,
-
       zoomToNode: function (nodeId, zoom = 2, duration = 500) {
         const node = _.find(treeBuilder.allNodes, {data: {id: nodeId}})
         if (node) {
           _zoomTo(node.x, node.y, zoom, duration)
         }
       },
-
       zoomToFit: function (duration = 500) {
         const groupBounds = treeBuilder.g.node().getBBox()
         const width = groupBounds.width
@@ -124,20 +124,15 @@ var dTree = {
     var root = {
       name: '',
       id: id++,
-      objectId:0,
       hidden: true,
       children: []
     };
 
     var reconstructTree = function(person, parent) {
 
-      if (person == undefined) {
-        return;
-      }
       // convert to person to d3 node
       var node = {
         name: person.name,
-        objectId: person.id,
         id: id++,
         hidden: false,
         children: [],
@@ -181,7 +176,6 @@ var dTree = {
       _.forEach(person.marriages, function(marriage, index) {
         var m = {
           name: '',
-          objectId: marriage.spouse.id,
           id: id++,
           hidden: opts.hideMarriageNodes,
           noParent: true,
@@ -195,7 +189,6 @@ var dTree = {
 
         var spouse = {
           name: sp.name,
-          objectId: sp.id,
           id: id++,
           hidden: false,
           noParent: true,
@@ -312,12 +305,12 @@ class TreeBuilder {
 
     // make a svg
     const svg = this.svg = d3.select(opts.target)
-      .html("")
       .append('svg')
       .attr('viewBox', [0, 0, width, height])
-      .call(zoom);
+      .call(zoom)
 
-    const g = this.g = svg.append('g');
+    // create svg group that holds all nodes
+    const g = this.g = svg.append('g')
 
     // set zoom identity
     svg.call(zoom.transform, d3.zoomIdentity.translate(width / 2, opts.margin.top).scale(1))
@@ -404,7 +397,6 @@ class TreeBuilder {
             marriageSize[1],
             d.data.extra,
             d.data.id,
-            d.data.objectId,
             d.data.class
           )
         } else {
@@ -416,7 +408,6 @@ class TreeBuilder {
             nodeSize[1],
             d.data.extra,
             d.data.id,
-            d.data.objectId,
             d.data.class,
             d.data.textClass,
             opts.callbacks.textRenderer
@@ -433,22 +424,10 @@ class TreeBuilder {
         if (d3.event.detail === 2 || d.data.hidden) {
           return;
         }
-        //marriageNode = {name: '', objectId: 3, id: 5, hidden: true, noParent: true, …}
-
-        if (d.data.marriageNode != undefined) {
-          if (d.data.marriageNode.isMarriage) {
-            //TODO: find the tree on the marriage node
-            //name, extra, id, objectId
-            opts.callbacks.marriageClick.call(this, d.data.name, d.data.extra, d.data.id, d.data.objectId)
-          }
-          else {
-            //opts.callbacks.nodeClick.call(this, d.data.name, d.data.extra, d.data.id, d.data.objectId)
-
-            //opts.callbacks.marriageClick.call(this, d.data.extra, d.data.id)
-          }
-        }
-         else {
-          opts.callbacks.nodeClick.call(this, d.data.name, d.data.extra, d.data.id, d.data.objectId)
+        if (d.data.isMarriage) {
+          opts.callbacks.marriageClick.call(this, d.data.extra, d.data.id)
+        } else {
+          opts.callbacks.nodeClick.call(this, d.data.name, d.data.extra, d.data.id)
         }
       })
       .on('contextmenu', function (d) {
@@ -624,7 +603,7 @@ class TreeBuilder {
     return [size, size]
   }
 
-  static _nodeRenderer(name, x, y, height, width, extra, id,objectId, nodeClass, textClass, textRenderer) {
+  static _nodeRenderer(name, x, y, height, width, extra, id, nodeClass, textClass, textRenderer) {
     let node = '';
     node += '<div ';
     node += 'style="height:100%;width:100%;" ';

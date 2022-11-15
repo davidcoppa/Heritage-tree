@@ -92,22 +92,22 @@ namespace Events.Core.Test
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
              .Options;
 
-            //using (var context = CreateContext(options))
-            //{
-            //    context.ParentPerson.Add(pp);
+            using (var context = CreateContext(options))
+            {
+                context.ParentPerson.Add(pp);
 
-            //    context.SaveChanges();
+                context.SaveChanges();
 
-            //    var testResul = new ParentPersonsController(context, mapper, validator,messages);
-            //    IActionResult countResult = await testResul.Index();
+                var testResul = new ParentPersonsController(context, mapper, validator,messages);
+                IActionResult countResult = await testResul.Index();
 
-            //    var contentResult = countResult as OkObjectResult;
+                var contentResult = countResult as OkObjectResult;
 
-            //    var value = contentResult?.Value as List<ParentPerson>;
-            //    Assert.IsNotNull(value);
-            //    Assert.AreEqual(1, value.Count);
+                var value = contentResult?.Value as List<ParentPerson>;
+                Assert.IsNotNull(value);
+                Assert.AreEqual(1, value.Count);
 
-            //}
+            }
         }
 
         [TestMethod]
@@ -183,24 +183,24 @@ namespace Events.Core.Test
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
               .Options;
 
-            //using (var context = CreateContext(options))
-            //{
+            using (var context = CreateContext(options))
+            {
 
-            //    context.Person.Add(pSon);
-            //    context.Person.Add(pMother);
-            //    context.Person.Add(pFather);
-            //    context.SaveChanges();
+                context.Person.Add(pSon);
+                context.Person.Add(pMother);
+                context.Person.Add(pFather);
+                context.SaveChanges();
 
-            //    var testResul = new ParentPersonsController(context, mapper, validator, messages);
-            //    IActionResult countResult = await testResul.Create(ppCreate);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
+                IActionResult countResult = await testResul.Create(ppCreate);
 
-            //    var contentResult = countResult as OkObjectResult;
+                var contentResult = countResult as OkObjectResult;
 
-            //    var value = contentResult?.Value as ParentPerson;
-            //    Assert.IsNotNull(value);
-            //    Assert.AreEqual(1, value.Id);
+                var value = contentResult?.Value as ParentPerson;
+                Assert.IsNotNull(value);
+                Assert.AreEqual(1, value.Id);
 
-            //}
+            }
         }
       
         [TestMethod]
@@ -216,20 +216,20 @@ namespace Events.Core.Test
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
               .Options;
 
-            //using (var context = CreateContext(options))
-            //{
-            //    context.SaveChanges();
+            using (var context = CreateContext(options))
+            {
+                context.SaveChanges();
 
-            //    var testResul = new ParentPersonsController(context, mapper, validator, messages);
-            //    IActionResult countResult = await testResul.Create(ppCreateNull);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
+                IActionResult countResult = await testResul.Create(ppCreateNull);
 
-            //    var contentResult = countResult as BadRequestObjectResult;
+                var contentResult = countResult as BadRequestObjectResult;
 
-            //    Assert.IsInstanceOfType(countResult, typeof(BadRequestObjectResult));
-            //    Assert.IsNotNull(contentResult);
-            //    Assert.AreEqual("Model is not valid", contentResult.Value);
+                Assert.IsInstanceOfType(countResult, typeof(BadRequestObjectResult));
+                Assert.IsNotNull(contentResult);
+                Assert.AreEqual("Model is not valid", contentResult.Value);
 
-            //}
+            }
         }
 
         [TestMethod]
@@ -246,22 +246,22 @@ namespace Events.Core.Test
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
               .Options;
 
-            //using (var context = CreateContext(options))
-            //{
-            //    context.Person.Add(pSon);
-            //    context.Person.Add(pFather);
-            //    context.SaveChanges();
+            using (var context = CreateContext(options))
+            {
+                context.Person.Add(pSon);
+                context.Person.Add(pFather);
+                context.SaveChanges();
 
-            //    var testResul = new ParentPersonsController(context, mapper, validator, messages);
-            //    IActionResult countResult = await testResul.Create(ppCreateNoMother);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
+                IActionResult countResult = await testResul.Create(ppCreateNoMother);
 
-            //    var contentResult = countResult as OkObjectResult;
+                var contentResult = countResult as OkObjectResult;
 
-            //    var value = contentResult?.Value as ParentPerson;
-            //    Assert.IsNotNull(value);
-            //    Assert.AreEqual(1, value.Id);
+                var value = contentResult?.Value as ParentPerson;
+                Assert.IsNotNull(value);
+                Assert.AreEqual(1, value.Id);
 
-            //}
+            }
         }
        
         [TestMethod]
@@ -278,19 +278,19 @@ namespace Events.Core.Test
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
               .Options;
 
-            //using (var context = CreateContext(options))
-            //{
-            //    context.Person.Add(pFather);
-            //    context.Person.Add(pMother);
-            //    context.SaveChanges();
+            using (var context = CreateContext(options))
+            {
+                context.Person.Add(pFather);
+                context.Person.Add(pMother);
+                context.SaveChanges();
 
-            //    var testResul = new ParentPersonsController(context, mapper, validator, messages);
-            //    IActionResult countResult = await testResul.Create(ppCreateNoSon);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
+                IActionResult countResult = await testResul.Create(ppCreateNoSon);
 
-            //    Assert.IsInstanceOfType(countResult, typeof(NotFoundObjectResult));
+                Assert.IsInstanceOfType(countResult, typeof(NotFoundObjectResult));
 
 
-            //}
+            }
         }
 
         [TestMethod]
@@ -306,22 +306,22 @@ namespace Events.Core.Test
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
               .Options;
 
-            //using (var context = CreateContext(options))
-            //{
-            //    context.ParentPerson.Add(pp);
+            using (var context = CreateContext(options))
+            {
+                context.ParentPerson.Add(pp);
 
-            //    context.SaveChanges();
+                context.SaveChanges();
 
-            //    var testResul = new ParentPersonsController(context, mapper, validator, messages);
-            //    IActionResult countResult = await testResul.Edit(1, ppeDto);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
+                IActionResult countResult = await testResul.Edit(1, ppeDto);
 
-            //    var contentResult = countResult as OkObjectResult;
+                var contentResult = countResult as OkObjectResult;
 
-            //    var value = contentResult?.Value as ParentPerson;
-            //    Assert.IsNotNull(value);
-            //    Assert.AreEqual("NewSon", value.Description);
+                var value = contentResult?.Value as ParentPerson;
+                Assert.IsNotNull(value);
+                Assert.AreEqual("NewSon", value.Description);
 
-            //}
+            }
         }
 
         [TestMethod]
@@ -339,19 +339,19 @@ namespace Events.Core.Test
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
               .Options;
 
-            //using (var context = CreateContext(options))
-            //{
-            //    context.ParentPerson.Add(pp);
+            using (var context = CreateContext(options))
+            {
+                context.ParentPerson.Add(pp);
 
-            //    context.SaveChanges();
+                context.SaveChanges();
 
-            //    var testResul = new ParentPersonsController(context, mapper, validator, messages);
-            //    IActionResult countResult = await testResul.Delete(1);
+                var testResul = new ParentPersonsController(context, mapper, validator, messages);
+                IActionResult countResult = await testResul.Delete(1);
 
-            //    Assert.IsInstanceOfType(countResult, typeof(NoContentResult));
+                Assert.IsInstanceOfType(countResult, typeof(NoContentResult));
 
 
-            //}
+            }
         }
 
 

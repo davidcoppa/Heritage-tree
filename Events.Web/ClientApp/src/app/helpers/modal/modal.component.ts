@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input } from "@angular/core";
 
 @Component({
     selector: 'modal',
@@ -6,18 +6,11 @@ import { Component, Input, OnInit } from "@angular/core";
   })
 
   //TODO: Find the way to do it generic
-
-export class Modal implements OnInit {
   
-    //@Input() tittle: string;
-    //@Input() text: string;
+  export class Modal {
   
-  @Input() tittle: string | undefined;
-  @Input() text: string | undefined;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+    @Input() tittle: string;
+    @Input() text: string;
+  
+   // constructor(public activeModal: ) { }
 }
