@@ -1,8 +1,12 @@
 {
   "dependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@kolkov/ngx-gallery": "^2.0.1",
     "d3-dtree": "^1.3.2",
+=======
+    "d3-dtree": "^2.4.1",
+>>>>>>> parent of 3c6a7b5 (Working Tree)
 =======
     "d3-dtree": "^2.4.1",
 >>>>>>> parent of 3c6a7b5 (Working Tree)
