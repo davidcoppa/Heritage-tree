@@ -2,12 +2,10 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { BehaviorSubject, of, merge } from 'rxjs';
+import { BehaviorSubject,of, merge } from 'rxjs';
 import { Media } from 'src/app/model/media.model';
 import { AppService } from 'src/app/server/app.service';
 import { startWith, switchMap, catchError, map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { AppMediaService } from '../../../server/app.media.service';
-import { ListObject } from '../../../model/listObject.model';
 
 @Component({
   selector: 'app-media-list',
@@ -16,16 +14,10 @@ import { ListObject } from '../../../model/listObject.model';
 })
 export class MediaListComponent implements AfterViewInit {
 
-  displayedColumns: string[] = [
-    'Name',
-    'Description',
-    'Date',
-    'UrlFile',
-    'MediaType',
-    'Tags'
-  ];
-  listModel: ListObject;
-
+  displayedColumns: string[] = ['Name',
+                                'Description',
+                                'Date',
+                                'UrlFile'];
   media: Media[] = [];
   @ViewChild(MatSort) sort!: MatSort;
   term$ = new BehaviorSubject<string>('');
@@ -33,43 +25,48 @@ export class MediaListComponent implements AfterViewInit {
   pageSize = 15;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   abmMedia: boolean = false;
+  constructor(private appService: AppService, private router: Router) { }
   rowSelected: Media;
 
 
-  constructor(private router: Router,
-    private appServiceMedia: AppMediaService  )
-  { }
-
-
   ngAfterViewInit() {
+    // If the user changes the sort order, reset back to the first page.
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 1);
 
-    console.log("ctor Media list");
 
-    this.listModel = new ListObject();
-    this.sort.direction = "desc";
-    this.sort.active = "FirstName";
-    this.sort.disableClear;
-    this.paginator = this.paginator;
+    merge(this.sort.sortChange, this.term$.pipe(debounceTime(1000), distinctUntilChanged()), this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap((searchTerm) => {
+          return this.appService!.getMedia(this.sort.active, this.sort.direction, this.paginator.pageIndex, this.pageSize, (searchTerm && typeof searchTerm == 'string') ? searchTerm.toString() : '')
+            .pipe(catchError(() =>
+              of(null)
+            ));
+        }),
+        map(data => {
 
-    this.listModel.sort = this.sort;
-    this.listModel.paginator = this.paginator;
+        //  console.log(data);
 
-    this.appServiceMedia.sendUpdateMedia(this.listModel);
+          if (data === null) {
+            return [];
+          }
+          this.resultsLength = data.length;
 
+          return data;
+        })
+      ).subscribe(data => this.media = data);
   }
 
   editMedia(contact: Media) {
     this.abmMedia = true;
     this.rowSelected = contact;
 
-    this.appServiceMedia.sendUpdateMedia(this.listModel);
-
   }
 
 
   viewMedia(contact: Media) {
-    this.abmMedia = true;
-    this.rowSelected = contact;
+    let route = '/media/view-media';
+    this.router.navigate([route], { queryParams: { id: contact.Id } });
   }
 
 }

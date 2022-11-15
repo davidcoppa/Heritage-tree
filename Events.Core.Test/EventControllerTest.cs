@@ -112,9 +112,9 @@ namespace Events.Core.Test
             EventDate = DateTime.Now,
             EventType = new EventTypes { Id = 1, Description = "test", Name = "test" },
             //   Loccation = new Model.Location { Id = 1, Country = "US" },
-            Person1 = new PersonWithParents { Id = 1, FirstName = "son" },
-            Person2 = new PersonWithParents { Id = 2, FirstName = "ana" },
-            Person3 = new PersonWithParents { Id = 3, FirstName = "juan" },
+            Person1 = new  Person { Id = 1, FirstName = "son" },
+            Person2 = new Person { Id = 2, FirstName = "ana" },
+            Person3 = new Person { Id = 3, FirstName = "juan" },
             Title = "the test",
             Media = new List<Media>
             {

@@ -110,7 +110,7 @@ namespace Events.Core.Controllers
 
             foreach (var person in lstPersons)
             {
-                var valEvent = evtFilter.Where(x => x.Person1.Id == person.Id).FirstOrDefault();
+                var valEvent = evtFilter.Where(x => x.Person1 !=null && x.Person1.Id == person.Id).FirstOrDefault();
 
                 PersonWithParents valToAdd = new PersonWithParents
                 {

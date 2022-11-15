@@ -5,10 +5,11 @@ import { SortDirection } from "@angular/material/sort";
 import { Person } from "../model/person.model";
 import { Events } from "../model/event.model";
 import { EventType } from "../model/eventType.model";
+import { Media } from "../model/media.model";
 import { Country } from "../model/country.model";
 import { State } from "../model/state.model";
 import { City } from "../model/city.model";
-import { rootValues } from "../model/PersonWithParents.model";
+import { PersonWithParents, rootValues } from "../model/PersonWithParents.model";
 
 @Injectable()
 export class AppService {
@@ -245,7 +246,16 @@ export class AppService {
 
 
 
+  //TODO: add media type
+  getMedia(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<Media[]> {
+    let queryParams = this.GetParams(sort, order, page, itemsPage, search);
 
+    return this.httpClient.get<Media[]>('api/Media/GetFilter', { params: queryParams });
+  }
+
+  AddMedia(media: Media): Observable<Media> {
+    return this.httpClient.post<Media>('api/Media/Create', media);
+  }
 
 
 
