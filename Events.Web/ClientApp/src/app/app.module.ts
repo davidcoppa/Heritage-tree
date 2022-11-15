@@ -42,7 +42,7 @@ import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.com
 import { MediaDetailsComponent } from './home/media/media-view/media-details/media-details.component';
 import { GalleryComponent } from './home/media/media-view/media-gallery.component';
 import { FilterimagesPipe } from './helpers/pipes/tag.filter.images.pipe';
-import { NgxGalleryModule } from 'ngx-gallery';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 
 
 
