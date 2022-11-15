@@ -45,6 +45,9 @@ import { MediaDetailsComponent } from './home/media/media-view/media-details/med
 import { GalleryComponent } from './home/media/media-view/media-gallery.component';
 import { FilterimagesPipe } from './helpers/pipes/tag.filter.images.pipe';
 import { NgxGalleryModule } from 'ngx-gallery';
+<<<<<<< HEAD
+>>>>>>> parent of 126bc0d (update to angular 14)
+=======
 >>>>>>> parent of 126bc0d (update to angular 14)
 
 
