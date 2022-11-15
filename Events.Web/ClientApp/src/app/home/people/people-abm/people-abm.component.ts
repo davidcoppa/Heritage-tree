@@ -142,14 +142,7 @@ export class PeopleABMComponent implements OnInit, OnChanges {
       this.person.mother = this.personSelectedData3.personSelected;
       this.person.eventId = this.personSelected.eventId;
     }
-    else {
-      if (this.personSelectedData2 != undefined) {
-        this.person.father = this.personSelectedData2.personSelected;
-      }
-      if (this.personSelectedData3 != undefined) {
-        this.person.mother = this.personSelectedData3.personSelected;
-      }
-    }
+ 
 
     if (this.buttonAction == "Update") {
       this.service.UpdatePerson(this.personSelected.id, this.person)

@@ -7,7 +7,7 @@ namespace EventsManager.Enums
 {
     public enum Gender
     {
-        man=1,
-        woman = 2
+        Male=1,  
+        Female=2
     }
 }
