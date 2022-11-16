@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, merge, of, startWith, Subscription, switchMap } from 'rxjs';
 import { Media } from '../../model/media.model';
-import { AppMediaService } from '../../server/AppMediaService';
+import { AppMediaService } from '../../server/app.media.service';
 
 @Component({
   selector: 'app-media',

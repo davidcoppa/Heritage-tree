@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject,of, merge } from 'rxjs';
 import { Media } from 'src/app/model/media.model';
 import { startWith, switchMap, catchError, map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { AppMediaService } from '../../../server/AppMediaService';
+import { AppMediaService } from '../../../server/app.media.service';
 
 @Component({
   selector: 'app-media-list',

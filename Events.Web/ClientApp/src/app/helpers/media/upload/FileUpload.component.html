@@ -1,0 +1,32 @@
+
+
+<div class="container" ng-cloak translate-cloak>
+  <div>
+    <h4>{{tittle}}</h4>
+  </div>
+  <div class="row" style="margin-bottom:15px;">
+    <div  class="col-md-4">
+      <input type="file"
+             class="file-input"
+             accept=".pdf,.doc,.docx"
+             [accept]="requiredFileType"
+             (change)="onFileSelected($event)" #fileUpload
+             data-ng-click="capture=true">
+
+      <!--<button type="button" class="btn btn-success" (click)="fileUpload.click()">Upload File</button>-->
+    </div>
+    <!--<div>
+      <button type="button" class="btn btn-success" (click)="SaveB64()">{{'SAVECHANGES'}}</button>
+    </div>-->
+    <div class="col-md-4">
+      <span class="upload" *ngIf="progress > 0">
+        {{progress}}%
+      </span>
+      <span class="upload" *ngIf="message">
+        {{message}}
+      </span>
+    </div>
+  
+  </div>
+  <button type="button" *ngIf="mostrarOpcionActivo" class="btn btn-success" [disabled]="!FileUploaded" (click)="Save()">{{'SAVECHANGES'}}</button>
+</div>

@@ -3,7 +3,7 @@ import { Media } from 'src/app/model/media.model';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs';
-import { AppMediaService } from '../../../server/AppMediaService';
+import { AppMediaService } from '../../../server/app.media.service';
 
 
 @Component({
@@ -56,7 +56,7 @@ CreateForm(mediaEdit:Media| null): FormGroup {
       });
     }else{
       return this.fb.group({
-        Name: new FormControl(mediaEdit.name ?? null),
+        Name: new FormControl(mediaEdit.mediaName ?? null),
         Description: new FormControl(mediaEdit.description ?? null),
         MediaDate:new FormControl(mediaEdit.mediaDate ?? null),
         MediaDateUploaded:new FormControl(mediaEdit.mediaDateUploaded ?? null),
