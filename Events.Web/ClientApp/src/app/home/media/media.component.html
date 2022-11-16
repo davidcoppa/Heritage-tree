@@ -1,1 +1,23 @@
-<p>media works!</p>
+
+<mat-card class="container">
+  <!-- <mat-card-title>Mat DataTable</mat-card-title> -->
+  <mat-card-content>
+    <div class="search-hero">
+      <input type="text" placeholder="Search..." class="search" (input)="termMedia$.next($any($event.target).value)">
+
+      <button mat-icon-button color="primary" (click)="addMedia()" title="Add">
+        <mat-icon>add</mat-icon>
+      </button>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<ng-container *ngIf="abmObject">
+  <app-media-abm [abmMedia]=true [mediaSelected]=mediaSelected></app-media-abm>
+</ng-container>
+<ng-container *ngIf="!abmObject">
+  <app-media-list [dataMedia]=media></app-media-list>
+</ng-container>
+
+

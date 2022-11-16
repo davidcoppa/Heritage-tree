@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { BehaviorSubject,of, merge } from 'rxjs';
 import { Media } from 'src/app/model/media.model';
-import { AppService } from 'src/app/server/app.service';
 import { startWith, switchMap, catchError, map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { AppMediaService } from '../../../server/AppMediaService';
 
 @Component({
   selector: 'app-media-list',
@@ -18,6 +18,7 @@ export class MediaListComponent implements AfterViewInit {
                                 'Description',
                                 'Date',
                                 'UrlFile'];
+  @Input() dataMedia: Media[];
   media: Media[] = [];
   @ViewChild(MatSort) sort!: MatSort;
   term$ = new BehaviorSubject<string>('');
@@ -25,7 +26,7 @@ export class MediaListComponent implements AfterViewInit {
   pageSize = 15;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   abmMedia: boolean = false;
-  constructor(private appService: AppService, private router: Router) { }
+  constructor(private appMediaService: AppMediaService, private router: Router) { }
   rowSelected: Media;
 
 
@@ -38,7 +39,7 @@ export class MediaListComponent implements AfterViewInit {
       .pipe(
         startWith({}),
         switchMap((searchTerm) => {
-          return this.appService!.getMedia(this.sort.active, this.sort.direction, this.paginator.pageIndex, this.pageSize, (searchTerm && typeof searchTerm == 'string') ? searchTerm.toString() : '')
+          return this.appMediaService!.getMedia(this.sort.active, this.sort.direction, this.paginator.pageIndex, this.pageSize, (searchTerm && typeof searchTerm == 'string') ? searchTerm.toString() : '')
             .pipe(catchError(() =>
               of(null)
             ));
@@ -66,7 +67,7 @@ export class MediaListComponent implements AfterViewInit {
 
   viewMedia(contact: Media) {
     let route = '/media/view-media';
-    this.router.navigate([route], { queryParams: { id: contact.Id } });
+    this.router.navigate([route], { queryParams: { id: contact.id } });
   }
 
 }

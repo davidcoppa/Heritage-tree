@@ -246,16 +246,7 @@ export class AppService {
 
 
 
-  //TODO: add media type
-  getMedia(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<Media[]> {
-    let queryParams = this.GetParams(sort, order, page, itemsPage, search);
 
-    return this.httpClient.get<Media[]>('api/Media/GetFilter', { params: queryParams });
-  }
-
-  AddMedia(media: Media): Observable<Media> {
-    return this.httpClient.post<Media>('api/Media/Create', media);
-  }
 
 
 

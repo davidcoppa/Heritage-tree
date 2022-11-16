@@ -39,6 +39,7 @@ import { LocationAbmComponent } from './home/location/Country/location-abm/locat
 import { FilterCityComponent } from './helpers/filters/Location/Cities/filterCity.component';
 import { FilterStatesComponent } from './helpers/filters/Location/States/filterStates.component';
 import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.component';
+import { AppMediaService } from './server/AppMediaService';
 
 
 
@@ -75,7 +76,8 @@ import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.com
     CityAbmComponent,
     StateAbmComponent,
     LocationAbmComponent,
-    SunburstComponent
+    SunburstComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -87,7 +89,7 @@ import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.com
     AppMaterial,
 
   ],
-  providers: [AppService, HttpClient,
+  providers: [AppService, AppMediaService, HttpClient,
                   { provide: MAT_DATE_LOCALE, useValue: 'en-ES' },
   ],
   bootstrap: [AppComponent],

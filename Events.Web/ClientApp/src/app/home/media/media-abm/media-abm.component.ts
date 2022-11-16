@@ -2,8 +2,8 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@
 import { Media } from 'src/app/model/media.model';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AppService } from 'src/app/server/app.service';
 import { first } from 'rxjs';
+import { AppMediaService } from '../../../server/AppMediaService';
 
 
 @Component({
@@ -14,11 +14,15 @@ import { first } from 'rxjs';
 export class MediaAbmComponent implements OnInit, OnChanges {
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Date>;
   @Input() mediaSelected: Media;
+  @Input() abmMedia: boolean;
+
 
   mediaGroup: FormGroup;
   fb: FormBuilder;
   media: Media;
-  constructor(fb: FormBuilder, private appService: AppService) {
+  buttonAction: string = "Add";
+
+  constructor(fb: FormBuilder, private appMediaService: AppMediaService) {
     this.fb = fb;
   }
 
@@ -52,12 +56,12 @@ CreateForm(mediaEdit:Media| null): FormGroup {
       });
     }else{
       return this.fb.group({
-        Name: new FormControl(mediaEdit.Name ?? null),
-        Description: new FormControl(mediaEdit.Description ?? null),
-        MediaDate:new FormControl(mediaEdit.MediaDate ?? null),
-        MediaDateUploaded:new FormControl(mediaEdit.MediaDateUploaded ?? null),
-        MediaType: new FormControl(mediaEdit.MediaType ?? null),
-        UrlFile: new FormControl(mediaEdit.UrlFile ?? null)
+        Name: new FormControl(mediaEdit.name ?? null),
+        Description: new FormControl(mediaEdit.description ?? null),
+        MediaDate:new FormControl(mediaEdit.mediaDate ?? null),
+        MediaDateUploaded:new FormControl(mediaEdit.mediaDateUploaded ?? null),
+        MediaType: new FormControl(mediaEdit.mediaType ?? null),
+        UrlFile: new FormControl(mediaEdit.urlFile ?? null)
         
       });    }
   
@@ -66,17 +70,43 @@ CreateForm(mediaEdit:Media| null): FormGroup {
   SaveMedia(MeidaABM: FormGroup) {
     this.media = MeidaABM.value as Media;
 
-    this.appService.AddMedia(this.media).pipe(first())
-      .subscribe(
-        {
-          next(data) {
-            console.log('Current Position: ', data);
+    if (this.buttonAction == "Update") {
+      this.appMediaService.UpdateMedia(this.mediaSelected.id, this.media)
+        .pipe(first())
+        .subscribe(
+          data => {
+            console.log('Current data: ', data);
+            this.ABMMediaFinished();
           },
-          error(msg) {
-            console.log('Error Getting Location: ', msg);
-          }
-        }
-      );
+          error => console.log('Error Getting Position: ', error)
+        );
+    }
+    else {
+
+      this.appMediaService.AddMedia(this.media).pipe(first())
+        .subscribe(
+          data => {
+            console.log('Current data: ', data);
+            this.ABMMediaFinished();
+
+          },
+          error => console.log('Error Getting Position: ', error)
+        );
+    }
+
+
+  }
+
+  ABMMediaFinished() {
+    this.appMediaService.sendUpdateMedia(true);
+  }
+
+  ResetForm() {
+    this.mediaGroup = this.CreateForm(null);
+  }
+
+  Cancel() {
+    this.appMediaService.sendUpdateMedia(true);
   }
 
 }

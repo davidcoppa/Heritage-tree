@@ -1,12 +1,12 @@
 import { MediaType } from "./MediaType";
 
 export interface Media {
-    Id: number;
-    MediaDate: Date;
-    MediaDateUploaded:Date;
-    Description:string;
-    Name:string;
-    UrlFile:string;
-    MediaType:MediaType;
+    id: number;
+    mediaDate: Date;
+    mediaDateUploaded:Date;
+    description:string;
+    name:string;
+    urlFile:string;
+    mediaType:MediaType;
 
   }
