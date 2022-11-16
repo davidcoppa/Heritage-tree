@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Media } from 'src/app/model/media.model';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs';
 import { AppMediaService } from '../../../server/app.media.service';
 
@@ -17,12 +17,12 @@ export class MediaAbmComponent implements OnInit, OnChanges {
   @Input() abmMedia: boolean;
 
 
-  mediaGroup: FormGroup;
-  fb: FormBuilder;
+  mediaGroup: UntypedFormGroup;
+  fb: UntypedFormBuilder;
   media: Media;
   buttonAction: string = "Add";
 
-  constructor(fb: FormBuilder, private appMediaService: AppMediaService) {
+  constructor(fb: UntypedFormBuilder, private appMediaService: AppMediaService) {
     this.fb = fb;
   }
 
@@ -43,7 +43,7 @@ export class MediaAbmComponent implements OnInit, OnChanges {
 
     }
   }
-CreateForm(mediaEdit:Media| null): FormGroup {
+CreateForm(mediaEdit:Media| null): UntypedFormGroup {
     if(mediaEdit==null)
     {
       return this.fb.group({
@@ -56,18 +56,18 @@ CreateForm(mediaEdit:Media| null): FormGroup {
       });
     }else{
       return this.fb.group({
-        Name: new FormControl(mediaEdit.mediaName ?? null),
-        Description: new FormControl(mediaEdit.description ?? null),
-        MediaDate:new FormControl(mediaEdit.mediaDate ?? null),
-        MediaDateUploaded:new FormControl(mediaEdit.mediaDateUploaded ?? null),
-        MediaType: new FormControl(mediaEdit.mediaType ?? null),
-        UrlFile: new FormControl(mediaEdit.urlFile ?? null)
+        Name: new UntypedFormControl(mediaEdit.mediaName ?? null),
+        Description: new UntypedFormControl(mediaEdit.description ?? null),
+        MediaDate:new UntypedFormControl(mediaEdit.mediaDate ?? null),
+        MediaDateUploaded:new UntypedFormControl(mediaEdit.mediaDateUploaded ?? null),
+        MediaType: new UntypedFormControl(mediaEdit.mediaType ?? null),
+        UrlFile: new UntypedFormControl(mediaEdit.urlFile ?? null)
         
       });    }
   
   }
 
-  SaveMedia(MeidaABM: FormGroup) {
+  SaveMedia(MeidaABM: UntypedFormGroup) {
     this.media = MeidaABM.value as Media;
 
     if (this.buttonAction == "Update") {

@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { first, Subscription } from 'rxjs';
 import { AppService } from 'src/app/server/app.service';
 import { LocationEnum } from '../../../../helpers/enums/location.enum';
@@ -14,8 +14,8 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
   @Input() countrySelected: Country;
   @Input() abmCountry: boolean;
 
-  country: FormGroup;
-  fb: FormBuilder;
+  country: UntypedFormGroup;
+  fb: UntypedFormBuilder;
   evt: Country;
   buttonAction: string;
 
@@ -23,7 +23,7 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
 
   private subscriptionABMLocation: Subscription;
 
-  constructor(fb: FormBuilder, private service: AppService) {
+  constructor(fb: UntypedFormBuilder, private service: AppService) {
     //console.log("country abm ctor");
     this.fb = fb;
 
@@ -55,7 +55,7 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
     }
   }
 
-  CreateForm(countryEdit: Country | null): FormGroup {
+  CreateForm(countryEdit: Country | null): UntypedFormGroup {
     if (countryEdit == null) {
 
       this.buttonAction = "Add";
@@ -72,11 +72,11 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
       this.buttonAction = "Update";
 
       return this.fb.group({
-        name: new FormControl(countryEdit.name ?? null),
-        code: new FormControl(countryEdit.code ?? null),
-        capital: new FormControl(countryEdit.capital ?? null),
-        region: new FormControl(countryEdit.region ?? null),
-        coordinates: new FormControl(countryEdit.coordinates ?? null)
+        name: new UntypedFormControl(countryEdit.name ?? null),
+        code: new UntypedFormControl(countryEdit.code ?? null),
+        capital: new UntypedFormControl(countryEdit.capital ?? null),
+        region: new UntypedFormControl(countryEdit.region ?? null),
+        coordinates: new UntypedFormControl(countryEdit.coordinates ?? null)
       });
     }
 
@@ -92,7 +92,7 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
     }
   }
 
-  SaveCountry(CountryABM: FormGroup) {
+  SaveCountry(CountryABM: UntypedFormGroup) {
     this.evt = CountryABM.value as Country;
     console.log('Current data: ', CountryABM);
 

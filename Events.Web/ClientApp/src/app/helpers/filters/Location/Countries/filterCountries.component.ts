@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { map, startWith, Observable, first } from "rxjs";
 import { Country } from "../../../../model/country.model";
 import { AppService } from "../../../../server/app.service";
@@ -15,7 +15,7 @@ export class FilterCountriesComponent implements OnInit {
   selectedCountry: Country;
 
   optionsCountries: Country[];
-  countriesControl = new FormControl('');
+  countriesControl = new UntypedFormControl('');
   CountriesOptions: Observable<Country[]>;
 
   constructor(private service: AppService) {

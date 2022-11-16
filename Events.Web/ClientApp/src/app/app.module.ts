@@ -48,58 +48,52 @@ import { FileUploadComponent } from './helpers/media/upload/FileUpload.component
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    PeoplelistComponent,
-    PeopleComponent,
-    PeopleABMComponent,
-    EventComponent,
-    EventlistComponent,
-    EventAbmComponent,
-    EnumPipe,
-    CustomDatePipe,
-    EventTypeComponent,
-    EventtypeAbmComponent,
-    EventtypelistComponent,
-    MediaComponent,
-    MediaListComponent,
-    MediaAbmComponent,
-    LayoutComponent,
-    HeaderComponent,
-    SideNavComponent,
-    FilterPeopleComponent,
-    FilterEventTypeComponent,
-    LocationComponent,
-    FilterCountriesComponent,
-    FilterStatesComponent,
-    FilterCityComponent,
-    CountryAbmComponent,
-    CountrylistComponent,
-    CityAbmComponent,
-    StateAbmComponent,
-    LocationAbmComponent,
-    SunburstComponent,
-
-
-    //media
-    FileUploadComponent
-
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppMaterial,
-
-  ],
-  providers: [AppService, AppMediaService, AppFileService, HttpClient,
-                  { provide: MAT_DATE_LOCALE, useValue: 'en-ES' },
-  ],
-  bootstrap: [AppComponent],
-  entryComponents: [CountrylistComponent]
-  
+    declarations: [
+        AppComponent,
+        PeoplelistComponent,
+        PeopleComponent,
+        PeopleABMComponent,
+        EventComponent,
+        EventlistComponent,
+        EventAbmComponent,
+        EnumPipe,
+        CustomDatePipe,
+        EventTypeComponent,
+        EventtypeAbmComponent,
+        EventtypelistComponent,
+        MediaComponent,
+        MediaListComponent,
+        MediaAbmComponent,
+        LayoutComponent,
+        HeaderComponent,
+        SideNavComponent,
+        FilterPeopleComponent,
+        FilterEventTypeComponent,
+        LocationComponent,
+        FilterCountriesComponent,
+        FilterStatesComponent,
+        FilterCityComponent,
+        CountryAbmComponent,
+        CountrylistComponent,
+        CityAbmComponent,
+        StateAbmComponent,
+        LocationAbmComponent,
+        SunburstComponent,
+        //media
+        FileUploadComponent
+    ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppMaterial,
+    ],
+    providers: [AppService, AppMediaService, AppFileService, HttpClient,
+        { provide: MAT_DATE_LOCALE, useValue: 'en-ES' },
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
