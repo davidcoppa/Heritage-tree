@@ -15,9 +15,9 @@ export class AppFileService {
     this.subjectName.next({ data: file }); 
   }
 
-  sendUpdateFile() {
-    this.subjectName.next({});
-  }
+  //sendUpdateFile() {
+  //  this.subjectName.next({});
+  //}
   getUpdateFile(): Observable<any> { 
     return this.subjectName.asObservable(); 
   }

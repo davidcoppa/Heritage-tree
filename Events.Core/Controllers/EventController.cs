@@ -214,7 +214,7 @@ namespace Events.Core.Controllers
                     foreach (var media in evt.Media)
                     {
 
-                        var photoElement = await context.Photos.Where(x => x.Id == media.Id).FirstOrDefaultAsync();
+                        var photoElement = await context.Media.Where(x => x.Id == media.Id).FirstOrDefaultAsync();
                         if (photoElement == null)
                         {
                             if (validator.ValidateObject<Media>(media))

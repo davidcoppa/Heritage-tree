@@ -10,7 +10,7 @@ import { PeoplelistComponent } from './home/people/peoplelist/peoplelist.compone
 import { PeopleComponent } from './home/people/people.component';
 import { PeopleABMComponent } from './home/people/people-abm/people-abm.component';
 import { AppService } from './server/app.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { EventlistComponent } from './home/event/eventlist/eventlist.component';
 import { EventAbmComponent } from './home/event/event-abm/event-abm.component';
 import { EventComponent } from './home/event/event.component';
@@ -42,58 +42,72 @@ import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.com
 import { AppMediaService } from './server/app.media.service';
 import { AppFileService } from './server/app.file.service';
 import { FileUploadComponent } from './helpers/media/upload/FileUpload.component';
-
-
+import { AuthInterceptor, ErrorInterceptor } from './helpers/interceptors';
+import { environment } from '../environments/environment';
+import { ServiceWorkerModule } from "@angular/service-worker";
+import { ToastrModule } from 'ngx-toastr';
+import { FilterEventComponent } from './helpers/filters/event/filterEvent.component';
 
 
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        PeoplelistComponent,
-        PeopleComponent,
-        PeopleABMComponent,
-        EventComponent,
-        EventlistComponent,
-        EventAbmComponent,
-        EnumPipe,
-        CustomDatePipe,
-        EventTypeComponent,
-        EventtypeAbmComponent,
-        EventtypelistComponent,
-        MediaComponent,
-        MediaListComponent,
-        MediaAbmComponent,
-        LayoutComponent,
-        HeaderComponent,
-        SideNavComponent,
-        FilterPeopleComponent,
-        FilterEventTypeComponent,
-        LocationComponent,
-        FilterCountriesComponent,
-        FilterStatesComponent,
-        FilterCityComponent,
-        CountryAbmComponent,
-        CountrylistComponent,
-        CityAbmComponent,
-        StateAbmComponent,
-        LocationAbmComponent,
-        SunburstComponent,
-        //media
-        FileUploadComponent
-    ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        FormsModule,
-        ReactiveFormsModule,
-        AppMaterial,
-    ],
-    providers: [AppService, AppMediaService, AppFileService, HttpClient,
-        { provide: MAT_DATE_LOCALE, useValue: 'en-ES' },
-    ],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    PeoplelistComponent,
+    PeopleComponent,
+    PeopleABMComponent,
+    EventComponent,
+    EventlistComponent,
+    EventAbmComponent,
+    EnumPipe,
+    CustomDatePipe,
+    EventTypeComponent,
+    EventtypeAbmComponent,
+    EventtypelistComponent,
+    MediaComponent,
+    MediaListComponent,
+    MediaAbmComponent,
+    LayoutComponent,
+    HeaderComponent,
+    SideNavComponent,
+    FilterPeopleComponent,
+    FilterEventTypeComponent,
+    LocationComponent,
+    FilterCountriesComponent,
+    FilterStatesComponent,
+    FilterCityComponent,
+    CountryAbmComponent,
+    CountrylistComponent,
+    CityAbmComponent,
+    StateAbmComponent,
+    LocationAbmComponent,
+    SunburstComponent,
+    FilterEventComponent,
+    //media
+    FileUploadComponent
+  ],
+  imports: [
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      registrationStrategy: 'registerImmediately',
+    }),
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AppMaterial,
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: 'toast-top-right'
+    }),
+  ],
+  providers: [AppService, AppMediaService, AppFileService, HttpClient,
+    { provide: MAT_DATE_LOCALE, useValue: 'en-ES' },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

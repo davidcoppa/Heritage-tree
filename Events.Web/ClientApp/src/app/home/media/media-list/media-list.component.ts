@@ -26,6 +26,7 @@ export class MediaListComponent implements AfterViewInit {
   pageSize = 15;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   abmMedia: boolean = false;
+
   constructor(private appMediaService: AppMediaService, private router: Router) { }
   rowSelected: Media;
 

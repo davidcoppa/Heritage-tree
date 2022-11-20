@@ -87,6 +87,45 @@ namespace Events.Core.Migrations
                     b.ToTable("Country");
                 });
 
+            modelBuilder.Entity("Events.Core.Model.FileData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("DateUploaded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DocumentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WebUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FileData");
+                });
+
             modelBuilder.Entity("Events.Core.Model.MediaType", b =>
                 {
                     b.Property<int>("Id")
@@ -252,7 +291,7 @@ namespace Events.Core.Migrations
 
                     b.HasIndex("PersonId");
 
-                    b.ToTable("Photos");
+                    b.ToTable("Media");
                 });
 
             modelBuilder.Entity("EventsManager.Model.ParentPerson", b =>

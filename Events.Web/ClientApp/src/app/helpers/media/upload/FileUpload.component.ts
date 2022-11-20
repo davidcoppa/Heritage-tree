@@ -1,11 +1,17 @@
-import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { HttpErrorResponse, HttpEventType, HttpResponse } from '@angular/common/http';
+import { Component, Input, EventEmitter, Output, inject } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { catchError, finalize, map } from 'rxjs/operators';
 import { OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AppFileService } from '../../../server/app.file.service';
 import { Media } from '../../../model/media.model';
+import { FileData } from '../../../model/fileData.model';
+import { CustomDateAdapterService } from '../../dates/CustomDateAdapterService';
+import { DateAdapter } from '@angular/material/core';
+
+
+
 
 
 @Component({
@@ -14,108 +20,138 @@ import { Media } from '../../../model/media.model';
   styleUrls: ['./FileUpload.component.css']
 })
 export class FileUploadComponent implements OnInit {
-  @Input() dataMedia: Media;
+  @Input() dataMedia: Media; //not used --> remove
 
   imageB64: string;
   private uploadSub: Subscription;
-  private upload$: Observable<any>;
+  imageInfos: Observable<any>;
 
-  requiredFileType: '.pdf,.doc,.docx'; //add image types
 
-  fileName = '';
-  FileUploaded = false;
+  filesSelected: FileData[] = [];
 
-  progress: number;
-  message: string;
+  selectedFiles?: FileList;
+  progress: any[] = [];
+  message: string[] = [];
+  previews: string[] = [];
 
-  FileUrl: "";
   response: any;
 
-  document: Media;
-  active = true;
   tittle: string;
 
   //mostrar data o no segun de donde sea llamado
   mostrarOpcionActivo = false;
 
+  toastr2: ToastrService;
+
+  myDate: Date;
 
   constructor(private appFileService: AppFileService,
-    private toastr: ToastrService
-  ) { }
+    private dateAdapter: DateAdapter<Date>,
+    private dataSer: CustomDateAdapterService
+    //  private toastr: ToastrService
+  ) {
+    this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
+
+    this.myDate = this.dataSer.CalibrateDate(new Date());
+
+  }
 
   ngOnInit() {
-  //  this.document = new Document();
+    //  this.document = new Document();
     this.mostrarOpcionActivo = false;
-    this.tittle = "Upload a newsletter"
+    this.tittle = "Upload Files"
 
 
   }
-  Upload(data: FormData) {
+  Upload(idx: number, document: File) {
+    //this.filesSelected[idx] ??
+    this.progress[idx] = { value: 0, fileName: document.name };
 
-    this.upload$ = this.appFileService.UploadFile(data).pipe(
+    this.filesSelected[idx] = {
+      dateUploaded: this.myDate,
+      description: '',
+      fileUploaded: false,
+      name: document.name,
+      size: 0,
+      url: '',
+      webUrl: '',
+      id: undefined,
 
-      finalize(() => {
-        this.progress = 100;
-        this.message = 'Upload Complete';
-        this.FileUploaded = true;
-        this.active = true;
-        this.mostrarOpcionActivo = true;
-      }),
+      mediaType: document.type
 
-      catchError(this.errorHandler)
+    };
 
-    );
+    if (document) {
 
-    this.uploadSub = this.upload$.subscribe((event: any) => {
+      const formData: FormData = new FormData();
 
-      if (event.type === HttpEventType.UploadProgress) {
-        this.progress = Math.round(100 * event.loaded / event.total);
-        this.document.size = event.total;
+      formData.append('1', document);
 
-      }
-      else if (event.type === HttpEventType.Response) {
-        console.log(event.body.dbPath);
-        this.document.urlFile = event.body.dbPath;
-        this.appFileService.sendUrlDataFile(this.document.urlFile);
-      }
-    })
-  }
+      this.imageInfos = this.appFileService.UploadFile(formData)
+        .pipe(
+          finalize(() => {
+            this.progress[idx] = 100;
+            this.message.push('Uploaded the file successfully: ' + document.name);
+            this.filesSelected[idx].fileUploaded = true;
+            this.mostrarOpcionActivo = true;
+            //this.filesSelected[idx].url=
+          }),
+          catchError(this.errorHandler)
+        );
 
-  //SaveB64() {
-  //  console.log(this.imageB64);
-  //  if (this.imageB64 != undefined) {
-  //    const formData = new FormData();
+      this.uploadSub = this.imageInfos.subscribe((event: any) => {
 
-  //    let blob = new Blob([this.imageB64], { type: 'image/png' });
-  //    let file = new File([blob], "image.jpg");
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progress[idx] = Math.round(100 * event.loaded / event.total);
+          this.filesSelected[idx].size = event.total;
 
-  //    formData.append("3", file);//image_data
-  //    //this.Upload(formData);
-
-  //    this.Upload(formData);
-  //  }
-
-  //}
-
-
-
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-
-    if (file) {
-      this.fileName = file.name
-      this.document.mediaName = this.fileName;
-   //   this.document.documentType = this.fileName.split('.').pop();
-
-
-      const formData = new FormData();
-
-      //Change: this.document.mediaName for something more usefull
-      formData.append(this.document.mediaName, file, this.fileName);
-
-      this.Upload(formData);
-      this.mostrarOpcionActivo = true;
+        }
+        else if (event.type === HttpEventType.Response) {
+          console.log(event.body.dbPath);
+          this.filesSelected[idx].url = event.body.dbPath;
+          this.appFileService.sendUrlDataFile(this.filesSelected[idx]);
+        }
+      })
     }
+
+
+
+  }
+
+  selectFiles(event: any): void {
+    this.message = [];
+    this.progress = [];
+    this.selectedFiles = event.target.files;
+
+    this.previews = [];
+    if (this.selectedFiles && this.selectedFiles[0]) {
+
+      const numberOfFiles = this.selectedFiles.length;
+      for (let i = 0; i < numberOfFiles; i++) {
+        const reader = new FileReader();
+
+        reader.onload = (e: any) => {
+          this.previews.push(e.target.result);
+        };
+
+        reader.readAsDataURL(this.selectedFiles[i]);
+      }
+    }
+  }
+
+  uploadFiles(): void {
+
+    this.message = [];
+    // const file: File = event.target.files;
+
+    if (this.selectedFiles) {
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        this.Upload(i, this.selectedFiles[i]);
+
+      }
+    }
+
+
   }
 
   errorHandler(error: HttpErrorResponse) {
@@ -123,42 +159,6 @@ export class FileUploadComponent implements OnInit {
     return "";// Observable.throw(error.message || "server error.");
   }
 
-  Save() {
-    if (this.document.urlFile == undefined) {
-      return;
-    }
-    const upload$ = this.appFileService.SendFile(this.document).subscribe(res => {
-      this.toastr.success("File Saved", "=)");
-
-      this.appFileService.sendUpdateFile();
-
-      this.reset();
-
-      return;
-    },
-      (err) => {
-
-        console.log(err);
-
-      });
-
-  }
-  cancelUpload() {
-    if (this.uploadSub != null) {
-      this.uploadSub.unsubscribe();
-
-    }
-    this.FileUploaded = false;
-
-    this.reset();
-  }
-
-  reset() {
-    this.progress = 0;
-     this.message = '';
-    this.FileUploaded = true;
-    this.active = false;
-  }
 
 }
 

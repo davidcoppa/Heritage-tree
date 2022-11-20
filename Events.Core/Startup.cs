@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Events.Core.Common.Messages;
 using Events.Core.Controllers;
 using Events.Core.Common.Helpers;
+using Events.core.Common.Files;
 
 namespace EventsManager
 {
@@ -64,6 +65,7 @@ namespace EventsManager
             services.AddSingleton<IDataValidator, DataValidator>();
             services.AddSingleton<IMessages, En_Messages>();
             services.AddSingleton<IHelper, Helper>();
+            services.AddSingleton<IFileManager, FileManager>();
 
             services.AddSwaggerGen(c =>
             {

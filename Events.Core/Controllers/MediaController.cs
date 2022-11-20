@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using EventsManager.Data;
 using EventsManager.Model;
 using Events.Core.Common.Messages;
+using Events.Core.Common.Queryable;
 
 namespace Events.Core.Controllers
 {
@@ -25,7 +26,7 @@ namespace Events.Core.Controllers
         [HttpGet("Get")]
         public async Task<IActionResult> Index()
         {
-            var photos = await context.Photos.ToListAsync();
+            var photos = await context.Media.ToListAsync();
             return Ok(photos);
         }
 
@@ -38,7 +39,7 @@ namespace Events.Core.Controllers
                 return NotFound();
             }
 
-            var photos = await context.Photos.FirstOrDefaultAsync(m => m.Id == id);
+            var photos = await context.Media.FirstOrDefaultAsync(m => m.Id == id);
             if (photos == null)
             {
                 return NotFound();
@@ -46,6 +47,56 @@ namespace Events.Core.Controllers
 
             return Ok(photos);
         }
+
+        [HttpGet("GetFilter")]
+        public async Task<IActionResult> GetFilter([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page, [FromQuery] string itemsPage, [FromQuery] string? search)
+        {
+            try
+            {
+
+                IQueryable<Media> data = context.Media.AsQueryable();
+                if (search == null)
+                {
+                    data = context.Media.AsQueryable<Media>().Include(x => x.MediaType);
+                }
+                else
+                {
+                    data = context.Media.Where(x => x.Name.Contains(search)
+                                 || x.Description.Contains(search)
+                                 || x.MediaDate.ToString().Contains(search)
+                                 || x.MediaDateUploaded.ToString().Contains(search)
+                                 || x.MediaType.Name.Contains(search)
+                                 || x.MediaType.Description.Contains(search))
+                                        .Include(x => x.MediaType)
+                                        .AsQueryable<Media>();
+
+                }
+
+                if (!data.Any())
+                {
+                    return Ok(null);
+                }
+                data = OrderByExtension.OrderBy(data, sort, order);
+
+                int itemsPageInt = int.TryParse(itemsPage, out int items) ? Int32.MaxValue : items;
+                Pagination pagination = new Pagination(data.Count(), itemsPageInt);
+
+                int pageIndex = int.TryParse(page, out int count) ? 0 : count;
+
+                List<Media>? result = data.PagedIndex(pagination, pageIndex).ToList();
+
+                return Ok(result);
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return BadRequest(ex.Message);
+
+            }
+        }
+
 
         // POST: Photos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -117,12 +168,12 @@ namespace Events.Core.Controllers
                 return NotFound();
             }
 
-            var photos = await context.Photos.FirstOrDefaultAsync(m => m.Id == id);
+            var photos = await context.Media.FirstOrDefaultAsync(m => m.Id == id);
             if (photos == null)
             {
                 return NotFound();
             }
-            context.Photos.Remove(photos);
+            context.Media.Remove(photos);
             await context.SaveChangesAsync();
             return NoContent();
         }
@@ -131,7 +182,7 @@ namespace Events.Core.Controllers
 
         private bool PhotosExists(int id)
         {
-            return context.Photos.Any(e => e.Id == id);
+            return context.Media.Any(e => e.Id == id);
         }
     }
 }

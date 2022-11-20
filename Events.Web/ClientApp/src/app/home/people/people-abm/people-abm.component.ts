@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { first, Subscription } from 'rxjs';
@@ -17,7 +17,7 @@ import { displayPeople } from '../../../model/displayPeople.model';
   styleUrls: ['./people-abm.component.css'],
 
 })
-export class PeopleABMComponent implements OnInit, OnChanges {
+export class PeopleABMComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Date>;
   @Input() personSelected: Person;
   @Input() abmperson: boolean;
@@ -175,6 +175,10 @@ export class PeopleABMComponent implements OnInit, OnChanges {
         );
     }
 
+  }
+
+  ngOnDestroy() {
+    this.subscriptionPeopleFilter.unsubscribe();
   }
 
   ABMPersonFinished() {

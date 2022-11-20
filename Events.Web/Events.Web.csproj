@@ -33,7 +33,10 @@
     <None Remove="ClientApp\src\app\helpers\enums\location.enum.ts" />
     <None Remove="ClientApp\src\app\helpers\enums\Person.enum.ts" />
     <None Remove="ClientApp\src\app\home\location\location.component.ts" />
+    <None Remove="ClientApp\src\app\model\fileData.model.ts" />
     <None Remove="ClientApp\src\app\model\listSubObject.ts" />
+    <None Remove="ClientApp\src\app\model\user.ts" />
+    <None Remove="ClientApp\src\app\server\app.auth.ts" />
     <None Remove="ClientApp\src\app\server\app.file.service.ts" />
     <None Remove="ClientApp\src\app\server\app.media.service.ts" />
   </ItemGroup>
@@ -46,7 +49,10 @@
     <TypeScriptCompile Include="ClientApp\src\app\helpers\enums\location.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\enums\person.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\home\location\location.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\fileData.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\listSubObject.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\user.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\server\app.auth.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\server\app.file.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\server\app.media.service.ts" />
   </ItemGroup>

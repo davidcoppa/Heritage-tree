@@ -24,6 +24,7 @@ export class AppService {
   subjectState = new Subject<any>();
   subjectCity = new Subject<any>();
   subjectAbmLocation = new Subject<any>();
+  subjectEvent = new Subject<any>();
 
   sendUpdateObject(file: any) { //the component that wants to update something, calls this fn
     this.subjectName.next({ data: file }); //next() will feed the value in Subject
@@ -49,6 +50,14 @@ export class AppService {
   }
   sendUpdateEventType(file: any) {
     this.subjectEventType.next({ data: file });
+  }
+
+  //Event filter list
+  getUpdateEvent(): Observable<any> {
+    return this.subjectEvent.asObservable();
+  }
+  sendUpdateEvent(file: any) {
+    this.subjectEvent.next({ data: file });
   }
 
   //Country filter lisr

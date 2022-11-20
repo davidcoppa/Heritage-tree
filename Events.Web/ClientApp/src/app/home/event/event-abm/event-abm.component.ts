@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -16,7 +16,7 @@ import { ListObject } from '../../../model/listObject.model';
   templateUrl: './event-abm.component.html',
   styleUrls: ['./event-abm.component.css']
 })
-export class EventAbmComponent implements OnInit {
+export class EventAbmComponent implements OnInit, OnDestroy {
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Date>;
   @Input() eventSelected: Events;
   @Input() abmEvent: boolean;
@@ -37,7 +37,11 @@ export class EventAbmComponent implements OnInit {
   private subscriptionPeopleFilter: Subscription;
   private subscriptionEventFilter: Subscription;
 
-  constructor(fb: UntypedFormBuilder, private service: AppService, private dateAdapter: DateAdapter<Date>, private dataSer: CustomDateAdapterService) {
+  constructor(fb: UntypedFormBuilder,
+    private service: AppService,
+    private dateAdapter: DateAdapter<Date>,
+    private dataSer: CustomDateAdapterService) {
+
     this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
 
     this.fb = fb;
