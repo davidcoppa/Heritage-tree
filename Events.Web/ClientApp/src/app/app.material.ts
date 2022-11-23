@@ -40,7 +40,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDividerModule } from "@angular/material/divider";
 
 
-
 @NgModule({
   imports: [
     CdkTableModule,

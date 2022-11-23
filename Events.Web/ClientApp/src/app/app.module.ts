@@ -47,6 +47,7 @@ import { environment } from '../environments/environment';
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { ToastrModule } from 'ngx-toastr';
 import { FilterEventComponent } from './helpers/filters/event/filterEvent.component';
+import { ChipsTags } from './helpers/chips/chips.tags.component';
 
 
 
@@ -84,7 +85,8 @@ import { FilterEventComponent } from './helpers/filters/event/filterEvent.compon
     SunburstComponent,
     FilterEventComponent,
     //media
-    FileUploadComponent
+    FileUploadComponent,
+    ChipsTags
   ],
   imports: [
     ServiceWorkerModule.register('ngsw-worker.js', {

@@ -12,7 +12,7 @@ export class FilterEventComponent implements OnInit {
 
   @Input() dataEvent: Events;
 
-  selectedEvent: Events;
+  //selectedEvent: Events;
 
   optionsEvent: Events[];
   eventControl = new UntypedFormControl('');
@@ -36,7 +36,7 @@ export class FilterEventComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          console.log('Current data filter event type: ', data);
+       //   console.log('Current data filter event type: ', data);
 
           this.optionsEvent = data;
 

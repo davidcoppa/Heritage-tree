@@ -10,6 +10,7 @@ import { Country } from "../model/country.model";
 import { State } from "../model/state.model";
 import { City } from "../model/city.model";
 import { PersonWithParents, rootValues } from "../model/PersonWithParents.model";
+import { TagItem } from "../model/tagItem.model";
 
 @Injectable()
 export class AppService {
@@ -85,6 +86,14 @@ export class AppService {
 
   // sendUpdateInnerTableCity
 
+  getUpdateTags(): Observable<any> {
+    return this.subjectCity.asObservable();
+  }
+  sendUpdateTags(file: any) {
+    this.subjectCity.next({ data: file });
+  }
+
+  //tags
   getUpdateCity(): Observable<any> {
     return this.subjectCity.asObservable();
   }
@@ -253,9 +262,31 @@ export class AppService {
   }
 
 
+  //tags
+  //GetAllTags
 
+  GetAllTags(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<TagItem[]> {
 
+    let queryParams = this.GetParams(sort, order, page, itemsPage, search);
 
+    return this.httpClient.get<TagItem[]>('api/Tag/GetFilter', { params: queryParams });
+  }
+
+  UpdateTag(id: number, newLocation: TagItem): Observable<TagItem> {
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("id", id);
+
+    return this.httpClient.post<TagItem>('api/Tag/Edit'
+      , newLocation
+      , { params: queryParams });
+
+  }
+  AddTag(newLocation: TagItem): Observable<TagItem> {
+
+    return this.httpClient.post<TagItem>('api/Tag/Create', newLocation);
+
+  }
 
 
 

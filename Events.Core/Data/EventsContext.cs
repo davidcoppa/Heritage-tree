@@ -41,6 +41,7 @@ namespace EventsManager.Data
         public DbSet<City> City { get; set; }
         public DbSet<ParentPerson> ParentPerson { get; set; }
         public DbSet<FileData> FileData { get; set; }
+        public DbSet<Tags> Tags { get; set; }
 
     }
 }

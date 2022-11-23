@@ -151,6 +151,8 @@ export class FileUploadComponent implements OnInit {
       }
     }
 
+    return;
+
 
   }
 
@@ -158,7 +160,9 @@ export class FileUploadComponent implements OnInit {
     console.log(error.message);
     return "";// Observable.throw(error.message || "server error.");
   }
-
+  ngOnDestroy() {
+    this.uploadSub.unsubscribe();
+  }
 
 }
 

@@ -30,7 +30,7 @@
 </div>
 
 <div>
-  <img *ngFor='let preview of previews' [src]="preview" class="preview">
+  <img *ngFor='let preview of previews' [src]="preview" class="preview" width="60" height="60">
 </div>
 
 <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">

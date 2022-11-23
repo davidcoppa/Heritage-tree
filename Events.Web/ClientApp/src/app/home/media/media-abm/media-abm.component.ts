@@ -26,6 +26,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
   media: Media;
   buttonAction: string = "Add";
   selectedEvent: Events;
+  mediaToSave: Media;
 
   private subscriptionFile: Subscription;
   private subscriptionEventFilter: Subscription;
@@ -34,15 +35,14 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
   constructor(fb: UntypedFormBuilder,
     private appMediaService: AppMediaService,
     private appFileService: AppFileService,
-    private service: AppService  ) {
+    private service: AppService) {
     this.fb = fb;
 
     this.subscriptionFile = this.appFileService.getUpdateFile().subscribe
       (data => { //message contains the data sent from service
         console.log("Get media uploaded: " + data.data);
-        
 
-
+        Array.prototype.push.apply(this.media.file, [data.data])
 
       });
 
@@ -59,6 +59,14 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.mediaGroup = this.CreateForm(null);
+    this.media = {
+      dateUploaded: new Date,
+      description: '',
+      name: '',
+      id: -1,
+      file: [],
+      event: null
+    }
   }
 
 
@@ -93,13 +101,16 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
 
   SaveMedia(MeidaABM: UntypedFormGroup) {
     if (MeidaABM.status == 'VALID') {
-      this.media = MeidaABM.value as Media;
+      this.mediaToSave = MeidaABM.value as Media;
       console.log('Current media: ', this.media);
+      //TODO:put files from media 
 
+      this.mediaToSave.file = this.media.file;
+      this.mediaToSave.event=  this.selectedEvent
 
 
       if (this.buttonAction == "Update") {
-        this.appMediaService.UpdateMedia(this.mediaSelected.id, this.media)
+        this.appMediaService.UpdateMedia(this.mediaSelected.id, this.mediaToSave)
           .pipe(first())
           .subscribe(
             data => {
@@ -111,7 +122,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
       }
       else {
 
-        this.appMediaService.AddMedia(this.media).pipe(first())
+        this.appMediaService.AddMedia(this.mediaToSave).pipe(first())
           .subscribe(
             data => {
               console.log('Current data: ', data);

@@ -1,9 +1,11 @@
-import { MediaType } from "./MediaType";
+import { Events } from "./event.model";
+import { FileData } from "./fileData.model";
 
-export interface Media {
-  id: number;
+export class Media {
+  id: number ;
   name: string;
   dateUploaded: Date;
   description: string;
-  event: Event;
+  file: FileData[];
+  event: Events|null;
 }

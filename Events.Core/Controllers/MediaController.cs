@@ -5,6 +5,8 @@ using EventsManager.Data;
 using EventsManager.Model;
 using Events.Core.Common.Messages;
 using Events.Core.Common.Queryable;
+using Events.Core.DTOs;
+using AutoMapper;
 
 namespace Events.Core.Controllers
 {
@@ -13,40 +15,43 @@ namespace Events.Core.Controllers
     public class MediaController : Controller
     {
         private readonly EventsContext context;
-        private readonly IMessages messages;
+        private readonly IMessages messages; 
+        private readonly IMapper mapper;
 
         public MediaController(EventsContext context,
-            IMessages messages)
+            IMessages messages,
+            IMapper mapper)
         {
             this.context = context;
             this.messages = messages;
+            this.mapper = mapper;
         }
 
-        // GET: Photos
-        [HttpGet("Get")]
-        public async Task<IActionResult> Index()
-        {
-            var photos = await context.Media.ToListAsync();
-            return Ok(photos);
-        }
+        //// GET: Photos
+        //[HttpGet("Get")]
+        //public async Task<IActionResult> Index()
+        //{
+        //    var photos = await context.Media.ToListAsync();
+        //    return Ok(photos);
+        //}
 
-        // GET: Photos/Details/5
-        [HttpGet]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: Photos/Details/5
+        //[HttpGet]
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var photos = await context.Media.FirstOrDefaultAsync(m => m.Id == id);
-            if (photos == null)
-            {
-                return NotFound();
-            }
+        //    var photos = await context.Media.FirstOrDefaultAsync(m => m.Id == id);
+        //    if (photos == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(photos);
-        }
+        //    return Ok(photos);
+        //}
 
         [HttpGet("GetFilter")]
         public async Task<IActionResult> GetFilter([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page, [FromQuery] string itemsPage, [FromQuery] string? search)
@@ -57,17 +62,15 @@ namespace Events.Core.Controllers
                 IQueryable<Media> data = context.Media.AsQueryable();
                 if (search == null)
                 {
-                    data = context.Media.AsQueryable<Media>().Include(x => x.MediaType);
+                    data = context.Media.AsQueryable<Media>().Include(x => x.Event).Include(x => x.File);
                 }
                 else
                 {
                     data = context.Media.Where(x => x.Name.Contains(search)
                                  || x.Description.Contains(search)
-                                 || x.MediaDate.ToString().Contains(search)
-                                 || x.MediaDateUploaded.ToString().Contains(search)
-                                 || x.MediaType.Name.Contains(search)
-                                 || x.MediaType.Description.Contains(search))
-                                        .Include(x => x.MediaType)
+                                 || x.MediaDateUploaded.ToString().Contains(search))
+                                        .Include(x => x.Event)
+                                        .Include(x => x.File)
                                         .AsQueryable<Media>();
 
                 }
@@ -104,15 +107,18 @@ namespace Events.Core.Controllers
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Create([Bind("Date,Description,UrlFile")] Media photos)
+        public async Task<IActionResult> Create(MediaCreateDTO photos)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(messages.BadRequestModelInvalid);
 
             }
+            Media evt = mapper.Map<Media>(photos);
+
             context.Add(photos);
             await context.SaveChangesAsync();
+
             return Ok(photos);
 
 

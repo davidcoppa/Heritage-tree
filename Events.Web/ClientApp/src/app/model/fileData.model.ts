@@ -1,4 +1,3 @@
-import { MediaType } from "./MediaType";
 
 export interface FileData {
   id: number | undefined,

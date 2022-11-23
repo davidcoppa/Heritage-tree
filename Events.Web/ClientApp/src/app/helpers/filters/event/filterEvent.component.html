@@ -4,7 +4,10 @@
 <mat-form-field class="mat-form-field--inline specialWidth" appearance="fill">
   <mat-label>Event</mat-label>
 
-  <input type="text" matInput [formControl]="eventControl" [matAutocomplete]="autoEvent">
+  <input type="text"
+         matInput [formControl]="eventControl"
+         [matAutocomplete]="autoEvent">
+
   <mat-autocomplete #autoEvent="matAutocomplete" [displayWith]="displayEvent">
     <mat-option *ngFor="let optionEvent of EventOptions | async" [value]="optionEvent">
       {{optionEvent.description}}
