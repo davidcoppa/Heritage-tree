@@ -110,7 +110,7 @@ export class EventAbmComponent implements OnInit, OnDestroy {
 
       return this.fb.group({
         title: [null, [Validators.required]],
-        description: [null],
+        //description: [null],
         eventDate: [null],
         eventType: [null],
         person1: [null],
@@ -135,7 +135,7 @@ export class EventAbmComponent implements OnInit, OnDestroy {
 
       return this.fb.group({
         title: new UntypedFormControl(eventEdit.title ?? null),
-        description: new UntypedFormControl(eventEdit.description ?? null),
+        //description: new UntypedFormControl(eventEdit.description ?? null),
         eventDate: new UntypedFormControl(eventEdit.eventDate ?? null),
         eventType: new UntypedFormControl(eventEdit.eventType ?? null),
         person1: new UntypedFormControl(eventEdit.person1 ?? null),
@@ -197,6 +197,12 @@ export class EventAbmComponent implements OnInit, OnDestroy {
       this.evt.person1 = this.personSelectedData1.personSelected;
       this.evt.person2 = this.personSelectedData2.personSelected;
       this.evt.person3 = this.personSelectedData3.personSelected;
+
+
+      if (!this.evt.title.includes(this.evt.person1.firstName)) {
+        this.evt.title += " "+this.evt.person1.firstName;
+      }
+
 
       this.service.AddEvent(this.evt).pipe(first())
         .subscribe(

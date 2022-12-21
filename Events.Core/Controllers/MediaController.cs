@@ -7,6 +7,7 @@ using Events.Core.Common.Messages;
 using Events.Core.Common.Queryable;
 using Events.Core.DTOs;
 using AutoMapper;
+using Events.Core.Model;
 
 namespace Events.Core.Controllers
 {
@@ -15,7 +16,7 @@ namespace Events.Core.Controllers
     public class MediaController : Controller
     {
         private readonly EventsContext context;
-        private readonly IMessages messages; 
+        private readonly IMessages messages;
         private readonly IMapper mapper;
 
         public MediaController(EventsContext context,
@@ -109,18 +110,98 @@ namespace Events.Core.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Create(MediaCreateDTO photos)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(messages.BadRequestModelInvalid);
 
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(messages.BadRequestModelInvalid);
+
+                }
+                Media evt = mapper.Map<Media>(photos);
+
+
+
+                var @event = await context.Event.Where(m => m.Id == photos.Event.Id).FirstOrDefaultAsync();
+
+                if (@event == null)
+                {
+                    context.Add(photos.Event);
+                }
+                evt.Event = @event;
+
+
+
+                if (evt.File!=null)
+                {
+                    foreach (var item in evt.File)
+                    {
+
+                        MediaType mediatype = await context.MediaType.Where(m => m.Id == item.DocumentType.Id).FirstOrDefaultAsync();
+                        if (mediatype == null)
+                        {
+                            item.DocumentType = mediatype;
+
+                            context.Add(item.DocumentType);
+                        }
+                        //   MediaTypeDTO mt = mapper.Map<MediaTypeDTO>(mediatype);
+                        item.DocumentType = mediatype;
+                        
+                        context.FileData.Add(item);
+                        await context.SaveChangesAsync();
+
+                        //    context.Entry(item.DocumentType).CurrentValues.SetValues(item.DocumentType);
+
+                        //    item.DocumentType= mediatype;
+
+                    }
+                }
+                context.Media.Add(evt);
+
+
+
+                //if (photos.TagItems != null)
+                //{
+                //    List<Tags> tagList = await context.Tags.ToListAsync();
+                //    List<MediaTags> mediaTags = new List<MediaTags>();
+                //    foreach (var tag in photos.TagItems)
+                //    {
+                //        //delete maediaTag
+                //        //if (!tag.Active)
+                //        //{
+
+                //        //}
+                //        //new tag
+                //        if (tag.Id == -1)
+                //        {
+                //            var newTag = new Tags { Name = tag.Name };
+                //            mediaTags.Add(new MediaTags { Tags = newTag, Media = evt });
+                //      //      context.Tags.Add(newTag);
+                //        }
+                //        else //editTag
+                //        {
+                //            var pp = tagList.Where(x => x.Id == tag.Id);
+
+                //        }
+
+
+
+                //    }
+                //}
+
+
+
+                await context.SaveChangesAsync();
+
+
+                return Ok(photos);
             }
-            Media evt = mapper.Map<Media>(photos);
+            catch (Exception ex)
+            {
 
-            context.Add(photos);
-            await context.SaveChangesAsync();
-
-            return Ok(photos);
-
+                throw;
+            }
 
         }
 
@@ -132,7 +213,7 @@ namespace Events.Core.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Description")] Media photos)
         {
-          
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(messages.BadRequestModelInvalid);

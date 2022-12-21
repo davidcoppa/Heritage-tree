@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QKJqdYYk4LlkY8l+VE2syxgBLYXGNBf8BHVq5OpwizB8L7A1y7pSCF093dUOoH5Q+SomMUrbBYp3UGNN3KVWLQ==",
+  "dgSpecHash": "eQcGZN1WUmZckJdzkREvuVpmVLK6u7PbkEhYhJlyVWQArbejqv4L6RW2QtSprRr8WZ5cvg+nktrLytCuf8Bfwg==",
   "success": true,
-  "projectFilePath": "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj",
+  "projectFilePath": "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\matlock\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\dynamiclinq\\1.0.0\\dynamiclinq.1.0.0.nupkg.sha512",

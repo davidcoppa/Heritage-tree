@@ -1,7 +1,6 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Document } from '../../../Model/Document';
-import { ServerService } from '../../../service/server.service';
+import { AppFileService } from '../../../server/app.file.service';
 
 
 @Component({
@@ -16,7 +15,7 @@ export class DownloadFileComponent implements OnInit {
   // fileUrl: "GITS - Brochure";
 
   constructor(
-    private server: ServerService,
+    private server: AppFileService,
     //private document: Document
   ) { }
 
@@ -30,29 +29,30 @@ export class DownloadFileComponent implements OnInit {
       return false;
     }
     this.blockButton = true;
-    this.server.GetLastNewsletter().subscribe((event) => {
-      //console.log('ddasd');
-      if (event.type === HttpEventType.UploadProgress)
 
-        this.progress = Math.round((100 * event.loaded) / event.total);
-      else if (event.type === HttpEventType.Response) {
-     //   console.log('Download');
+    //this.server.GetLastNewsletter().subscribe((event) => {
+    //  //console.log('ddasd');
+    //  if (event.type === HttpEventType.UploadProgress)
 
-        //   this.message = 'Download success.';
-        this.downloadFile(event);
+    //    this.progress = Math.round((100 * event.loaded) / event.total);
+    //  else if (event.type === HttpEventType.Response) {
+    // //   console.log('Download');
 
-      }
+    //    //   this.message = 'Download success.';
+    //    this.downloadFile(event);
 
-      //let blob: any = new Blob([event.blob()], { type: 'text/json; charset=utf-8' });
-      //const url = window.URL.createObjectURL(blob);
-      //window.location.href = url;//response.url
+    //  }
 
-      //  window.open(url);
-    }), (error: any) => {
-     // console.log('Error downloading the file')
-      this.blockButton = false;
+    //  //let blob: any = new Blob([event.blob()], { type: 'text/json; charset=utf-8' });
+    //  //const url = window.URL.createObjectURL(blob);
+    //  //window.location.href = url;//response.url
 
-    };
+    //  //  window.open(url);
+    //}), (error: any) => {
+    // // console.log('Error downloading the file')
+    //  this.blockButton = false;
+
+    //};
 
     return false;
 

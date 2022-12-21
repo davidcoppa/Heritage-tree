@@ -102,9 +102,11 @@ namespace Events.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DocumentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DocumentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MediaId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -123,7 +125,34 @@ namespace Events.Core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("MediaId");
+
                     b.ToTable("FileData");
+                });
+
+            modelBuilder.Entity("Events.Core.Model.MediaTags", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("MediaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TagsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MediaId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("MediaTags");
                 });
 
             modelBuilder.Entity("Events.Core.Model.MediaType", b =>
@@ -182,22 +211,22 @@ namespace Events.Core.Migrations
                     b.ToTable("State");
                 });
 
-            modelBuilder.Entity("Events.Core.Model.Tags", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            //modelBuilder.Entity("Events.Core.Model.Tags", b =>
+            //    {
+            //        b.Property<int>("Id")
+            //            .ValueGeneratedOnAdd()
+            //            .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+            //        SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+            //        b.Property<string>("Name")
+            //            .IsRequired()
+            //            .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+            //        b.HasKey("Id");
 
-                    b.ToTable("Tags");
-                });
+            //        b.ToTable("Tags");
+            //    });
 
             modelBuilder.Entity("EventsManager.Model.Event", b =>
                 {
@@ -282,14 +311,8 @@ namespace Events.Core.Migrations
                     b.Property<int?>("EventId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("MediaDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime?>("MediaDateUploaded")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("MediaTypeId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -297,49 +320,13 @@ namespace Events.Core.Migrations
                     b.Property<int?>("PersonId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UrlFile")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EventId");
 
-                    b.HasIndex("MediaTypeId");
-
                     b.HasIndex("PersonId");
 
                     b.ToTable("Media");
-                });
-
-            modelBuilder.Entity("EventsManager.Model.ParentPerson", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PersonFatherId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PersonMotherId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonFatherId");
-
-                    b.HasIndex("PersonId");
-
-                    b.HasIndex("PersonMotherId");
-
-                    b.ToTable("ParentPerson");
                 });
 
             modelBuilder.Entity("EventsManager.Model.Person", b =>
@@ -397,6 +384,36 @@ namespace Events.Core.Migrations
                         .HasForeignKey("StatesId");
                 });
 
+            modelBuilder.Entity("Events.Core.Model.FileData", b =>
+                {
+                    b.HasOne("Events.Core.Model.MediaType", "DocumentType")
+                        .WithMany()
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EventsManager.Model.Media", null)
+                        .WithMany("File")
+                        .HasForeignKey("MediaId");
+
+                    b.Navigation("DocumentType");
+                });
+
+            modelBuilder.Entity("Events.Core.Model.MediaTags", b =>
+                {
+                    b.HasOne("EventsManager.Model.Media", "Media")
+                        .WithMany()
+                        .HasForeignKey("MediaId");
+
+                    b.HasOne("Events.Core.Model.Tags", "Tags")
+                        .WithMany()
+                        .HasForeignKey("TagsId");
+
+                    b.Navigation("Media");
+
+                    b.Navigation("Tags");
+                });
+
             modelBuilder.Entity("Events.Core.Model.States", b =>
                 {
                     b.HasOne("Events.Core.Model.Country", null)
@@ -443,44 +460,15 @@ namespace Events.Core.Migrations
 
             modelBuilder.Entity("EventsManager.Model.Media", b =>
                 {
-                    b.HasOne("EventsManager.Model.Event", null)
+                    b.HasOne("EventsManager.Model.Event", "Event")
                         .WithMany("Media")
                         .HasForeignKey("EventId");
-
-                    b.HasOne("Events.Core.Model.MediaType", "MediaType")
-                        .WithMany()
-                        .HasForeignKey("MediaTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("EventsManager.Model.Person", null)
                         .WithMany("Photos")
                         .HasForeignKey("PersonId");
 
-                    b.Navigation("MediaType");
-                });
-
-            modelBuilder.Entity("EventsManager.Model.ParentPerson", b =>
-                {
-                    b.HasOne("EventsManager.Model.Person", "PersonFather")
-                        .WithMany()
-                        .HasForeignKey("PersonFatherId");
-
-                    b.HasOne("EventsManager.Model.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EventsManager.Model.Person", "PersonMother")
-                        .WithMany()
-                        .HasForeignKey("PersonMotherId");
-
-                    b.Navigation("Person");
-
-                    b.Navigation("PersonFather");
-
-                    b.Navigation("PersonMother");
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("EventsManager.Model.Person", b =>
@@ -511,6 +499,11 @@ namespace Events.Core.Migrations
             modelBuilder.Entity("EventsManager.Model.Event", b =>
                 {
                     b.Navigation("Media");
+                });
+
+            modelBuilder.Entity("EventsManager.Model.Media", b =>
+                {
+                    b.Navigation("File");
                 });
 
             modelBuilder.Entity("EventsManager.Model.Person", b =>

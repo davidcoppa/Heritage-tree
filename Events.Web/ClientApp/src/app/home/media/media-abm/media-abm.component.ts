@@ -7,6 +7,7 @@ import { AppMediaService } from '../../../server/app.media.service';
 import { AppFileService } from '../../../server/app.file.service';
 import { Events } from '../../../model/event.model';
 import { AppService } from '../../../server/app.service';
+import { TagItem } from '../../../model/tagItem.model';
 
 
 @Component({
@@ -27,9 +28,12 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
   buttonAction: string = "Add";
   selectedEvent: Events;
   mediaToSave: Media;
+  tagItems: TagItem[] = [];
+
 
   private subscriptionFile: Subscription;
   private subscriptionEventFilter: Subscription;
+  private subscriptionChipTags: Subscription;
 
 
   constructor(fb: UntypedFormBuilder,
@@ -39,20 +43,21 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
     this.fb = fb;
 
     this.subscriptionFile = this.appFileService.getUpdateFile().subscribe
-      (data => { //message contains the data sent from service
-        console.log("Get media uploaded: " + data.data);
-
+      (data => { 
         Array.prototype.push.apply(this.media.file, [data.data])
 
       });
 
     this.subscriptionEventFilter = this.service.getUpdateEvent().subscribe
-      (data => { //message contains the data sent from service
-        console.log("sendUpdateEvent: " + data.data);
+      (data => {
         this.selectedEvent = data.data;
       });
 
-
+    this.subscriptionChipTags = this.service.getUpdateChipTag().subscribe
+      (data => {
+   //     console.log("chip data: " + data.data);
+        this.tagItems = data.data;
+      })
 
   }
 
@@ -65,7 +70,8 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
       name: '',
       id: -1,
       file: [],
-      event: null
+      event: null,
+      tagItems:[]
     }
   }
 
@@ -81,6 +87,8 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
 
     }
   }
+
+  //get media, events and tags
   CreateForm(mediaEdit: Media | null): UntypedFormGroup {
     if (mediaEdit == null) {
       return this.fb.group({
@@ -106,15 +114,15 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
       //TODO:put files from media 
 
       this.mediaToSave.file = this.media.file;
-      this.mediaToSave.event=  this.selectedEvent
-
+      this.mediaToSave.event = this.selectedEvent;
+      this.mediaToSave.tagItems = this.tagItems;
 
       if (this.buttonAction == "Update") {
         this.appMediaService.UpdateMedia(this.mediaSelected.id, this.mediaToSave)
           .pipe(first())
           .subscribe(
             data => {
-              console.log('Current data: ', data);
+              console.log('Current data update: ', data);
               this.ABMMediaFinished();
             },
             error => console.log('Error Getting Position: ', error)
@@ -125,7 +133,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
         this.appMediaService.AddMedia(this.mediaToSave).pipe(first())
           .subscribe(
             data => {
-              console.log('Current data: ', data);
+              console.log('Current data create: ', data);
               this.ABMMediaFinished();
 
             },
@@ -138,6 +146,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.subscriptionFile.unsubscribe();
     this.subscriptionEventFilter.unsubscribe();
+    this.subscriptionChipTags.unsubscribe();
   }
 
   ABMMediaFinished() {

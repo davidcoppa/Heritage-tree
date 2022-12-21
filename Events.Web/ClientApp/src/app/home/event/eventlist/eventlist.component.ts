@@ -13,7 +13,6 @@ import { ListObject } from '../../../model/listObject.model';
 })
 export class EventlistComponent implements AfterViewInit {
   displayedColumns: string[] = ['Title',
-    'Description',
     'EventDate',
     'EventType',
     'Person1',

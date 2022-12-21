@@ -86,32 +86,33 @@ namespace Events.Core.Controllers
         {
             try
             {
-                IQueryable<Country> data = context.Country.AsQueryable();
-                if (search == null)
-                {
-                    data = context.Country.AsQueryable<Country>().Include(x => x.States).ThenInclude(c => c.Cities);
-                }
-                else
-                {
-                    data = context.Country.Where(x => x.Code.Contains(search)
-                                 || x.Name.Contains(search))
-                                    .Include(x => x.States)
-                                    .ThenInclude(c => c.Cities)
-                                    .AsQueryable<Country>();
+                //IQueryable<Country> data = context.Country.AsQueryable();
+                //if (search == null)
+                //{
+                //    data = context.Country.AsQueryable<Country>().Include(x => x.States).ThenInclude(c => c.Cities);
+                //}
+                //else
+                //{
+                //    data = context.Country.Where(x => x.Code.Contains(search)
+                //                 || x.Name.Contains(search))
+                //                    .Include(x => x.States)
+                //                    .ThenInclude(c => c.Cities)
+                //                    .AsQueryable<Country>();
 
-                }
+                //}
 
-                if (!data.Any())
-                {
-                    return Ok(null);
-                }
+                //if (!data.Any())
+                //{
+                //    return Ok(null);
+                //}
 
 
-                List<Country> result = helper.GetFilter<Country>(sort, order, page, itemsPage, data);
+                //List<Country> result = helper.GetFilter<Country>(sort, order, page, itemsPage, data);
 
-                var ret = GenerateReturnValuesCountry(result);
+                //var ret = GenerateReturnValuesCountry(result);
 
-                return Ok(ret);
+                //return Ok(ret);
+                return Ok();
 
 
             }
@@ -189,21 +190,21 @@ namespace Events.Core.Controllers
 
             try
             {
-                Country countryBD = await context.Country.FindAsync(id);
-                if (countryBD == null)
-                {
-                    return NotFound();
-                }
-                Country country = mapper.Map<Country>(location);
+                //Country countryBD = await context.Country.FindAsync(id);
+                //if (countryBD == null)
+                //{
+                //    return NotFound();
+                //}
+                //Country country = mapper.Map<Country>(location);
 
-                context.Entry(countryBD).CurrentValues.SetValues(country);
+                //context.Entry(countryBD).CurrentValues.SetValues(country);
 
-                if (location.States != null)
-                {
-                    countryBD.States = country.States;
-                    context.Entry(countryBD.States).CurrentValues.SetValues(country.States);
+                //if (location.States != null)
+                //{
+                //    countryBD.States = country.States;
+                //    context.Entry(countryBD.States).CurrentValues.SetValues(country.States);
 
-                }
+                //}
 
 
                 await context.SaveChangesAsync();
@@ -229,11 +230,12 @@ namespace Events.Core.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCountryAll()
         {
-            List<Country> countryLocation = await context.Country.Include(x => x.States).ThenInclude(c => c.Cities).ToListAsync();
+            //List<Country> countryLocation = await context.Country.Include(x => x.States).ThenInclude(c => c.Cities).ToListAsync();
 
-            var ret = GenerateReturnValuesCountry(countryLocation);
+            //var ret = GenerateReturnValuesCountry(countryLocation);
 
-            return Ok(ret);
+            //return Ok(ret);
+            return Ok();
         }
 
         // GET: Locations/Details/5
@@ -247,13 +249,14 @@ namespace Events.Core.Controllers
                 return NotFound();
             }
 
-            var location = await context.Country.FirstOrDefaultAsync(m => m.Id == id);
-            if (location == null)
-            {
-                return NotFound();
-            }
+            //var location = null;// await context.Country.FirstOrDefaultAsync(m => m.Id == id);
+            //if (location == null)
+            //{
+            //    return NotFound();
+            //}
 
-            return Ok(location);
+            //return Ok(location);
+            return Ok();
         }
 
 
@@ -263,24 +266,25 @@ namespace Events.Core.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var location = await context.Country.FirstOrDefaultAsync(m => m.Id == id);
-            if (location == null)
-            {
-                return NotFound();
-            }
+            //var location = await context.Country.FirstOrDefaultAsync(m => m.Id == id);
+            //if (location == null)
+            //{
+            //    return NotFound();
+            //}
 
-            context.Country.Remove(location);
-            await context.SaveChangesAsync();
+            //context.Country.Remove(location);
+            //await context.SaveChangesAsync();
             return NoContent();
         }
         private bool LocationExists(int id)
         {
-            return context.Country.Any(e => e.Id == id);
+            return true;
+           // return context.Country.Any(e => e.Id == id);
         }
     }
 }

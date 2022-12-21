@@ -86,6 +86,7 @@ export class ChipsTags implements OnInit {
       if (value) {
         Array.prototype.push.apply(this.itemTags, [addVal])
         //  this.itemOnList.push(addVal);
+        this.service.sendUpdateChipTag(this.itemTags);
       }
     }
 
@@ -102,8 +103,10 @@ export class ChipsTags implements OnInit {
     }
 
     this.itemTags.forEach((element, index) => {
-      if (element.name == fruit.name)
+      if (element.name == fruit.name) {
         this.itemTags.splice(index, 1);
+        this.service.sendUpdateChipTag(this.itemTags);
+      }
     });
 
   }
@@ -133,6 +136,8 @@ export class ChipsTags implements OnInit {
       this.itemTags.push(event.option.value);
       this.dataInput.nativeElement.value = '';
       this.dataControler.setValue(null);
+      this.service.sendUpdateChipTag(this.itemTags);
+
     }
 
 
@@ -145,13 +150,13 @@ export class ChipsTags implements OnInit {
     if (this.dataTags != undefined) {
       if (tags.id != undefined) {
         this.dataTags = tags;
-        this.service.sendUpdateTags(this.dataTags);
+        this.service.sendUpdateChipTag(this.dataTags);
       } else {
         this.dataControler.setValue(this.dataTags);
       }
     }
 
-    this.service.sendUpdateTags(tags);
+    this.service.sendUpdateChipTag(tags);
 
     return tags && tags.name ? tags.name : '';
   }

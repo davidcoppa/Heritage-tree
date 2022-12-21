@@ -13,6 +13,4 @@
 
         public bool Update { get; set; }
     }
-
 }
-

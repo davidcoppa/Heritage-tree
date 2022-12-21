@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj": {}
+    "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj": {}
   },
   "projects": {
-    "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj": {
+    "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj",
+        "projectUniqueName": "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj",
         "projectName": "Events.Core",
-        "projectPath": "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj",
+        "projectPath": "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj",
         "packagesPath": "C:\\Users\\matlock\\.nuget\\packages\\",
-        "outputPath": "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core\\obj\\",
+        "outputPath": "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\matlock\\AppData\\Roaming\\NuGet\\NuGet.Config",

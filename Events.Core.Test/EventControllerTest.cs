@@ -55,8 +55,8 @@ namespace Events.Core.Test
             Title = "the test",
             Media = new List<Media> 
             {
-                new Media{ Id=1, MediaDate=DateTime.Now ,Name="1.jpg",Description="photo1",UrlFile="c:/data1"},
-                new Media{ Id=2, MediaDate=DateTime.Now ,Name="2.jpg",Description="photo2",UrlFile="c:/data2"},
+                new Media{ Id=1, Name="1.jpg",Description="photo1"},
+                new Media{ Id=2, Name="2.jpg",Description="photo2"},
             }
 
         };
@@ -73,8 +73,8 @@ namespace Events.Core.Test
             Title = "the test",
             Media = new List<Media>
             {
-                new Media{ Id=1, MediaDate=DateTime.Now ,Name="1.jpg",Description="photo1",UrlFile="c:/data1"},
-                new Media{ Id=2, MediaDate=DateTime.Now ,Name="2.jpg",Description="photo2",UrlFile="c:/data2"},
+                new Media{ Id=1,Name="1.jpg",Description="photo1",},
+                new Media{ Id=2 ,Name="2.jpg",Description="photo2",},
             }
 
         };
@@ -90,8 +90,8 @@ namespace Events.Core.Test
             Title = "the test",
             Media = new List<Media>
             {
-                new Media{ Id=1, MediaDate=DateTime.Now ,Name="1.jpg",Description="photo1",UrlFile="c:/data1"},
-                new Media{ Id=2, MediaDate=DateTime.Now ,Name="2.jpg",Description="photo2",UrlFile="c:/data2"},
+                new Media{ Id=1, Name="1.jpg",Description="photo1"},
+                new Media{ Id=2,Name="2.jpg",Description="photo2"},
             }
 
         };
@@ -101,8 +101,8 @@ namespace Events.Core.Test
         Person pMother = new() { Id = 2, FirstName = "ana" };
         Person pFather = new() { Id = 3, FirstName = "juan" };
      //   Model.Location location = new Model.Location() { Id = 1, Country = "US" };
-        Media photo1 = new Media { Id = 1, MediaDate = DateTime.Now, Name = "1.jpg", Description = "photo1", UrlFile = "c:/data1" };
-        Media photo2 = new Media { Id = 2, MediaDate = DateTime.Now, Name = "2.jpg", Description = "photo2", UrlFile = "c:/data2" };
+        Media photo1 = new Media { Id = 1, Name = "1.jpg", Description = "photo1"};
+        Media photo2 = new Media { Id = 2, Name = "2.jpg", Description = "photo2"};
         EventTypes eventypes = new EventTypes { Id = 1, Description = "test", Name = "test" };
 
         EventCreateEditDTO evtEditGood = new () 
@@ -118,8 +118,8 @@ namespace Events.Core.Test
             Title = "the test",
             Media = new List<Media>
             {
-                new Media{ Id=1, MediaDate=DateTime.Now ,Name="1.jpg",Description="photo1",UrlFile="c:/data1"},
-                new Media{ Id=2, MediaDate=DateTime.Now ,Name="2.jpg",Description="photo2",UrlFile="c:/data2"},
+                new Media{ Id=1, Name="1.jpg",Description="photo1"},
+                new Media{ Id=2, Name="2.jpg",Description="photo2"},
             }
         };
         [TestMethod]

@@ -5,11 +5,10 @@ import { SortDirection } from "@angular/material/sort";
 import { Person } from "../model/person.model";
 import { Events } from "../model/event.model";
 import { EventType } from "../model/eventType.model";
-import { Media } from "../model/media.model";
 import { Country } from "../model/country.model";
 import { State } from "../model/state.model";
 import { City } from "../model/city.model";
-import { PersonWithParents, rootValues } from "../model/PersonWithParents.model";
+import { rootValues } from "../model/PersonWithParents.model";
 import { TagItem } from "../model/tagItem.model";
 
 @Injectable()
@@ -26,6 +25,7 @@ export class AppService {
   subjectCity = new Subject<any>();
   subjectAbmLocation = new Subject<any>();
   subjectEvent = new Subject<any>();
+  subjectChip = new Subject<any>();
 
   sendUpdateObject(file: any) { //the component that wants to update something, calls this fn
     this.subjectName.next({ data: file }); //next() will feed the value in Subject
@@ -86,19 +86,19 @@ export class AppService {
 
   // sendUpdateInnerTableCity
 
-  getUpdateTags(): Observable<any> {
-    return this.subjectCity.asObservable();
-  }
-  sendUpdateTags(file: any) {
-    this.subjectCity.next({ data: file });
-  }
-
-  //tags
   getUpdateCity(): Observable<any> {
     return this.subjectCity.asObservable();
   }
   sendUpdateCity(file: any) {
     this.subjectCity.next({ data: file });
+  }
+
+  //tags
+  getUpdateChipTag(): Observable<any> {
+    return this.subjectChip.asObservable();
+  }
+  sendUpdateChipTag(file: any) {
+    this.subjectChip.next({ data: file });
   }
 
   //get params on search
@@ -118,7 +118,6 @@ export class AppService {
 
     return this.httpClient.get<Person[]>('api/People/GetFilter', { params: queryParams });
   }
-
 
   AddPerson(newPerson: Person): Observable<Person> {
 
@@ -164,6 +163,7 @@ export class AppService {
 
     return this.httpClient.get<EventType[]>('api/EventTypes/Get', { params: queryParams });
   }
+
   UpdateEventType(id: number, newEventType: EventType): Observable<EventType> {
 
     let queryParams = new HttpParams();
@@ -174,6 +174,7 @@ export class AppService {
       , { params: queryParams });
 
   }
+
   AddEventType(newEventType: EventType): Observable<EventType> {
 
     return this.httpClient.post<EventType>('api/EventTypes/Create', newEventType);
@@ -187,7 +188,6 @@ export class AppService {
 
     return this.httpClient.get<Country[]>('api/Country/GetFilterCountry', { params: queryParams });
   }
-
 
   UpdateCountries(id: number, newLocation: Country): Observable<Country> {
 
@@ -203,14 +203,12 @@ export class AppService {
   }
 
   //GetStates 
-
   GetStates(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<State[]> {
     let queryParams = this.GetParams(sort, order, page, itemsPage, search);
 
 
     return this.httpClient.get<State[]>('api/State/GetFilterState', { params: queryParams });
   }
-
 
   UpdateStates(id: number, newLocation: State): Observable<State> {
 
@@ -222,6 +220,7 @@ export class AppService {
       , { params: queryParams });
 
   }
+
   AddStates(newLocation: State): Observable<State> {
 
     return this.httpClient.post<State>('api/State/CreateState', newLocation);
@@ -246,6 +245,7 @@ export class AppService {
       , { params: queryParams });
 
   }
+
   AddCity(newLocation: City): Observable<City> {
 
     return this.httpClient.post<City>('api/City/CreateCity', newLocation);
@@ -253,8 +253,7 @@ export class AppService {
   }
 
   //GetDataToVisualize
-
-  GetDataToVisualize(id: number): Observable<rootValues> { 
+  GetDataToVisualize(id: number): Observable<rootValues> {
     let queryParams = new HttpParams();
     queryParams = queryParams.append("idPerson", id);
 
@@ -264,7 +263,6 @@ export class AppService {
 
   //tags
   //GetAllTags
-
   GetAllTags(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<TagItem[]> {
 
     let queryParams = this.GetParams(sort, order, page, itemsPage, search);
@@ -282,6 +280,7 @@ export class AppService {
       , { params: queryParams });
 
   }
+
   AddTag(newLocation: TagItem): Observable<TagItem> {
 
     return this.httpClient.post<TagItem>('api/Tag/Create', newLocation);

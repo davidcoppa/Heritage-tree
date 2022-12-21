@@ -1,5 +1,6 @@
 import { Events } from "./event.model";
 import { FileData } from "./fileData.model";
+import { TagItem } from "./tagItem.model";
 
 export class Media {
   id: number ;
@@ -7,5 +8,7 @@ export class Media {
   dateUploaded: Date;
   description: string;
   file: FileData[];
-  event: Events|null;
+  event: Events | null;
+  tagItems: TagItem[] = [];
+
 }
