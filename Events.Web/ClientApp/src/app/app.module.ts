@@ -48,6 +48,7 @@ import { ServiceWorkerModule } from "@angular/service-worker";
 import { ToastrModule } from 'ngx-toastr';
 import { FilterEventComponent } from './helpers/filters/event/filterEvent.component';
 import { ChipsTags } from './helpers/chips/chips.tags.component';
+import { FilterNamePipe } from './helpers/pipes/filterName.pipe';
 
 
 
@@ -62,6 +63,7 @@ import { ChipsTags } from './helpers/chips/chips.tags.component';
     EventAbmComponent,
     EnumPipe,
     CustomDatePipe,
+    FilterNamePipe,
     EventTypeComponent,
     EventtypeAbmComponent,
     EventtypelistComponent,

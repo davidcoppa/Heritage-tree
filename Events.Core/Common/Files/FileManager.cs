@@ -1,4 +1,5 @@
 ﻿using Events.Core.Model;
+using ImageMagick;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,35 @@ namespace Events.core.Common.Files
 {
     public class FileManager : IFileManager
     {
+        public string WriteImageThumbnail(string path)
+        {
+            string urlThumbnail = ChangePathNameNoExtension(path,"-small");
+
+
+            //  string urlThumbnail = ChangeExtension(path, "thumb");
+            using (MagickImage image = new MagickImage(path))
+            {
+                image.Format = image.Format; // Get or Set the format of the image.
+                image.Quality = 75; // This is the Compression level.
+                image.Resize(150, 150);
+
+                image.Write(urlThumbnail);
+            }
+            return urlThumbnail;
+        }
+
+        public string ChangePathNameNoExtension(string path,string newName)
+        {
+            var pathData = path.Split('.');
+            if (pathData.Length < 2)
+            {
+                //no encontro el formato
+            }
+            string extension = pathData[(pathData.Length - 1)];
+            string urlThumbnail = pathData[pathData.Length - 2];
+            urlThumbnail += newName+"." + extension;
+            return urlThumbnail;
+        }
 
         public string SaveFile(IFormFile file)
         {
@@ -20,10 +50,15 @@ namespace Events.core.Common.Files
             string directoryName = CreateDirectoryName(locationServer);
 
             string urlRet = CreateFileOnServer(file, locationServer, directoryName, origenDoc);
+            string thumbnail = WriteImageThumbnail(urlRet);
 
             return urlRet;
 
         }
+        //public string ChangeExtension(string file, string newExtension)
+        //{
+        //    return Path.ChangeExtension(file, newExtension);
+        //}
 
         public string CreateDirectoryName(string fullPath)
         {
@@ -60,11 +95,12 @@ namespace Events.core.Common.Files
         public async Task<MemoryStream> GetPhysicalFile(FileData document)
         {
             var pathToRead = Path.Combine(Directory.GetCurrentDirectory(), document.Url);
-           // var fileRet = Directory.EnumerateFiles(pathToRead);
+            // var fileRet = Directory.EnumerateFiles(pathToRead);
 
-
-            if (!System.IO.File.Exists(pathToRead))
-                 throw new ApplicationException("File not found.");
+            if (!FileExists(pathToRead))
+            {
+                throw new ApplicationException("File not found.");
+            }
 
             var memory = new MemoryStream();
             await using (var stream = new FileStream(pathToRead, FileMode.Open))
@@ -76,6 +112,11 @@ namespace Events.core.Common.Files
             return memory;
         }
 
-
+        public  bool FileExists(string urlFile)
+        {
+            if (!File.Exists(urlFile))
+                return false;
+            return true;
+        }
     }
 }

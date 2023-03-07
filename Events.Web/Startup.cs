@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using System.Text.Json.Serialization;
 
 namespace Events.Web
 {
@@ -62,8 +63,10 @@ namespace Events.Web
             services.AddSingleton<IMessages, En_Messages>();
             services.AddSingleton<IHelper, Helper>();
             services.AddSingleton<IFileManager, FileManager>();
-          //  services.AddCors();
+            //  services.AddCors();
 
+            services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 
         }

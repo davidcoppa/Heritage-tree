@@ -33,9 +33,9 @@ namespace Events.Core.Controllers
         }
 
 
-        [HttpGet("GetAllFilter")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        //[HttpGet("GetAllFilter")]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllFilter(int idPerson)
         {
             if (idPerson == 0)

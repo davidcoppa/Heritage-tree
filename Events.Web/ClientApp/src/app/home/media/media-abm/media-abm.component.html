@@ -1,6 +1,6 @@
 <div class="mat-card">
 
-  <form class="form mat-card" [formGroup]="mediaGroup" flex="50" fxLayout="column" >
+  <form class="form mat-card" [formGroup]="mediaGroup" flex="50" fxLayout="column">
 
 
     <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
@@ -15,7 +15,7 @@
 
     <mat-form-field class="mat-form-field--inline" appearance="fill">
       <mat-label>MediaDate</mat-label>
-      <input matInput inputmode="date" [matDatepicker]="MediaDate" formControlName="MediaDateUploaded">
+      <input matInput inputmode="date" [matDatepicker]="MediaDate" formControlName="DateUploaded">
       <mat-datepicker-toggle matSuffix [for]="MediaDate">
         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
       </mat-datepicker-toggle>
@@ -23,8 +23,13 @@
       <mat-hint>DD/MM/YYYY</mat-hint>
     </mat-form-field>
 
-      <app-filter-Event [dataEvent]="selectedEvent"></app-filter-Event>
-      <app-chips-autocomplete></app-chips-autocomplete>
+    <app-filter-Event [dataEvent]="selectedEvent"></app-filter-Event>
+    <app-chips-autocomplete></app-chips-autocomplete>
+
+    <ng-container>
+      <app-FileUpload [dataMedia]=media></app-FileUpload>
+    </ng-container>
+
 
     <ng-container>
       <app-FileUpload [dataMedia]=media></app-FileUpload>

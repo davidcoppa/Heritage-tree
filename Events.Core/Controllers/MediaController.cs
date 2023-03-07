@@ -8,6 +8,7 @@ using Events.Core.Common.Queryable;
 using Events.Core.DTOs;
 using AutoMapper;
 using Events.Core.Model;
+using Events.core.Common.Files;
 
 namespace Events.Core.Controllers
 {
@@ -18,41 +19,16 @@ namespace Events.Core.Controllers
         private readonly EventsContext context;
         private readonly IMessages messages;
         private readonly IMapper mapper;
+        private readonly IFileManager fileManager;
 
-        public MediaController(EventsContext context,
-            IMessages messages,
-            IMapper mapper)
+        public MediaController(EventsContext context, IMessages messages, IMapper mapper, IFileManager fileManager)
         {
             this.context = context;
             this.messages = messages;
             this.mapper = mapper;
+            this.fileManager = fileManager;
         }
 
-        //// GET: Photos
-        //[HttpGet("Get")]
-        //public async Task<IActionResult> Index()
-        //{
-        //    var photos = await context.Media.ToListAsync();
-        //    return Ok(photos);
-        //}
-
-        //// GET: Photos/Details/5
-        //[HttpGet]
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var photos = await context.Media.FirstOrDefaultAsync(m => m.Id == id);
-        //    if (photos == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(photos);
-        //}
 
         [HttpGet("GetFilter")]
         public async Task<IActionResult> GetFilter([FromQuery] string sort, [FromQuery] string order, [FromQuery] string page, [FromQuery] string itemsPage, [FromQuery] string? search)
@@ -63,15 +39,16 @@ namespace Events.Core.Controllers
                 IQueryable<Media> data = context.Media.AsQueryable();
                 if (search == null)
                 {
-                    data = context.Media.AsQueryable<Media>().Include(x => x.Event).Include(x => x.File);
+                    data = context.Media.AsQueryable<Media>().Include(x => x.Event).Include(x => x.File).Include(x => x.TagItems);
                 }
                 else
                 {
                     data = context.Media.Where(x => x.Name.Contains(search)
                                  || x.Description.Contains(search)
-                                 || x.MediaDateUploaded.ToString().Contains(search))
-                                        .Include(x => x.Event)
+                                 || x.DateUploaded.ToString().Contains(search))
+                                         .Include(x => x.Event)
                                         .Include(x => x.File)
+                                        .Include(x=>x.TagItems)
                                         .AsQueryable<Media>();
 
                 }
@@ -88,6 +65,55 @@ namespace Events.Core.Controllers
                 int pageIndex = int.TryParse(page, out int count) ? 0 : count;
 
                 List<Media>? result = data.PagedIndex(pagination, pageIndex).ToList();
+
+                foreach (Media mediaFile in result)
+                {
+                    if (mediaFile.File == null)
+                    {
+                        continue;
+                    }
+                    foreach (var tmbFile in mediaFile.File)
+                    {
+                        if (tmbFile.Url == null)
+                        {
+                            continue;
+                        }
+                        if (tmbFile.UrlPreview != null)
+                        {
+                            continue;
+                        }
+
+
+                        if (fileManager.FileExists(tmbFile.Url))
+                        {
+                            try
+                            {
+                                tmbFile.UrlPreview = fileManager.WriteImageThumbnail(tmbFile.Url);
+                                //context.Entry(pp).CurrentValues.SetValues(pp);
+                                var pp = await context.FileData.Where(x => x.Id == tmbFile.Id).FirstOrDefaultAsync();
+                                if (pp == null)
+                                {
+                                    //throw error
+                                    throw new ApplicationException("the file doesn't exist on the database");
+                                }
+                                pp.UrlPreview = tmbFile.UrlPreview;
+                                context.Update(pp);
+
+                                await context.SaveChangesAsync();
+
+                            }
+                            catch (Exception ex)
+                            {
+                                //TODO: log error
+                                throw;
+                            }
+                        }
+
+                    }
+
+                }
+
+
 
                 return Ok(result);
 
@@ -123,7 +149,7 @@ namespace Events.Core.Controllers
 
 
 
-                var @event = await context.Event.Where(m => m.Id == photos.Event.Id).FirstOrDefaultAsync();
+                var @event = await context.Event.Where(m => m.Id == photos.Event.ID).FirstOrDefaultAsync();
 
                 if (@event == null)
                 {
@@ -133,10 +159,11 @@ namespace Events.Core.Controllers
 
 
 
-                if (evt.File!=null)
+                if (evt.File != null)
                 {
                     foreach (var item in evt.File)
                     {
+                        item.UrlPreview = fileManager.ChangePathNameNoExtension(item.Url, "-small");
 
                         MediaType mediatype = await context.MediaType.Where(m => m.Id == item.DocumentType.Id).FirstOrDefaultAsync();
                         if (mediatype == null)
@@ -147,49 +174,40 @@ namespace Events.Core.Controllers
                         }
                         //   MediaTypeDTO mt = mapper.Map<MediaTypeDTO>(mediatype);
                         item.DocumentType = mediatype;
-                        
-                        context.FileData.Add(item);
-                        await context.SaveChangesAsync();
 
-                        //    context.Entry(item.DocumentType).CurrentValues.SetValues(item.DocumentType);
+                        context.Entry(item.DocumentType).CurrentValues.SetValues(item.DocumentType);
+                        //context.FileData.Add(item);
+                        //await context.SaveChangesAsync();
 
                         //    item.DocumentType= mediatype;
 
                     }
+
                 }
+
+
+
+                if (photos.TagItems != null)
+                {
+                    List<Tags> tagList = await context.Tags.ToListAsync();
+                    foreach (var tag in photos.TagItems)
+                    {
+                        Tags pp = tagList.Where(x => x.Name == tag.Name).FirstOrDefault();
+                        if (pp != null)
+                        {
+                            context.Entry(pp).CurrentValues.SetValues(pp);
+
+                        }
+                        else
+                        {
+                            var newTag = new Tags { Name = tag.Name };
+                            context.Add(newTag);
+                        }
+
+                    }
+                }
+
                 context.Media.Add(evt);
-
-
-
-                //if (photos.TagItems != null)
-                //{
-                //    List<Tags> tagList = await context.Tags.ToListAsync();
-                //    List<MediaTags> mediaTags = new List<MediaTags>();
-                //    foreach (var tag in photos.TagItems)
-                //    {
-                //        //delete maediaTag
-                //        //if (!tag.Active)
-                //        //{
-
-                //        //}
-                //        //new tag
-                //        if (tag.Id == -1)
-                //        {
-                //            var newTag = new Tags { Name = tag.Name };
-                //            mediaTags.Add(new MediaTags { Tags = newTag, Media = evt });
-                //      //      context.Tags.Add(newTag);
-                //        }
-                //        else //editTag
-                //        {
-                //            var pp = tagList.Where(x => x.Id == tag.Id);
-
-                //        }
-
-
-
-                //    }
-                //}
-
 
 
                 await context.SaveChangesAsync();

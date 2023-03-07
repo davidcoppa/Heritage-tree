@@ -76,6 +76,7 @@ export class FileUploadComponent implements OnInit {
       url: '',
       webUrl: '',
       id: undefined,
+      urlPreview:'',
 
       documentType: //document.type
       {

@@ -12,7 +12,7 @@ import { AppService } from '../../server/app.service';
   selector: 'app-location',
   templateUrl: './location.component.html'
 })
-export class LocationComponent implements OnChanges, OnDestroy {
+export class LocationComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() abmObject: boolean;
  
@@ -36,10 +36,8 @@ export class LocationComponent implements OnChanges, OnDestroy {
   expandedElementCity: State | null;
 
 
-  constructor(private service: AppService,
-    private cd: ChangeDetectorRef
-  ) {
-
+  constructor(private service: AppService) {
+    console.log("new part data: ");
     this.subscriptionCountry = this.service.getUpdateCountry().subscribe
       (data => {
         if (data != undefined) {
@@ -50,7 +48,7 @@ export class LocationComponent implements OnChanges, OnDestroy {
           else {
             this.sort = data.data.sort;
             this.paginator = data.data.paginator;
-            this.LoadData();
+            this.ngOnInit();
           }
         }
       });
@@ -69,7 +67,7 @@ export class LocationComponent implements OnChanges, OnDestroy {
       });
   }
 
-  LoadData(): void {
+  ngOnInit(): void {
     if (this.sort == undefined) { return; }
 
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 1);

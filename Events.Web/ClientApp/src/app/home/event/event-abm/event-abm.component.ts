@@ -26,7 +26,7 @@ export class EventAbmComponent implements OnInit, OnDestroy {
   evt: Events;
   buttonAction: string = "Add";
 
-  listModel: ListObject;
+  //listModel: ListObject;
 
   selectedEventType: EventType;
 
