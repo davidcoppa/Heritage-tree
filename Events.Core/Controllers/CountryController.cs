@@ -86,33 +86,33 @@ namespace Events.Core.Controllers
         {
             try
             {
-                IQueryable<Country> data = context.Country.AsQueryable();
-                if (search == null)
-                {
-                    data = context.Country.AsQueryable<Country>().Include(x => x.States).ThenInclude(c => c.Cities);
-                }
-                else
-                {
-                    data = context.Country.Where(x => x.Code.Contains(search)
-                                 || x.Name.Contains(search))
-                                    .Include(x => x.States)
-                                    .ThenInclude(c => c.Cities)
-                                    .AsQueryable<Country>();
+                //IQueryable<Country> data = context.Country.AsQueryable();
+                //if (search == null)
+                //{
+                //    data = context.Country.AsQueryable<Country>().Include(x => x.States).ThenInclude(c => c.Cities);
+                //}
+                //else
+                //{
+                //    data = context.Country.Where(x => x.Code.Contains(search)
+                //                 || x.Name.Contains(search))
+                //                    .Include(x => x.States)
+                //                    .ThenInclude(c => c.Cities)
+                //                    .AsQueryable<Country>();
 
-                }
+                //}
 
-                if (!data.Any())
-                {
-                    return Ok(null);
-                }
+                //if (!data.Any())
+                //{
+                //    return Ok(null);
+                //}
 
 
-                List<Country> result = helper.GetFilter<Country>(sort, order, page, itemsPage, data);
+                //List<Country> result = helper.GetFilter<Country>(sort, order, page, itemsPage, data);
 
-                var ret = GenerateReturnValuesCountry(result);
+                //var ret = GenerateReturnValuesCountry(result);
 
-                return Ok(ret);
-           //     return Ok();
+                //return Ok(ret);
+                return Ok();
 
 
             }

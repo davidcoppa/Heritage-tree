@@ -34,7 +34,6 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
   private subscriptionFile: Subscription;
   private subscriptionEventFilter: Subscription;
   private subscriptionChipTags: Subscription;
-  private subscriptionABMMedia: Subscription;
 
 
   constructor(fb: UntypedFormBuilder,
@@ -42,21 +41,6 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
     private appFileService: AppFileService,
     private service: AppService) {
     this.fb = fb;
-
-    this.subscriptionABMMedia = this.appMediaService.getUpdateMedia().subscribe
-      (data => {
-               console.log("media abm ctor -- data: "+data);
-        if (data != undefined) {
-
-          if (data.data.abmObject == true) {
-            this.mediaSelected = data.data.rowSelected;
-
-            if (data.data.type != undefined) {
-              this.abmMedia = true;
-            }
-          }
-        }
-      });
 
     this.subscriptionFile = this.appFileService.getUpdateFile().subscribe
       (data => { 
@@ -79,14 +63,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
 
 
   ngOnInit(): void {
-    console.log("media edit init: ");
-
-    if (this.mediaSelected != undefined) {
-      this.mediaGroup = this.CreateForm(this.mediaSelected);
-    } else {
-      this.mediaGroup = this.CreateForm(null);
-    }
-
+    this.mediaGroup = this.CreateForm(null);
     this.media = {
       dateUploaded: new Date,
       description: '',
@@ -96,9 +73,6 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
       event: null,
       tagItems:[]
     }
-
-
-  
   }
 
 
@@ -120,17 +94,14 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
       return this.fb.group({
         Name: [null, [Validators.required]],
         Description: [null],
-        DateUploaded: [null],
-        
+        MediaDateUploaded: [null],
       });
     } else {
-      this.selectedEvent = (mediaEdit.event == null) ? this.selectedEvent : mediaEdit.event;
-
       return this.fb.group({
         Name: new UntypedFormControl(mediaEdit.name ?? null),
         Description: new UntypedFormControl(mediaEdit.description ?? null),
-        DateUploaded: new UntypedFormControl(mediaEdit.dateUploaded ?? null),
-       
+        MediaDateUploaded: new UntypedFormControl(mediaEdit.dateUploaded ?? null),
+
       });
     }
 
@@ -145,7 +116,6 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
       this.mediaToSave.file = this.media.file;
       this.mediaToSave.event = this.selectedEvent;
       this.mediaToSave.tagItems = this.tagItems;
-      this.mediaToSave.description = (this.selectedEvent==null) ? '' : this.selectedEvent.description;
 
       if (this.buttonAction == "Update") {
         this.appMediaService.UpdateMedia(this.mediaSelected.id, this.mediaToSave)
@@ -177,7 +147,6 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptionFile.unsubscribe();
     this.subscriptionEventFilter.unsubscribe();
     this.subscriptionChipTags.unsubscribe();
-    this.subscriptionABMMedia.unsubscribe();
   }
 
   ABMMediaFinished() {

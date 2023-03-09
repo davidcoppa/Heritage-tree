@@ -35,7 +35,6 @@ export class LocationAbmComponent implements OnInit, OnDestroy {
   }
 
   ngOnChanges() {
-
     if (this.abmLocation.type != undefined && this.abmLocation.type == LocationEnum.country) {
       console.log("edit country");
 

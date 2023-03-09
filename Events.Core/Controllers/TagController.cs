@@ -91,7 +91,7 @@ namespace Events.Core.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Edit(int id, TagsEditDTO tagDto)
+        public async Task<IActionResult> Edit(int id, TagsDTO tagDto)
         {
             if (id != tagDto.Id)
             {

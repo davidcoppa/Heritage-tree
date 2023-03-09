@@ -18,10 +18,5 @@ namespace Events.core.Common.Files
         //public List<Model.Files> SetFilesStatus(bool newStatus, List<Model.Files> fileList);
         public Task<MemoryStream> GetPhysicalFile(FileData document);
 
-      //  public string ChangeExtension(string file, string newExtension);
-        public bool FileExists(string urlFile);
-        public string WriteImageThumbnail(string path);
-        public string ChangePathNameNoExtension(string path, string newName);
-
     }
 }

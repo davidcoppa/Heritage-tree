@@ -41,6 +41,7 @@ namespace EventsManager.Data
         public DbSet<City> City { get; set; }
         public DbSet<FileData> FileData { get; set; }
         public DbSet<Tags> Tags { get; set; }
+        public DbSet<MediaTags> MediaTags { get; set; }
         public DbSet<MediaType> MediaType { get; set; }
 
     }

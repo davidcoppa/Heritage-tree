@@ -43,10 +43,6 @@
           <td mat-cell *matCellDef="let row">{{row.state?.data?.length}}</td>
         </ng-container>
 
-
-
-
-
         <ng-container matColumnDef="expandedDetail">
           <td mat-cell *matCellDef="let row" [attr.colspan]="stateDisplaedColumns.length">
             <div class="example-element-detail" *ngIf="row.state?.data?.length"
@@ -171,7 +167,7 @@
 
                   <ng-container matColumnDef="Action">
                     <tr>
-                      <th mat-header-cell *matHeaderCellDef>Action </th>
+                      <th mat-header-cell *matHeaderCellDef> Action </th>
                     </tr>
                     <tr>
                       <td mat-cell *matCellDef="let state" style="width:20%">
@@ -204,11 +200,6 @@
             </div>
           </td>
         </ng-container>
-
-
-
-
-
 
 
         <ng-container matColumnDef="Action">

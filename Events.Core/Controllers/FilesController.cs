@@ -5,13 +5,11 @@ using Events.Core.Common.Validators;
 using Events.Core.DTOs;
 using Events.Core.Model;
 using EventsManager.Data;
-using ImageMagick;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Events.Core.Controllers
 {
@@ -41,13 +39,6 @@ namespace Events.Core.Controllers
             this.fileManager = fileManager;
         }
 
-        //[HttpPost, DisableRequestSizeLimit]
-        //[Route("SetThumbnailFile")]
-        //public async Task<ActionResult> SetThumbnailFile()
-        //{
-
-        //}
-
 
         /// <summary>
         /// Allows to upload a File to put it in a specific folder according to the value of the OrigenDocument
@@ -67,7 +58,6 @@ namespace Events.Core.Controllers
                 var file = formCollection.Files.First();
                 int folder;
                 string dbPath;
-
 
                 if (int.TryParse(file.Name, out folder))//image_data
                 {
@@ -90,9 +80,6 @@ namespace Events.Core.Controllers
 
         }
 
-
-       
-
         /// <summary>
         /// Allow to upload the data of the uploaded file in the database
         /// </summary>
@@ -111,9 +98,7 @@ namespace Events.Core.Controllers
 
                 FileData fileToUpload = mapper.Map<FileData>(newFile);
 
-
-                fileToUpload.UrlPreview=fileManager.ChangePathNameNoExtension(fileToUpload.Url, "-small");
-
+                
                 //check if exist
                 if (newFile.Update)
                 {

@@ -1,9 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, merge, of, startWith, Subscription, switchMap } from 'rxjs';
-import { FileData } from '../../model/fileData.model';
 import { Media } from '../../model/media.model';
 import { AppMediaService } from '../../server/app.media.service';
 
@@ -16,7 +14,6 @@ export class MediaComponent implements OnInit {
 
   @Input() abmObject: boolean;
   media: Media[] = [];
-  file: FileData[]=[];
   @Input() sort!: MatSort;
   @Input() paginator!: MatPaginator;
 
@@ -52,7 +49,7 @@ export class MediaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("init media");
+    console.log("changes people");
     if (this.sort == undefined) { return; }
 
     // If the user changes the sort order, reset back to the first page.
@@ -80,28 +77,7 @@ export class MediaComponent implements OnInit {
 
           return data;
         })
-      //).subscribe(data => this.media = data);
-    ).subscribe(data => {
-      console.log(data);
-
-      this.media = [];
-      this.file = [];
-
-      data.forEach(user => {
-        if (user.file && Array.isArray(user.file) && user.file.length) {
-
-          var userState = user.file;
-
-          this.media = [...this.media, { ...user, file: new MatTableDataSource(userState) }];
-
-        } else {
-          this.media = [...this.media, user];
-        }
-
-      });
-
-
-    });
+      ).subscribe(data => this.media = data);
 
 
   }

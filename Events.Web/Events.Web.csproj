@@ -33,7 +33,6 @@
     <None Remove="ClientApp\src\app\helpers\chips\chips.tags.component.ts" />
     <None Remove="ClientApp\src\app\helpers\enums\location.enum.ts" />
     <None Remove="ClientApp\src\app\helpers\enums\Person.enum.ts" />
-    <None Remove="ClientApp\src\app\helpers\pipes\filterName.pipe.ts" />
     <None Remove="ClientApp\src\app\home\location\location.component.ts" />
     <None Remove="ClientApp\src\app\model\fileData.model.ts" />
     <None Remove="ClientApp\src\app\model\listSubObject.ts" />
@@ -51,7 +50,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\helpers\chips\chips.tags.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\enums\location.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\enums\person.enum.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\helpers\pipes\filterName.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\home\location\location.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\fileData.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\listSubObject.ts" />
@@ -62,15 +60,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\helpers\media\visualization\" />
     <Folder Include="ClientApp\src\app\helpers\media\upload\" />
     <Folder Include="ClientApp\src\app\home\location\Country\State-abm\" />
   </ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Resources\tmp\" />
-	</ItemGroup>
-	
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

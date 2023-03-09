@@ -11,6 +11,5 @@ export interface FileData {
   url: string,
   webUrl: string,
 
-  urlPreview:string
   fileUploaded: boolean
 }

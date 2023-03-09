@@ -48,10 +48,6 @@
               "target": "Package",
               "version": "[1.0.0, )"
             },
-            "Magick.NET-Q16-AnyCPU": {
-              "target": "Package",
-              "version": "[12.3.0, )"
-            },
             "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": {
               "target": "Package",
               "version": "[6.0.4, )"

@@ -11,13 +11,11 @@ namespace EventsManager.Model
     {
         public int Id { get; set; }
         [DataType(DataType.Date)]
-        public DateTime? DateUploaded { get; set; }
+        public DateTime? MediaDateUploaded { get; set; }
         public string? Description { get; set; }
         public string? Name { get; set; }
         public List<FileData>? File { get; set; }
         public Event? Event { get; set; }
-        public List<Tags>? TagItems { get; set; }
-
 
     }
 }
