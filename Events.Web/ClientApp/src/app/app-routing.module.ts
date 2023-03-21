@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { EventComponent } from './home/event/event.component';
 import { EventTypeComponent } from './home/eventType/eventtype.component';
 import { LocationComponent } from './home/location/location.component';

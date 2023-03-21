@@ -1,7 +1,7 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { AfterContentInit, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit,  Component,  ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { delay, filter } from 'rxjs/operators';
+import {  filter } from 'rxjs/operators';
 //import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NavigationEnd, Router } from '@angular/router';
 

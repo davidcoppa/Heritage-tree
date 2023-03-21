@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, Input, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Router } from '@angular/router';
 import { Media } from 'src/app/model/media.model';
 import { AppMediaService } from '../../../server/app.media.service';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -9,6 +8,7 @@ import { ListObject } from '../../../model/listObject.model';
 import { ListSubObject } from '../../../model/listSubObject';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FileData } from '../../../model/fileData.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-media-list',
