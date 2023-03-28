@@ -102,7 +102,7 @@ export class CountrylistComponent implements AfterViewInit {
 
     var elementCity = element as State;
 
-    (elementCity.cities != [] && (elementCity.cities as MatTableDataSource<City>).data?.length) ?
+    (elementCity.cities && (elementCity.cities as MatTableDataSource<City>).data?.length) ?
       (this.expandedElementCity = this.expandedElementCity === elementCity ? null : elementCity) : null;
 
   }
@@ -113,9 +113,10 @@ export class CountrylistComponent implements AfterViewInit {
 
     var elementCountry = element as Country;
 
-    (elementCountry.state != [] && (elementCountry.state as MatTableDataSource<State>).data?.length) ?
+    (elementCountry.state && (elementCountry.state as MatTableDataSource<State>).data?.length) ?
       (this.expandedElement = this.expandedElement === elementCountry ? null : elementCountry) : null;
   }
+  //(elementCity.file as MatTableDataSource<FileData>)
 
   applyFilter(filterValue: string) {
     this.innerTablesState.forEach((table, index) => (table.dataSource as MatTableDataSource<State>).filter = filterValue.trim().toLowerCase());

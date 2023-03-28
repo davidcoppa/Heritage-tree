@@ -24,8 +24,12 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\src\app\helpers\media\visualization\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\src\app\helpers\media\visualization\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\helpers\media\visualization\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="ClientApp\src\app\helpers\media\visualization\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
@@ -62,7 +66,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\helpers\media\visualization\" />
     <Folder Include="ClientApp\src\app\helpers\media\upload\" />
     <Folder Include="ClientApp\src\app\home\location\Country\State-abm\" />
   </ItemGroup>

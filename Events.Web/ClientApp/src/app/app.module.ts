@@ -49,6 +49,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { FilterEventComponent } from './helpers/filters/event/filterEvent.component';
 import { ChipsTags } from './helpers/chips/chips.tags.component';
 import { FilterNamePipe } from './helpers/pipes/filterName.pipe';
+import { NgImageSliderModule } from 'ng-image-slider';
 
 
 
@@ -106,6 +107,7 @@ import { FilterNamePipe } from './helpers/pipes/filterName.pipe';
       timeOut: 2000,
       positionClass: 'toast-top-right'
     }),
+    NgImageSliderModule
   ],
   providers: [AppService, AppMediaService, AppFileService, HttpClient,
     { provide: MAT_DATE_LOCALE, useValue: 'en-ES' },

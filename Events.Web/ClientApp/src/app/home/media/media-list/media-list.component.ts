@@ -83,7 +83,7 @@ export class MediaListComponent implements AfterViewInit {
 
     var elementCity = element as Media;
     //unknown
-    (elementCity.file != [] && (elementCity.file as MatTableDataSource<FileData>).data?.length) ?
+    (elementCity.file && (elementCity.file as MatTableDataSource<FileData>).data?.length) ?
       (this.expandedElementMedia = this.expandedElementMedia === elementCity ? null : elementCity) : null;
 
 
