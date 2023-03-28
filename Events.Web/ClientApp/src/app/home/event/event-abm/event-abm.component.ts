@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { first, Subscription } from 'rxjs';
@@ -16,17 +16,17 @@ import { ListObject } from '../../../model/listObject.model';
   templateUrl: './event-abm.component.html',
   styleUrls: ['./event-abm.component.css']
 })
-export class EventAbmComponent implements OnInit {
+export class EventAbmComponent implements OnInit, OnDestroy {
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Date>;
   @Input() eventSelected: Events;
   @Input() abmEvent: boolean;
 
-  event: FormGroup;
-  fb: FormBuilder;
+  event: UntypedFormGroup;
+  fb: UntypedFormBuilder;
   evt: Events;
   buttonAction: string = "Add";
 
-  listModel: ListObject;
+  //listModel: ListObject;
 
   selectedEventType: EventType;
 
@@ -37,7 +37,11 @@ export class EventAbmComponent implements OnInit {
   private subscriptionPeopleFilter: Subscription;
   private subscriptionEventFilter: Subscription;
 
-  constructor(fb: FormBuilder, private service: AppService, private dateAdapter: DateAdapter<Date>, private dataSer: CustomDateAdapterService) {
+  constructor(fb: UntypedFormBuilder,
+    private service: AppService,
+    private dateAdapter: DateAdapter<Date>,
+    private dataSer: CustomDateAdapterService) {
+
     this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
 
     this.fb = fb;
@@ -90,7 +94,7 @@ export class EventAbmComponent implements OnInit {
 
   }
 
-  CreateForm(eventEdit: Events | null): FormGroup {
+  CreateForm(eventEdit: Events | null): UntypedFormGroup {
    
 
     this.personSelectedData1 = new displayPeople();
@@ -106,7 +110,7 @@ export class EventAbmComponent implements OnInit {
 
       return this.fb.group({
         title: [null, [Validators.required]],
-        description: [null],
+        //description: [null],
         eventDate: [null],
         eventType: [null],
         person1: [null],
@@ -130,15 +134,15 @@ export class EventAbmComponent implements OnInit {
 
 
       return this.fb.group({
-        title: new FormControl(eventEdit.title ?? null),
-        description: new FormControl(eventEdit.description ?? null),
-        eventDate: new FormControl(eventEdit.eventDate ?? null),
-        eventType: new FormControl(eventEdit.eventType ?? null),
-        person1: new FormControl(eventEdit.person1 ?? null),
-        person2: new FormControl(eventEdit.person2 ?? null),
-        person3: new FormControl(eventEdit.person3 ?? null),
-        location: new FormControl(eventEdit.location ?? null),
-        media: new FormControl(eventEdit.media ?? null)
+        title: new UntypedFormControl(eventEdit.title ?? null),
+        //description: new UntypedFormControl(eventEdit.description ?? null),
+        eventDate: new UntypedFormControl(eventEdit.eventDate ?? null),
+        eventType: new UntypedFormControl(eventEdit.eventType ?? null),
+        person1: new UntypedFormControl(eventEdit.person1 ?? null),
+        person2: new UntypedFormControl(eventEdit.person2 ?? null),
+        person3: new UntypedFormControl(eventEdit.person3 ?? null),
+        location: new UntypedFormControl(eventEdit.location ?? null),
+        media: new UntypedFormControl(eventEdit.media ?? null)
 
       });
     }
@@ -156,7 +160,7 @@ export class EventAbmComponent implements OnInit {
     }
   }
 
-  SaveEvent(EventABM: FormGroup) {
+  SaveEvent(EventABM: UntypedFormGroup) {
     this.evt = EventABM.value as Events;
     
 
@@ -193,6 +197,12 @@ export class EventAbmComponent implements OnInit {
       this.evt.person1 = this.personSelectedData1.personSelected;
       this.evt.person2 = this.personSelectedData2.personSelected;
       this.evt.person3 = this.personSelectedData3.personSelected;
+
+
+      if (!this.evt.title.includes(this.evt.person1.firstName)) {
+        this.evt.title += " "+this.evt.person1.firstName;
+      }
+
 
       this.service.AddEvent(this.evt).pipe(first())
         .subscribe(

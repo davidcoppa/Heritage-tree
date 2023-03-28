@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs';
 import { EventType } from '../../../model/eventType.model';
 import { ListObject } from '../../../model/listObject.model';
@@ -15,15 +15,15 @@ export class EventtypeAbmComponent implements OnInit {
   @Input() eventTypeSelected: EventType;
   @Input() abmEventType: boolean;
 
-  eventTypesGroup: FormGroup;
-  fb: FormBuilder;
+  eventTypesGroup: UntypedFormGroup;
+  fb: UntypedFormBuilder;
   eventTypes: EventType;
 
   buttonAction: string = "Add";
   listModel: ListObject;
 
 
-  constructor(fb: FormBuilder, private service: AppService) {
+  constructor(fb: UntypedFormBuilder, private service: AppService) {
     this.fb = fb;
 
   }
@@ -38,7 +38,7 @@ export class EventtypeAbmComponent implements OnInit {
     }
   }
 
-  CreateForm(eventTypeEdit: EventType | null): FormGroup {
+  CreateForm(eventTypeEdit: EventType | null): UntypedFormGroup {
     if (eventTypeEdit == null) {
 
       return this.fb.group({
@@ -52,9 +52,9 @@ export class EventtypeAbmComponent implements OnInit {
       this.buttonAction = "Update";
 
       return this.fb.group({
-        id: new FormControl(this.eventTypeSelected.id),
-        name: new FormControl(eventTypeEdit.name ?? null),
-        description: new FormControl(eventTypeEdit.description ?? null),
+        id: new UntypedFormControl(this.eventTypeSelected.id),
+        name: new UntypedFormControl(eventTypeEdit.name ?? null),
+        description: new UntypedFormControl(eventTypeEdit.description ?? null),
 
       });
     }
@@ -69,7 +69,7 @@ export class EventtypeAbmComponent implements OnInit {
   }
 
 
-  SaveEventType(evt: FormGroup) {
+  SaveEventType(evt: UntypedFormGroup) {
     this.eventTypes = evt.value as EventType;
 
 

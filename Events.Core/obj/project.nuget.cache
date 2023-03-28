@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "QKJqdYYk4LlkY8l+VE2syxgBLYXGNBf8BHVq5OpwizB8L7A1y7pSCF093dUOoH5Q+SomMUrbBYp3UGNN3KVWLQ==",
+  "dgSpecHash": "FdEaxdlA8DvDukWSYqKAp4bt7bmfIyn1BvX4EM/LCgpQXX/XDeZL5ZUKar6G+Yn2aNYEL893LOZJE9zI6HH9Rw==",
   "success": true,
-  "projectFilePath": "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj",
+  "projectFilePath": "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\matlock\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\dynamiclinq\\1.0.0\\dynamiclinq.1.0.0.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\matlock\\.nuget\\packages\\magick.net-q16-anycpu\\12.3.0\\magick.net-q16-anycpu.12.3.0.nupkg.sha512",
+    "C:\\Users\\matlock\\.nuget\\packages\\magick.net.core\\12.3.0\\magick.net.core.12.3.0.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\messagepack.annotations\\2.1.152\\messagepack.annotations.2.1.152.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\messagepackanalyzer\\2.1.152\\messagepackanalyzer.2.1.152.nupkg.sha512",

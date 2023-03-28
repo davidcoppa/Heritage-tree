@@ -1,49 +1,39 @@
 <div class="mat-card">
 
-    <form class="form mat-card" [formGroup]="mediaGroup" flex="50" fxLayout="column" (ngSubmit)="SaveMedia(mediaGroup)">
-  
-  
-      <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
-        <mat-label>Name</mat-label>
-        <input matInput inputmode="text" placeholder="Name *" formControlName="Name" #nameInput>
-      </mat-form-field>
+  <form class="form mat-card" [formGroup]="mediaGroup" flex="50" fxLayout="column">
 
-      <mat-form-field class="ml-3 mat-form-field--inline" flex="50" fxLayout="column" appearance="fill">
-        <mat-label>Description</mat-label>
-        <input matInput inputmode="text" placeholder="Description" formControlName="Description" #nameInput>
-      </mat-form-field>
-  
-      <mat-form-field class="mat-form-field--inline" appearance="fill">
-        <mat-label>MediaDate</mat-label>
-        <input matInput inputmode="date" [matDatepicker]="MediaDate" formControlName="MediaDate">
-        <mat-datepicker-toggle matSuffix [for]="MediaDate">
-          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-        </mat-datepicker-toggle>
-        <mat-datepicker #MediaDate></mat-datepicker>
-        <mat-hint>DD/MM/YYYY</mat-hint>
-      </mat-form-field>
 
-      <mat-form-field class="mat-form-field--inline" appearance="fill">
-        <mat-label>MediaDateUploaded</mat-label>
-        <input matInput inputmode="date" [matDatepicker]="MediaDateUploaded" formControlName="MediaDateUploaded">
-        <mat-datepicker-toggle matSuffix [for]="MediaDateUploaded">
-          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-        </mat-datepicker-toggle>
-        <mat-datepicker #MediaDateUploaded></mat-datepicker>
-        <mat-hint>DD/MM/YYYY</mat-hint>
-      </mat-form-field>
+    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput inputmode="text" placeholder="Name *" formControlName="Name" #nameInput>
+    </mat-form-field>
 
-      <mat-form-field class="mat-form-field--inline" appearance="fill">
-        <mat-label>MediaType</mat-label>
-        <input matInput inputmode="text" placeholder="MediaType" formControlName="MediaType" #nameInput>
-      </mat-form-field>
+    <mat-form-field class="ml-3 mat-form-field--inline" flex="50" fxLayout="column" appearance="fill">
+      <mat-label>Description</mat-label>
+      <input matInput inputmode="text" placeholder="Description" formControlName="Description" #nameInput>
+    </mat-form-field>
 
-      <mat-form-field class="mat-form-field--inline" appearance="fill">
-        <mat-label>UrlFile</mat-label>
-        <input matInput inputmode="text" placeholder="UrlFile" formControlName="UrlFile" #nameInput>
-      </mat-form-field>
+    <mat-form-field class="mat-form-field--inline" appearance="fill">
+      <mat-label>MediaDate</mat-label>
+      <input matInput inputmode="date" [matDatepicker]="MediaDate" formControlName="DateUploaded">
+      <mat-datepicker-toggle matSuffix [for]="MediaDate">
+        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker #MediaDate></mat-datepicker>
+      <mat-hint>DD/MM/YYYY</mat-hint>
+    </mat-form-field>
 
-     
-      <button mat-raised-button color="primary" type="submit" [disabled]="!mediaGroup.valid">Add</button>
-    </form>
+    <app-filter-Event [dataEvent]="selectedEvent"></app-filter-Event>
+    <app-chips-autocomplete></app-chips-autocomplete>
+
+   <!-- <ng-image-slider [images]="imageObject" #nav></ng-image-slider>-->
+
+
+
+    <ng-container>
+      <app-FileUpload [dataMedia]=media></app-FileUpload>
+    </ng-container>
+
+    <button mat-raised-button color="primary" (click)="SaveMedia(mediaGroup)" [disabled]="!mediaGroup.valid">Add</button>
+  </form>
   </div>

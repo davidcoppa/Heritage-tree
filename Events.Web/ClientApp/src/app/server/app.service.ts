@@ -5,11 +5,11 @@ import { SortDirection } from "@angular/material/sort";
 import { Person } from "../model/person.model";
 import { Events } from "../model/event.model";
 import { EventType } from "../model/eventType.model";
-import { Media } from "../model/media.model";
 import { Country } from "../model/country.model";
 import { State } from "../model/state.model";
 import { City } from "../model/city.model";
-import { PersonWithParents, rootValues } from "../model/PersonWithParents.model";
+import { rootValues } from "../model/PersonWithParents.model";
+import { TagItem } from "../model/tagItem.model";
 
 @Injectable()
 export class AppService {
@@ -24,6 +24,8 @@ export class AppService {
   subjectState = new Subject<any>();
   subjectCity = new Subject<any>();
   subjectAbmLocation = new Subject<any>();
+  subjectEvent = new Subject<any>();
+  subjectChip = new Subject<any>();
 
   sendUpdateObject(file: any) { //the component that wants to update something, calls this fn
     this.subjectName.next({ data: file }); //next() will feed the value in Subject
@@ -49,6 +51,14 @@ export class AppService {
   }
   sendUpdateEventType(file: any) {
     this.subjectEventType.next({ data: file });
+  }
+
+  //Event filter list
+  getUpdateEvent(): Observable<any> {
+    return this.subjectEvent.asObservable();
+  }
+  sendUpdateEvent(file: any) {
+    this.subjectEvent.next({ data: file });
   }
 
   //Country filter lisr
@@ -83,6 +93,14 @@ export class AppService {
     this.subjectCity.next({ data: file });
   }
 
+  //tags
+  getUpdateChipTag(): Observable<any> {
+    return this.subjectChip.asObservable();
+  }
+  sendUpdateChipTag(file: any) {
+    this.subjectChip.next({ data: file });
+  }
+
   //get params on search
   private GetParams(sort: string, order: string, page: number, itemsPage: number, search: string) {
     let queryParams = new HttpParams();
@@ -100,7 +118,6 @@ export class AppService {
 
     return this.httpClient.get<Person[]>('api/People/GetFilter', { params: queryParams });
   }
-
 
   AddPerson(newPerson: Person): Observable<Person> {
 
@@ -146,6 +163,7 @@ export class AppService {
 
     return this.httpClient.get<EventType[]>('api/EventTypes/Get', { params: queryParams });
   }
+
   UpdateEventType(id: number, newEventType: EventType): Observable<EventType> {
 
     let queryParams = new HttpParams();
@@ -156,6 +174,7 @@ export class AppService {
       , { params: queryParams });
 
   }
+
   AddEventType(newEventType: EventType): Observable<EventType> {
 
     return this.httpClient.post<EventType>('api/EventTypes/Create', newEventType);
@@ -169,7 +188,6 @@ export class AppService {
 
     return this.httpClient.get<Country[]>('api/Country/GetFilterCountry', { params: queryParams });
   }
-
 
   UpdateCountries(id: number, newLocation: Country): Observable<Country> {
 
@@ -185,14 +203,12 @@ export class AppService {
   }
 
   //GetStates 
-
   GetStates(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<State[]> {
     let queryParams = this.GetParams(sort, order, page, itemsPage, search);
 
 
     return this.httpClient.get<State[]>('api/State/GetFilterState', { params: queryParams });
   }
-
 
   UpdateStates(id: number, newLocation: State): Observable<State> {
 
@@ -204,6 +220,7 @@ export class AppService {
       , { params: queryParams });
 
   }
+
   AddStates(newLocation: State): Observable<State> {
 
     return this.httpClient.post<State>('api/State/CreateState', newLocation);
@@ -228,6 +245,7 @@ export class AppService {
       , { params: queryParams });
 
   }
+
   AddCity(newLocation: City): Observable<City> {
 
     return this.httpClient.post<City>('api/City/CreateCity', newLocation);
@@ -235,8 +253,7 @@ export class AppService {
   }
 
   //GetDataToVisualize
-
-  GetDataToVisualize(id: number): Observable<rootValues> { 
+  GetDataToVisualize(id: number): Observable<rootValues> {
     let queryParams = new HttpParams();
     queryParams = queryParams.append("idPerson", id);
 
@@ -244,17 +261,30 @@ export class AppService {
   }
 
 
+  //tags
+  //GetAllTags
+  GetAllTags(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<TagItem[]> {
 
-
-  //TODO: add media type
-  getMedia(sort: string, order: SortDirection, page: number, itemsPage: number, search: string): Observable<Media[]> {
     let queryParams = this.GetParams(sort, order, page, itemsPage, search);
 
-    return this.httpClient.get<Media[]>('api/Media/GetFilter', { params: queryParams });
+    return this.httpClient.get<TagItem[]>('api/Tag/GetFilter', { params: queryParams });
   }
 
-  AddMedia(media: Media): Observable<Media> {
-    return this.httpClient.post<Media>('api/Media/Create', media);
+  UpdateTag(id: number, newLocation: TagItem): Observable<TagItem> {
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("id", id);
+
+    return this.httpClient.post<TagItem>('api/Tag/Edit'
+      , newLocation
+      , { params: queryParams });
+
+  }
+
+  AddTag(newLocation: TagItem): Observable<TagItem> {
+
+    return this.httpClient.post<TagItem>('api/Tag/Create', newLocation);
+
   }
 
 

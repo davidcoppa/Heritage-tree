@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
+using Events.core.Common.Files;
 using Events.Core.Common;
 using Events.Core.Common.Helpers;
 using Events.Core.Common.Messages;
 using Events.Core.Common.Validators;
 using EventsManager.Data;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using System.Text.Json.Serialization;
 
 namespace Events.Web
 {
@@ -25,11 +29,26 @@ namespace Events.Web
             services.AddDataProtection();
             services.AddControllersWithViews();
 
+            services.AddResponseCompression(options =>
+            {
+                options.Providers.Add<BrotliCompressionProvider>();
+            });
+
+            services.AddHsts(
+                options =>
+                {
+                    options.Preload = true;
+                    options.IncludeSubDomains = true;
+                    options.MaxAge = TimeSpan.FromDays(180);
+                });
+
+
             services.AddDbContext<EventsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
 
             services.AddSingleton(provider =>
 
@@ -43,9 +62,11 @@ namespace Events.Web
             services.AddSingleton<IDataValidator, DataValidator>();
             services.AddSingleton<IMessages, En_Messages>();
             services.AddSingleton<IHelper, Helper>();
-           
-           
+            services.AddSingleton<IFileManager, FileManager>();
+            //  services.AddCors();
 
+            services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 
         }
@@ -55,6 +76,15 @@ namespace Events.Web
         {
             app.UseHsts();
             app.UseHttpsRedirection();
+            app.UseResponseCompression();
+
+            //app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
+
 
             app.UseAuthentication();
 
@@ -69,8 +99,6 @@ namespace Events.Web
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             }
-
-            app.UseStaticFiles();
 
             app.UseRouting();
 

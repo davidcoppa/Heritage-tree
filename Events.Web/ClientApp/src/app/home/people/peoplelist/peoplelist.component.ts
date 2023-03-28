@@ -2,9 +2,9 @@ import { Component, AfterViewInit, ViewChild, OnInit, Input, Output } from '@ang
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { Gender } from 'src/app/helpers/enums/gender.enum';
 import { Person } from 'src/app/model/person.model';
 import { AppService } from 'src/app/server/app.service';
+import { Gender } from '../../../helpers/enums/gender.enum';
 import { ListObject } from '../../../model/listObject.model';
 
 @Component({

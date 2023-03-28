@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { first, Subscription } from 'rxjs';
 import { Person } from 'src/app/model/person.model';
@@ -17,13 +17,13 @@ import { displayPeople } from '../../../model/displayPeople.model';
   styleUrls: ['./people-abm.component.css'],
 
 })
-export class PeopleABMComponent implements OnInit, OnChanges {
+export class PeopleABMComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Date>;
   @Input() personSelected: Person;
   @Input() abmperson: boolean;
 
-  people: FormGroup;
-  fb: FormBuilder;
+  people: UntypedFormGroup;
+  fb: UntypedFormBuilder;
 
   genderList = Gender;
   person: Person;
@@ -38,7 +38,7 @@ export class PeopleABMComponent implements OnInit, OnChanges {
 
 
 
-  constructor(fb: FormBuilder, private service: AppService, private dateAdapter: DateAdapter<Date>, private dataSer: CustomDateAdapterService) {
+  constructor(fb: UntypedFormBuilder, private service: AppService, private dateAdapter: DateAdapter<Date>, private dataSer: CustomDateAdapterService) {
     this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
 
     this.fb = fb;
@@ -70,7 +70,7 @@ export class PeopleABMComponent implements OnInit, OnChanges {
 
   }
 
-  CreateForm(personEdit: Person | null): FormGroup {
+  CreateForm(personEdit: Person | null): UntypedFormGroup {
 
     this.personSelectedData2 = new displayPeople();
     this.personSelectedData3 = new displayPeople();
@@ -102,17 +102,17 @@ export class PeopleABMComponent implements OnInit, OnChanges {
       this.personSelectedData3.personSelected = this.personSelected.mother;
 
       return this.fb.group({
-        id: new FormControl(this.personSelected.id),
-        firstName: new FormControl(personEdit.firstName ?? null),
-        secondName: new FormControl(personEdit.secondName ?? null),
-        firstSurname: new FormControl(personEdit.firstSurname ?? null),
-        secondSurname: new FormControl(personEdit.secondSurname ?? null),
-        sex: new FormControl(personEdit.sex ?? null),
-        order: new FormControl(personEdit.order ?? null),
-        dateOfBirth: new FormControl(personEdit.dateOfBirth ?? null),
-        placeOfBirth: new FormControl(personEdit.placeOfBirth ?? null),
-        dateOfDeath: new FormControl(personEdit.dateOfDeath ?? null),
-        placeOfDeath: new FormControl(personEdit.placeOfDeath ?? null)
+        id: new UntypedFormControl(this.personSelected.id),
+        firstName: new UntypedFormControl(personEdit.firstName ?? null),
+        secondName: new UntypedFormControl(personEdit.secondName ?? null),
+        firstSurname: new UntypedFormControl(personEdit.firstSurname ?? null),
+        secondSurname: new UntypedFormControl(personEdit.secondSurname ?? null),
+        sex: new UntypedFormControl(personEdit.sex ?? null),
+        order: new UntypedFormControl(personEdit.order ?? null),
+        dateOfBirth: new UntypedFormControl(personEdit.dateOfBirth ?? null),
+        placeOfBirth: new UntypedFormControl(personEdit.placeOfBirth ?? null),
+        dateOfDeath: new UntypedFormControl(personEdit.dateOfDeath ?? null),
+        placeOfDeath: new UntypedFormControl(personEdit.placeOfDeath ?? null)
 
       });
     }
@@ -128,7 +128,7 @@ export class PeopleABMComponent implements OnInit, OnChanges {
   }
 
 
-  SavePerson(people: FormGroup) {
+  SavePerson(people: UntypedFormGroup) {
     this.person = people.value as Person;
 
     if (this.person.dateOfBirth != undefined) {
@@ -175,6 +175,10 @@ export class PeopleABMComponent implements OnInit, OnChanges {
         );
     }
 
+  }
+
+  ngOnDestroy() {
+    this.subscriptionPeopleFilter.unsubscribe();
   }
 
   ABMPersonFinished() {

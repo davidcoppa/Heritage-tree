@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit} from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { map, startWith, Observable, first, Subscription } from "rxjs";
 import { displayPeople } from "../../../model/displayPeople.model";
 import { Person } from "../../../model/person.model";
@@ -15,7 +15,7 @@ export class FilterPeopleComponent implements OnInit, OnChanges {
 
   optionsPersons: Person[];
   personsOptions: Observable<Person[]>;
-  personControl = new FormControl('');
+  personControl = new UntypedFormControl('');
 
 
   constructor(private service: AppService) {

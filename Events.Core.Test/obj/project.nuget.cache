@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hGMzPT1JR+doNlDf1CBYnmDnH8y++FRnYI5+a4ck99Q3NrKG/KfhTJjr9OvWQkYMJBgyef2oHEY4k3nQTmornw==",
+  "dgSpecHash": "KFZPEUgoQt84+b7rdhd7mGpNnbGezdsDifvvHqyuN4xkvnxxU8VpSffhGqgVsyD6pDDBRbVeblI1ErDeXHdZXQ==",
   "success": true,
-  "projectFilePath": "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core.Test\\Events.Core.Test.csproj",
+  "projectFilePath": "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core.Test\\Events.Core.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\matlock\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\matlock\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",

@@ -34,12 +34,14 @@ namespace EventsManager.Data
 
         public DbSet<Event> Event { get; set; }
         public DbSet<EventTypes> EventType { get; set; }
-        public DbSet<Media> Photos { get; set; }
+        public DbSet<Media> Media { get; set; }
         public DbSet<Person> Person { get; set; }
         public DbSet<Country> Country { get; set; }
         public DbSet<States> State { get; set; }
         public DbSet<City> City { get; set; }
-        public DbSet<ParentPerson> ParentPerson { get; set; }
+        public DbSet<FileData> FileData { get; set; }
+        public DbSet<Tags> Tags { get; set; }
+        public DbSet<MediaType> MediaType { get; set; }
 
     }
 }

@@ -24,16 +24,27 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\src\app\helpers\media\visualization\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\src\app\helpers\media\visualization\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\helpers\media\visualization\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="ClientApp\src\app\helpers\media\visualization\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\helpers\chips\chips.tags.component.ts" />
     <None Remove="ClientApp\src\app\helpers\enums\location.enum.ts" />
     <None Remove="ClientApp\src\app\helpers\enums\Person.enum.ts" />
+    <None Remove="ClientApp\src\app\helpers\pipes\filterName.pipe.ts" />
     <None Remove="ClientApp\src\app\home\location\location.component.ts" />
+    <None Remove="ClientApp\src\app\model\fileData.model.ts" />
     <None Remove="ClientApp\src\app\model\listSubObject.ts" />
+    <None Remove="ClientApp\src\app\model\user.ts" />
+    <None Remove="ClientApp\src\app\server\app.auth.ts" />
+    <None Remove="ClientApp\src\app\server\app.file.service.ts" />
+    <None Remove="ClientApp\src\app\server\app.media.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,16 +52,28 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\helpers\chips\chips.tags.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\enums\location.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\enums\person.enum.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\helpers\pipes\filterName.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\home\location\location.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\fileData.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\listSubObject.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\user.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\server\app.auth.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\server\app.file.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\server\app.media.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\helpers\media\upload\" />
     <Folder Include="ClientApp\src\app\home\location\Country\State-abm\" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Folder Include="Resources\tmp\" />
+	</ItemGroup>
+	
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

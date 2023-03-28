@@ -18,8 +18,8 @@ namespace Events.Core.Common
             CreateMap<Person, PersonEditDTO>().ReverseMap();
             CreateMap<Person, PersonWithParents>().ReverseMap();
 
-            CreateMap<ParentPerson, ParentPersonCreateDTO>().ReverseMap();
-            CreateMap<ParentPerson, ParentPersonEditDTO>().ReverseMap();
+            //CreateMap<ParentPerson, ParentPersonCreateDTO>().ReverseMap();
+            //CreateMap<ParentPerson, ParentPersonEditDTO>().ReverseMap();
 
             CreateMap<EventTypes, EventTypeCreateDTO>().ReverseMap();
             CreateMap<EventTypes, EventTypeEditDTO>().ReverseMap();
@@ -36,6 +36,13 @@ namespace Events.Core.Common
             CreateMap<CityReturnDTO, City>().ReverseMap();
             CreateMap<CityCreateDTO, City>().ReverseMap();
             CreateMap<CityEditDTO, City>().ReverseMap();
+
+
+
+            CreateMap<MediaCreateDTO, Media>().ReverseMap();
+            CreateMap<FileDataCreateDTO, FileData>().ReverseMap();
+            CreateMap<MediaTypeDTO, MediaType>().ReverseMap();
+            CreateMap<TagsDTO, Tags>().ReverseMap();
             
 
         }

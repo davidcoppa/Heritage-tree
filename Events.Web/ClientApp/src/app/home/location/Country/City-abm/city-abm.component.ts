@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { first, Subscription } from 'rxjs';
 import { AppService } from 'src/app/server/app.service';
 import { City } from '../../../../model/city.model';
@@ -13,8 +13,8 @@ export class CityAbmComponent implements OnInit, OnDestroy {
   @Input() citySelected: City;
   @Input() abmCity: boolean;
 
-  city: FormGroup;
-  fb: FormBuilder;
+  city: UntypedFormGroup;
+  fb: UntypedFormBuilder;
   evt: City;
   buttonAction: string;
 
@@ -22,7 +22,7 @@ export class CityAbmComponent implements OnInit, OnDestroy {
 
   private subscriptionCityFilter: Subscription;
 
-  constructor(fb: FormBuilder, private service: AppService) {
+  constructor(fb: UntypedFormBuilder, private service: AppService) {
 
     this.fb = fb;
 
@@ -47,7 +47,7 @@ export class CityAbmComponent implements OnInit, OnDestroy {
     }
   }
 
-  CreateForm(cityEdit: City | null): FormGroup {
+  CreateForm(cityEdit: City | null): UntypedFormGroup {
     if (cityEdit == null) {
 
       this.buttonAction = "Add";
@@ -64,11 +64,11 @@ export class CityAbmComponent implements OnInit, OnDestroy {
       this.buttonAction = "Update";
 
       return this.fb.group({
-        name: new FormControl(cityEdit.name ?? null),
-        code: new FormControl(cityEdit.code ?? null),
-        capital: new FormControl(cityEdit.capital ?? null),
-        region: new FormControl(cityEdit.region ?? null),
-        coordinates: new FormControl(cityEdit.coordinates ?? null)        
+        name: new UntypedFormControl(cityEdit.name ?? null),
+        code: new UntypedFormControl(cityEdit.code ?? null),
+        capital: new UntypedFormControl(cityEdit.capital ?? null),
+        region: new UntypedFormControl(cityEdit.region ?? null),
+        coordinates: new UntypedFormControl(cityEdit.coordinates ?? null)        
       });
     }
 
@@ -84,7 +84,7 @@ export class CityAbmComponent implements OnInit, OnDestroy {
     }
   }
 
-  SaveCity(cityABM: FormGroup) {
+  SaveCity(cityABM: UntypedFormGroup) {
     this.evt = cityABM.value as City;
 
 

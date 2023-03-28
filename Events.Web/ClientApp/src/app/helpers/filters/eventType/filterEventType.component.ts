@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { map, startWith, Observable, first } from "rxjs";
 import { displayPeople } from "../../../model/displayPeople.model";
 import { EventType } from "../../../model/eventType.model";
@@ -16,7 +16,7 @@ export class FilterEventTypeComponent implements OnInit {
   selectedEventType: EventType;
 
   optionsEventType: EventType[];
-  eventTypesControl = new FormControl('');
+  eventTypesControl = new UntypedFormControl('');
   EventTypesOptions: Observable<EventType[]>;
 
   personSelectedData: displayPeople;

@@ -12703,11 +12703,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core.Test\\Events.Core.Test.csproj",
+      "projectUniqueName": "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core.Test\\Events.Core.Test.csproj",
       "projectName": "Events.Core.Test",
-      "projectPath": "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core.Test\\Events.Core.Test.csproj",
+      "projectPath": "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core.Test\\Events.Core.Test.csproj",
       "packagesPath": "C:\\Users\\matlock\\.nuget\\packages\\",
-      "outputPath": "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core.Test\\obj\\",
+      "outputPath": "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core.Test\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\matlock\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -12724,8 +12724,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj": {
-              "projectPath": "D:\\Dropbox\\david\\code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj"
+            "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj": {
+              "projectPath": "D:\\Mega\\David\\Code\\C-S\\Heritage-tree\\Events.Core\\Events.Core.csproj"
             }
           }
         }

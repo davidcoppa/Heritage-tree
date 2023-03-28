@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { map, startWith, Observable, first } from "rxjs";
 import { State } from "../../../../model/state.model";
 import { AppService } from "../../../../server/app.service";
@@ -15,7 +15,7 @@ export class FilterStatesComponent implements OnInit {
   selectedState: State;
 
   optionsStates: State[];
-  statesControl = new FormControl('');
+  statesControl = new UntypedFormControl('');
   statesOptions: Observable<State[]>;
 
   constructor(private service: AppService) {

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { map, startWith, Observable, first } from "rxjs";
 import { City } from "../../../../model/city.model";
 import { AppService } from "../../../../server/app.service";
@@ -15,7 +15,7 @@ export class FilterCityComponent implements OnInit {
   selectedCity: City;
 
   optionsCities: City[];
-  citiesControl = new FormControl('');
+  citiesControl = new UntypedFormControl('');
   citiesOptions: Observable<City[]>;
 
   constructor(private service: AppService) {

@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Events.Core.Common.Messages;
 using Events.Core.Controllers;
 using Events.Core.Common.Helpers;
+using Events.core.Common.Files;
+using Microsoft.Extensions.FileProviders;
 
 namespace EventsManager
 {
@@ -64,6 +66,7 @@ namespace EventsManager
             services.AddSingleton<IDataValidator, DataValidator>();
             services.AddSingleton<IMessages, En_Messages>();
             services.AddSingleton<IHelper, Helper>();
+            services.AddSingleton<IFileManager, FileManager>();
 
             services.AddSwaggerGen(c =>
             {
@@ -116,7 +119,11 @@ namespace EventsManager
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             }
 
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
             app.UseRouting();
 

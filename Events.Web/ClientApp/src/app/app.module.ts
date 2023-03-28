@@ -10,7 +10,7 @@ import { PeoplelistComponent } from './home/people/peoplelist/peoplelist.compone
 import { PeopleComponent } from './home/people/people.component';
 import { PeopleABMComponent } from './home/people/people-abm/people-abm.component';
 import { AppService } from './server/app.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { EventlistComponent } from './home/event/eventlist/eventlist.component';
 import { EventAbmComponent } from './home/event/event-abm/event-abm.component';
 import { EventComponent } from './home/event/event.component';
@@ -39,8 +39,17 @@ import { LocationAbmComponent } from './home/location/Country/location-abm/locat
 import { FilterCityComponent } from './helpers/filters/Location/Cities/filterCity.component';
 import { FilterStatesComponent } from './helpers/filters/Location/States/filterStates.component';
 import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.component';
-
-
+import { AppMediaService } from './server/app.media.service';
+import { AppFileService } from './server/app.file.service';
+import { FileUploadComponent } from './helpers/media/upload/FileUpload.component';
+import { AuthInterceptor, ErrorInterceptor } from './helpers/interceptors';
+import { environment } from '../environments/environment';
+import { ServiceWorkerModule } from "@angular/service-worker";
+import { ToastrModule } from 'ngx-toastr';
+import { FilterEventComponent } from './helpers/filters/event/filterEvent.component';
+import { ChipsTags } from './helpers/chips/chips.tags.component';
+import { FilterNamePipe } from './helpers/pipes/filterName.pipe';
+import { NgImageSliderModule } from 'ng-image-slider';
 
 
 
@@ -55,6 +64,7 @@ import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.com
     EventAbmComponent,
     EnumPipe,
     CustomDatePipe,
+    FilterNamePipe,
     EventTypeComponent,
     EventtypeAbmComponent,
     EventtypelistComponent,
@@ -75,9 +85,17 @@ import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.com
     CityAbmComponent,
     StateAbmComponent,
     LocationAbmComponent,
-    SunburstComponent
+    SunburstComponent,
+    FilterEventComponent,
+    //media
+    FileUploadComponent,
+    ChipsTags
   ],
   imports: [
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      registrationStrategy: 'registerImmediately',
+    }),
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
@@ -85,13 +103,17 @@ import { SunburstComponent } from './helpers/visualization/sunburst/sunburst.com
     FormsModule,
     ReactiveFormsModule,
     AppMaterial,
-
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: 'toast-top-right'
+    }),
+    NgImageSliderModule
   ],
-  providers: [AppService, HttpClient,
-                  { provide: MAT_DATE_LOCALE, useValue: 'en-ES' },
+  providers: [AppService, AppMediaService, AppFileService, HttpClient,
+    { provide: MAT_DATE_LOCALE, useValue: 'en-ES' },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent],
-  entryComponents: [CountrylistComponent]
-  
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

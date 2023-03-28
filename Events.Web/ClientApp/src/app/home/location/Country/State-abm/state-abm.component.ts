@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { first, Subscription } from 'rxjs';
 import { AppService } from 'src/app/server/app.service';
 import { ListObject } from '../../../../model/listObject.model';
@@ -13,8 +13,8 @@ export class StateAbmComponent implements OnInit, OnDestroy {
   @Input() stateSelected: State;
   @Input() abmState: boolean;
 
-  state: FormGroup;
-  fb: FormBuilder;
+  state: UntypedFormGroup;
+  fb: UntypedFormBuilder;
   evt: State;
   buttonAction: string;
 
@@ -22,7 +22,7 @@ export class StateAbmComponent implements OnInit, OnDestroy {
 
   private subscriptionStateFilter: Subscription;
 
-  constructor(fb: FormBuilder, private service: AppService) {
+  constructor(fb: UntypedFormBuilder, private service: AppService) {
     this.fb = fb;
 
     this.subscriptionStateFilter = this.service.getUpdateState().subscribe
@@ -44,7 +44,7 @@ export class StateAbmComponent implements OnInit, OnDestroy {
     }
   }
 
-  CreateForm(stateEdit: State | null): FormGroup {
+  CreateForm(stateEdit: State | null): UntypedFormGroup {
 
     if (stateEdit == null) {
 
@@ -62,11 +62,11 @@ export class StateAbmComponent implements OnInit, OnDestroy {
       this.buttonAction = "Update";
 
       return this.fb.group({
-        name: new FormControl(stateEdit.name ?? null),
-        code: new FormControl(stateEdit.code ?? null),
-        capital: new FormControl(stateEdit.capital ?? null),
-        region: new FormControl(stateEdit.region ?? null),
-        coordinates: new FormControl(stateEdit.coordinates ?? null)
+        name: new UntypedFormControl(stateEdit.name ?? null),
+        code: new UntypedFormControl(stateEdit.code ?? null),
+        capital: new UntypedFormControl(stateEdit.capital ?? null),
+        region: new UntypedFormControl(stateEdit.region ?? null),
+        coordinates: new UntypedFormControl(stateEdit.coordinates ?? null)
       });
     }
 
@@ -80,7 +80,7 @@ export class StateAbmComponent implements OnInit, OnDestroy {
     }
   }
 
-  saveState(stateABM: FormGroup) {
+  saveState(stateABM: UntypedFormGroup) {
     this.evt = stateABM.value as State;
 
     console.log('Current State abm: ', this.evt);
