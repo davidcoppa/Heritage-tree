@@ -35,35 +35,43 @@ export class LocationAbmComponent implements OnInit, OnDestroy {
   }
 
   ngOnChanges() {
+    if (this.abmLocation != undefined) {
 
-    if (this.abmLocation.type != undefined && this.abmLocation.type == LocationEnum.country) {
-      console.log("edit country");
+      if (this.abmLocation.type != undefined && this.abmLocation.type == LocationEnum.country) {
+        console.log("edit country");
 
+        this.abmCountry = true;
+        this.abmState = false;
+        this.abmCity = false;
+
+        this.countrySelected = this.abmLocation.rowSelected as Country;
+      }
+      if (this.abmLocation.type != undefined && this.abmLocation.type == LocationEnum.state) {
+        console.log("edit state");
+
+        this.abmCountry = false;
+        this.abmState = true;
+        this.abmCity = false;
+
+        this.stateSelected = this.abmLocation.rowSelected as State;
+
+      }
+      if (this.abmLocation.type != undefined && this.abmLocation.type == LocationEnum.city) {
+        console.log("edit city");
+
+        this.abmCountry = false;
+        this.abmState = false;
+        this.abmCity = true;
+
+        this.citySelected = this.abmLocation.rowSelected as City;
+
+      }
+    }
+    else {
+      console.log("Add country");
       this.abmCountry = true;
-      this.abmState = false;
-      this.abmCity = false;
-
-      this.countrySelected = this.abmLocation.rowSelected as Country;
-    }
-    if (this.abmLocation.type != undefined && this.abmLocation.type == LocationEnum.state) {
-      console.log("edit state");
-
-      this.abmCountry = false;
       this.abmState = true;
-      this.abmCity = false;
-
-      this.stateSelected = this.abmLocation.rowSelected as State;
-
-    }
-    if (this.abmLocation.type != undefined && this.abmLocation.type == LocationEnum.city) {
-      console.log("edit city");
-
-      this.abmCountry = false;
-      this.abmState = false;
       this.abmCity = true;
-
-      this.citySelected = this.abmLocation.rowSelected as City;
-
     }
   }
 

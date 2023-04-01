@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, inject, Injectable, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Media } from 'src/app/model/media.model';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
@@ -8,6 +8,9 @@ import { AppFileService } from '../../../server/app.file.service';
 import { Events } from '../../../model/event.model';
 import { AppService } from '../../../server/app.service';
 import { TagItem } from '../../../model/tagItem.model';
+import { FileData } from '../../../model/fileData.model';
+import { NgImageSliderModule } from 'ng-image-slider';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -15,12 +18,12 @@ import { TagItem } from '../../../model/tagItem.model';
   templateUrl: './media-abm.component.html',
   styleUrls: ['./media-abm.component.css']
 })
+@Injectable({ providedIn: 'root' })
 export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Date>;
   @Input() mediaSelected: Media;
   @Input() abmMedia: boolean;
-
 
   mediaGroup: UntypedFormGroup;
   fb: UntypedFormBuilder;
@@ -29,6 +32,9 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
   selectedEvent: Events;
   mediaToSave: Media;
   tagItems: TagItem[] = [];
+
+  filesToShow: FileData[];
+  imageObject: object[]=[];
 
 
   private subscriptionFile: Subscription;
@@ -40,12 +46,15 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
   constructor(fb: UntypedFormBuilder,
     private appMediaService: AppMediaService,
     private appFileService: AppFileService,
-    private service: AppService) {
+    private service: AppService,
+    private route: ActivatedRoute) {
     this.fb = fb;
 
+
+    
     this.subscriptionABMMedia = this.appMediaService.getUpdateMedia().subscribe
       (data => {
-               console.log("media abm ctor -- data: "+data);
+        console.log("media abm ctor -- data: " + data);
         if (data != undefined) {
 
           if (data.data.abmObject == true) {
@@ -59,7 +68,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
       });
 
     this.subscriptionFile = this.appFileService.getUpdateFile().subscribe
-      (data => { 
+      (data => {
         Array.prototype.push.apply(this.media.file, [data.data])
 
       });
@@ -71,7 +80,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
 
     this.subscriptionChipTags = this.service.getUpdateChipTag().subscribe
       (data => {
-   //     console.log("chip data: " + data.data);
+        //     console.log("chip data: " + data.data);
         this.tagItems = data.data;
       })
 
@@ -94,13 +103,37 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
       id: -1,
       file: [],
       event: null,
-      tagItems:[]
+      tagItems: [],
+      onlyFilesInfo:[]
+
     }
 
 
-  
+
   }
 
+  getFileMedia() {
+    this.filesToShow = this.mediaSelected.onlyFilesInfo;
+
+    for (var i = 0; i < this.filesToShow.length; i++) {
+   //   console.log("media this.filesToShow  i : " + this.filesToShow[i]);
+
+      var obj = {
+        image: this.filesToShow[i].url,
+        thumbImage: this.filesToShow[i].urlPreview,
+        alt: this.filesToShow[i].description,
+        title: this.filesToShow[i].name
+      }
+
+
+      this.imageObject.push(obj);
+
+    }
+  }
+
+  imageClickHandler(e:any) {
+    console.log('image click', e);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.mediaSelected == null) {
@@ -110,6 +143,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
 
     } else {
       this.media = this.mediaSelected;
+    //  this.getFileMedia();
 
     }
   }
@@ -121,17 +155,20 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
         Name: [null, [Validators.required]],
         Description: [null],
         DateUploaded: [null],
-        
+
       });
     } else {
       this.selectedEvent = (mediaEdit.event == null) ? this.selectedEvent : mediaEdit.event;
+
+      this.getFileMedia();
 
       return this.fb.group({
         Name: new UntypedFormControl(mediaEdit.name ?? null),
         Description: new UntypedFormControl(mediaEdit.description ?? null),
         DateUploaded: new UntypedFormControl(mediaEdit.dateUploaded ?? null),
-       
+
       });
+
     }
 
   }
@@ -145,7 +182,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
       this.mediaToSave.file = this.media.file;
       this.mediaToSave.event = this.selectedEvent;
       this.mediaToSave.tagItems = this.tagItems;
-      this.mediaToSave.description = (this.selectedEvent==null) ? '' : this.selectedEvent.description;
+      this.mediaToSave.description = (this.selectedEvent == null) ? '' : this.selectedEvent.description;
 
       if (this.buttonAction == "Update") {
         this.appMediaService.UpdateMedia(this.mediaSelected.id, this.mediaToSave)

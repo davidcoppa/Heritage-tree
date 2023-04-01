@@ -78,7 +78,7 @@
 
 
 
-                  <ng-container matColumnDef="Action">
+                  <!--<ng-container matColumnDef="Action">
                     <tr>
                       <th mat-header-cell *matHeaderCellDef> Action </th>
                     </tr>
@@ -92,7 +92,7 @@
                         </button>
                       </td>
                     <tr>
-                  </ng-container>
+                  </ng-container>-->
 
                   <tr mat-header-row *matHeaderRowDef="mediaDisplayedColumns"></tr>
                   <tr mat-row *matRowDef="let row; columns: mediaDisplayedColumns;"></tr>
@@ -109,9 +109,9 @@
           </tr>
           <tr>
             <td mat-cell *matCellDef="let row" style="width:20%">
-              <button mat-icon-button color="primary" (click)="viewMedia(row)" title="View">
+              <!--<button mat-icon-button color="primary" (click)="viewMedia(row)" title="View">
                 <mat-icon>preview</mat-icon>
-              </button>
+              </button>-->
               <button mat-icon-button color="primary" (click)="editMedia(row)" title="Edit">
                 <mat-icon>edit</mat-icon>
                 <ng-container *ngIf="abmMedia">

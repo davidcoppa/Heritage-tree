@@ -168,7 +168,9 @@ export class FileUploadComponent implements OnInit {
     return "";// Observable.throw(error.message || "server error.");
   }
   ngOnDestroy() {
-    this.uploadSub.unsubscribe();
+    if (document) {
+      this.uploadSub.unsubscribe();
+    }
   }
 
 }

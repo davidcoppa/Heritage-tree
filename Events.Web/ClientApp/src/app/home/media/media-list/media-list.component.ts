@@ -38,7 +38,8 @@ export class MediaListComponent implements AfterViewInit {
     'DocumentType',
     'Url',
     'Img',
-    'Action'];
+    //'Action'
+  ];
 
 
 
@@ -106,9 +107,9 @@ export class MediaListComponent implements AfterViewInit {
 
   }
 
-  viewMedia(contact: Media) {
+  viewMedia(media: Media) {
     let route = '/media/view-media';
-    this.router.navigate([route], { queryParams: { id: contact.id } });
+    this.router.navigate([route], { queryParams: { id: media } });
   }
 
 }

@@ -40,6 +40,8 @@ namespace Events.Core.Common
 
 
             CreateMap<MediaCreateDTO, Media>().ReverseMap();
+            CreateMap<MediaDTO, Media>().ReverseMap();
+            //CreateMap<List<MediaDTO> , List<Media>>().ReverseMap();
             CreateMap<FileDataCreateDTO, FileData>().ReverseMap();
             CreateMap<MediaTypeDTO, MediaType>().ReverseMap();
             CreateMap<TagsDTO, Tags>().ReverseMap();

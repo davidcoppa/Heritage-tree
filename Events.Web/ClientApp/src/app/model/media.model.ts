@@ -10,6 +10,7 @@ export interface Media {
   description: string,
   file: FileData[] | MatTableDataSource<FileData>,
   event: Events | null,
-  tagItems: TagItem[] 
+  tagItems: TagItem[],
+  onlyFilesInfo:FileData[]
 
 }

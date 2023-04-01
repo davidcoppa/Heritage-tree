@@ -64,20 +64,28 @@ namespace Events.Core.Controllers
 
                 int pageIndex = int.TryParse(page, out int count) ? 0 : count;
 
-                List<Media>? result = data.PagedIndex(pagination, pageIndex).ToList();
+                List<Media> result = data.PagedIndex(pagination, pageIndex).ToList();
 
-                foreach (Media mediaFile in result)
+                List<MediaDTO> rtn = mapper.Map<List<MediaDTO>>(result);
+
+                foreach (MediaDTO mediaFile in rtn)
                 {
+                   
+
                     if (mediaFile.File == null)
                     {
                         continue;
                     }
+
+                    mediaFile.OnlyFilesInfo=mediaFile.File;
+
                     foreach (var tmbFile in mediaFile.File)
                     {
                         if (tmbFile.Url == null)
                         {
                             continue;
                         }
+
                         if (tmbFile.UrlPreview != null)
                         {
                             continue;
@@ -113,9 +121,9 @@ namespace Events.Core.Controllers
 
                 }
 
+               
 
-
-                return Ok(result);
+                return Ok(rtn);
 
 
             }

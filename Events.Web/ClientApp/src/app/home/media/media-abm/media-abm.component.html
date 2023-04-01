@@ -26,12 +26,17 @@
     <app-filter-Event [dataEvent]="selectedEvent"></app-filter-Event>
     <app-chips-autocomplete></app-chips-autocomplete>
 
-   <!-- <ng-image-slider [images]="imageObject" #nav></ng-image-slider>-->
+    <ng-image-slider [images]="imageObject"
+                     [imagePopup]="true"
+                     (imageClick)="imageClickHandler($event)"
+                     #nav>
+    </ng-image-slider>
 
 
 
     <ng-container>
-      <app-FileUpload [dataMedia]=media></app-FileUpload>
+      <app-FileUpload [dataMedia]="media">
+      </app-FileUpload>
     </ng-container>
 
     <button mat-raised-button color="primary" (click)="SaveMedia(mediaGroup)" [disabled]="!mediaGroup.valid">Add</button>
