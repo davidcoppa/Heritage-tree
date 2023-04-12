@@ -79,18 +79,28 @@ namespace Events.Core.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> CreateState(StateCreateDTO location)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(messages.BadRequestModelInvalid);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(messages.BadRequestModelInvalid);
+                }
+
+                var locationMap = mapper.Map<States>(location);
+
+
+                context.Add(locationMap);
+                await context.SaveChangesAsync();
+
+                return Ok(locationMap);
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
 
-            var locationMap = mapper.Map<States>(location);
-
-
-            context.Add(locationMap);
-            await context.SaveChangesAsync();
-
-            return Ok(locationMap);
+                throw;
+            }
+           
         }
 
 

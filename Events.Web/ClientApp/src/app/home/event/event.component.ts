@@ -52,7 +52,7 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
   ngOnInit(): void {
-    console.log("changes event");
+//    console.log("changes event");
     if (this.sort == undefined) { return; }
 
     // If the user changes the sort order, reset back to the first page.

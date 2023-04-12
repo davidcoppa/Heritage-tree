@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { UntypedFormControl } from "@angular/forms";
-import { map, startWith, Observable, first } from "rxjs";
+import { map, startWith, Observable, first, Subscription } from "rxjs";
 import { Country } from "../../../../model/country.model";
 import { AppService } from "../../../../server/app.service";
 
@@ -8,18 +8,22 @@ import { AppService } from "../../../../server/app.service";
   selector: 'app-filter-countries',
   templateUrl: './filterCountries.component.html'
 })
-export class FilterCountriesComponent implements OnInit {
+export class FilterCountriesComponent implements OnInit, OnDestroy {
 
   @Input() dataCountry: Country;
 
-  selectedCountry: Country;
+//  selectedCountry: Country;
 
   optionsCountries: Country[];
   countriesControl = new UntypedFormControl('');
   CountriesOptions: Observable<Country[]>;
 
+
+
   constructor(private service: AppService) {
 
+  }
+  ngOnDestroy(): void {
   }
 
   ngOnInit(): void {
@@ -27,8 +31,6 @@ export class FilterCountriesComponent implements OnInit {
   }
 
   GetAllCountries() {
-    console.log('event type list');
-
     this.service.GetCountries('Name', 'desc', 0, 10000, '')
       .pipe(first())
       .subscribe(
@@ -36,7 +38,6 @@ export class FilterCountriesComponent implements OnInit {
           console.log('Current data filter event type: ', data);
 
           this.optionsCountries = data;
-
           this.CountriesOptions = this.countriesControl.valueChanges.pipe(
             startWith(''),
             map(value => {
@@ -44,23 +45,27 @@ export class FilterCountriesComponent implements OnInit {
               return name ? this._filterCountry(name as string) : this.optionsCountries.slice();
             }),
           );
-
         },
         error => console.log('Error Getting Position: ', error)
       );
+
   }
 
   displayCountries = (user: Country): string => {
-
+    console.log('event type displayCountries');
     if (this.dataCountry != undefined) {
       if (user.id != undefined) {
         this.dataCountry = user;
-        this.service.sendUpdatePeople(this.dataCountry);
+        this.service.sendUpdateCountry(this.dataCountry);
       } else {
         this.countriesControl.setValue(this.dataCountry);
       }
     }
-
+    else {
+      if (user != undefined) {
+   //     this.service.sendUpdateCountry(user)
+      }
+    }
     return user && user.name ? user.name : '';
   }
 

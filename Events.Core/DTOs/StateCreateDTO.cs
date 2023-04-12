@@ -10,7 +10,7 @@ namespace Events.Core.DTOs
         public string? Region { get; set; }
         public string? FullName { get; set; }
         public string? Coordinates { get; set; }
-
+        public int CountryId { get; set; }
         public List<City>? Cities { get; set; }
     }
 }

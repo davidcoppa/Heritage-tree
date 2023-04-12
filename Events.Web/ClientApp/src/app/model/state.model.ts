@@ -12,4 +12,5 @@ export interface State {
 
   cities: City[] | MatTableDataSource<City> ,
   fullName: string
+  countryId: number
 }

@@ -190,21 +190,21 @@ namespace Events.Core.Controllers
 
             try
             {
-                //Country countryBD = await context.Country.FindAsync(id);
-                //if (countryBD == null)
-                //{
-                //    return NotFound();
-                //}
-                //Country country = mapper.Map<Country>(location);
+                Country countryBD = await context.Country.FindAsync(id);
+                if (countryBD == null)
+                {
+                    return NotFound();
+                }
+                Country country = mapper.Map<Country>(location);
 
-                //context.Entry(countryBD).CurrentValues.SetValues(country);
+                context.Entry(countryBD).CurrentValues.SetValues(country);
 
-                //if (location.States != null)
-                //{
-                //    countryBD.States = country.States;
-                //    context.Entry(countryBD.States).CurrentValues.SetValues(country.States);
+                if (location.States != null)
+                {
+                    countryBD.States = country.States;
+                    context.Entry(countryBD.States).CurrentValues.SetValues(country.States);
 
-                //}
+                }
 
 
                 await context.SaveChangesAsync();

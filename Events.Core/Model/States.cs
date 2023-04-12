@@ -10,8 +10,9 @@
         public string? Region { get; set; }
         public string? Coordinates { get; set; }
         public List<City>? Cities { get; set; }
+        public int CountryId { get; set; }
 
-      
+
 
     }
 }

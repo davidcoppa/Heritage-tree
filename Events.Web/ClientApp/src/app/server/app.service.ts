@@ -21,7 +21,9 @@ export class AppService {
   subjectPeople = new Subject<any>();
   subjectEventType = new Subject<any>();
   subjectCountry = new Subject<any>();
+  subjectNewCountry = new Subject<any>();//getNewCountry
   subjectState = new Subject<any>();
+//  subjectNewState = new Subject<any>();
   subjectCity = new Subject<any>();
   subjectAbmLocation = new Subject<any>();
   subjectEvent = new Subject<any>();
@@ -76,6 +78,24 @@ export class AppService {
   sendUpdateCountry(file: any) {
     this.subjectCountry.next({ data: file });
   }
+
+  //new country
+  getNewCountry(): Observable<any> {
+    return this.subjectNewCountry.asObservable();
+  }
+  setNewCountry(file: any) {
+    this.subjectNewCountry.next({ data: file });
+  }
+
+  //state add to country
+  //sendAddStateToCountry
+  //getAddStateToCountry(): Observable<any> {
+  //  return this.subjectNewState.asObservable();
+  //}
+  //sendAddStateToCountry(file: any) {
+  //  this.subjectNewState.next({ data: file });
+  //}
+
   //state filter
   getUpdateState(): Observable<any> {
     return this.subjectState.asObservable();

@@ -1,8 +1,9 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
 import { AppService } from 'src/app/server/app.service';
 import { LocationEnum } from '../../../../helpers/enums/location.enum';
 import { City } from '../../../../model/city.model';
@@ -24,7 +25,7 @@ import { State } from '../../../../model/state.model';
   ],
 
 })
-export class CountrylistComponent implements AfterViewInit {
+export class CountrylistComponent implements AfterViewInit, OnDestroy {
   displayedColumns = ['Name',
     'Code',
     'Capital',
@@ -77,8 +78,30 @@ export class CountrylistComponent implements AfterViewInit {
   valueSelectedCity: City;
 
 
+  //private subscriptionNewStateCountry: Subscription;
+
+
   constructor(private service: AppService,
-  ) { }
+  ) {
+    //getAddStateToCountry
+    //this.subscriptionNewStateCountry = this.service.getAddStateToCountry().subscribe
+    //  (data => {
+    //    if (data != undefined) {
+    //      if (data.data != undefined) {
+    //        if (data.data.abmObject == true) {
+    //          this.abmObject = data.data.abmObject;
+    //        }
+    //      }
+    //    }
+    //  });
+
+
+
+  }
+  ngOnDestroy(): void {
+  //  this.subscriptionNewStateCountry.unsubscribe();
+
+  }
 
   ngAfterViewInit() {
 
@@ -139,7 +162,7 @@ export class CountrylistComponent implements AfterViewInit {
     this.listModel.abmObject = true;
     this.listModel.rowSelected = contact;
     this.listModel.type = LocationEnum.country;
-   // this.service.sendUpdateCountry();
+    // this.service.sendUpdateCountry();
     this.service.sendUpdateABMLocation(this.listModel);
   }
 

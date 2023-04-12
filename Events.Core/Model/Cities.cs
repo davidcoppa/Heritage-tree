@@ -9,6 +9,8 @@
         public string? Code { get; set; }
         public string? Region { get; set; }
         public string? Coordinates { get; set; }
+        //public States State { get; set; }
+
 
     }
 }

@@ -5,6 +5,7 @@ import { AppService } from 'src/app/server/app.service';
 import { LocationEnum } from '../../../../helpers/enums/location.enum';
 import { Country } from '../../../../model/country.model';
 import { ListObject } from '../../../../model/listObject.model';
+import { State } from '../../../../model/state.model';
 
 @Component({
   selector: 'app-country-abm',
@@ -19,39 +20,29 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
   evt: Country;
   buttonAction: string;
 
-  listModel: ListObject;
-
-  private subscriptionABMLocation: Subscription;
+  abmLocation: ListObject;
+  addCity = false;
+  abmstate = false
+ // stateSelected: State|null;
 
   constructor(fb: UntypedFormBuilder, private service: AppService) {
-    //console.log("country abm ctor");
     this.fb = fb;
-
-    this.subscriptionABMLocation = this.service.getUpdateABMLocation().subscribe
-      (data => {
- //       console.log("country abm ctor -- data: "+data);
-        if (data != undefined) {
-
-          if (data.data.abmObject == true) {
-            this.countrySelected = data.data.rowSelected;
-
-            if (data.data.type != undefined && data.data.type == LocationEnum.country) {
-              this.abmCountry = true;
-            }
-          }
-        }
-      });
+    this.abmLocation = new ListObject();
   }
 
   ngOnDestroy() {
-    this.subscriptionABMLocation.unsubscribe();
   }
 
   ngOnInit(): void {
-    if (this.countrySelected != undefined) {
-      this.country = this.CreateForm(this.countrySelected);
-    } else {
-      this.country = this.CreateForm(null);
+
+    console.log("country abm init");
+
+    if (this.abmCountry) {
+      if (this.countrySelected != undefined) {
+        this.country = this.CreateForm(this.countrySelected);
+      } else {
+        this.abmCountry = false;
+      }
     }
   }
 
@@ -68,8 +59,9 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
         coordinates: [null]
       });
     } else {
-      this.evt = this.countrySelected;
       this.buttonAction = "Update";
+
+      this.addCity = true;
 
       return this.fb.group({
         name: new UntypedFormControl(countryEdit.name ?? null),
@@ -78,13 +70,12 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
         region: new UntypedFormControl(countryEdit.region ?? null),
         coordinates: new UntypedFormControl(countryEdit.coordinates ?? null)
       });
+
     }
 
   }
 
   ngOnChanges() {
-    //console.log("country on changes: ");
-
     if (this.countrySelected == null) {
       this.country = this.CreateForm(null);
     } else {
@@ -92,40 +83,56 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
     }
   }
 
+  OpenEdit() {
+    this.abmCountry = true;
+    this.country = this.CreateForm(null);
+
+  }
+
+  OpenNewCity() {
+    if (this.addCity) {
+      this.abmstate = true;
+    //  this.stateSelected = null;
+      this.abmCountry = false;
+    }
+
+    //this.abmLocation.rowSelected = this.countrySelected;
+    //this.abmLocation.type = LocationEnum.country;
+    //this.abmLocation.abmObject = false;
+    //this.service.sendAddStateToCountry(this.abmLocation);
+  }
+
   SaveCountry(CountryABM: UntypedFormGroup) {
-    this.evt = CountryABM.value as Country;
+    var evt = CountryABM.value as Country;
     console.log('Current data: ', CountryABM);
 
     if (this.buttonAction == "Update") {
 
-      this.evt.id = (this.countrySelected).id;
+      evt.id = (this.countrySelected).id;
 
-      this.service.UpdateCountries((this.countrySelected).id, this.evt)
+      this.service.UpdateCountries((this.countrySelected).id, evt)
         .pipe(first())
         .subscribe(
           data => {
-            this.ABMCountryFinished();
+            this.abmLocation.abmObject = false;
+            this.service.sendUpdateCountry(this.abmLocation);
           },
           error => console.log('Error Getting Position: ', error)
         );
     }
     else {
 
-      this.service.AddCountries(this.evt).pipe(first())
+      this.service.AddCountries(evt).pipe(first())
         .subscribe(
           data => {
-       //     console.log('Current data: ', data);
-            this.ABMCountryFinished();
-
+            this.abmLocation.abmObject = false;
+            this.service.sendUpdateCountry(this.abmLocation);
           },
           error => console.log('Error Getting Position: ', error)
         );
     }
   }
 
-  ABMCountryFinished() {
-    this.service.sendUpdateCountry(true);
-  }
 
   ResetForm() {
     this.country = this.CreateForm(null);

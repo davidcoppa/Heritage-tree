@@ -1,39 +1,57 @@
 <div class="mat-card">
 
-  <app-filter-countries></app-filter-countries>
+  <ng-container *ngIf="!abmCountry">
 
-  <form class="form mat-card" [formGroup]="country" flex="50" fxLayout="column" (ngSubmit)="SaveCountry(country)">
+    <app-filter-countries [dataCountry]="countrySelected"></app-filter-countries>
 
-    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
-      <mat-label>Name</mat-label>
-      <input matInput inputmode="text" placeholder="Name *" formControlName="name" #nameInput>
-    </mat-form-field>
+    <ng-container *ngIf="!abmstate">
+      <button class="space-buttons" mat-raised-button color="primary" (click)="OpenEdit()">Add</button>
+    </ng-container>
 
-    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
-      <mat-label>Code</mat-label>
-      <input matInput inputmode="text" placeholder="Code *" formControlName="code" #nameInput>
-    </mat-form-field>
+  </ng-container>
 
-    <mat-form-field class="ml-3 mat-form-field--inline" flex="50" fxLayout="column" appearance="fill">
-      <mat-label>Capital</mat-label>
-      <input matInput inputmode="text" placeholder="Capital" formControlName="capital" #nameInput>
-    </mat-form-field>
+  <ng-container *ngIf="abmCountry">
+    <form class="form mat-card" [formGroup]="country" flex="50" fxLayout="column" (ngSubmit)="SaveCountry(country)">
 
-    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
-      <mat-label>Region</mat-label>
-      <input matInput inputmode="text" placeholder="Region *" formControlName="region" #nameInput>
-    </mat-form-field>
+      <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput inputmode="text" placeholder="Name *" formControlName="name" #nameInput>
+      </mat-form-field>
 
-    <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
-      <mat-label>Coordinates</mat-label>
-      <input matInput inputmode="text" placeholder="Coordinates *" formControlName="coordinates" #nameInput>
-    </mat-form-field>
+      <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+        <mat-label>Code</mat-label>
+        <input matInput inputmode="text" placeholder="Code *" formControlName="code" #nameInput>
+      </mat-form-field>
 
-       <div class="clear position-buttons">
+      <mat-form-field class="ml-3 mat-form-field--inline" flex="50" fxLayout="column" appearance="fill">
+        <mat-label>Capital</mat-label>
+        <input matInput inputmode="text" placeholder="Capital" formControlName="capital" #nameInput>
+      </mat-form-field>
 
-      <button class="space-buttons" mat-raised-button color="primary" type="submit" [disabled]="!country.valid">{{buttonAction}}</button>
-      <button class="space-buttons" mat-raised-button color="basic" type="button" (click)="ResetForm()">Clean</button>
-      <button class="space-buttons" mat-raised-button color="warn" type="button" (click)="Cancel()">Cancel</button>
-    </div>
-  </form>
+      <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+        <mat-label>Region</mat-label>
+        <input matInput inputmode="text" placeholder="Region *" formControlName="region" #nameInput>
+      </mat-form-field>
+
+      <mat-form-field class="ml-6 mat-form-field--inline" appearance="fill">
+        <mat-label>Coordinates</mat-label>
+        <input matInput inputmode="text" placeholder="Coordinates *" formControlName="coordinates" #nameInput>
+      </mat-form-field>
+
+      <div class="clear">
+        <button class="space-buttons" mat-raised-button color="primary" (click)="OpenNewCity()">Add City</button>
+
+      </div>
+      <div class="clear position-buttons">
+
+        <button class="space-buttons" mat-raised-button color="primary" type="submit" [disabled]="!country.valid">{{buttonAction}}</button>
+        <button class="space-buttons" mat-raised-button color="basic" type="button" (click)="ResetForm()">Clean</button>
+        <button class="space-buttons" mat-raised-button color="warn" type="button" (click)="Cancel()">Cancel</button>
+      </div>
+    </form>
+  </ng-container>
+  <ng-container *ngIf="abmstate">
+    <app-state-abm [abmState]="true" [dataCountry]="countrySelected"></app-state-abm>
+
+  </ng-container>
 </div>

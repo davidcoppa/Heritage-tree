@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { first, Subscription } from 'rxjs';
 import { AppService } from 'src/app/server/app.service';
+import { Country } from '../../../../model/country.model';
 import { ListObject } from '../../../../model/listObject.model';
 import { State } from '../../../../model/state.model';
 
@@ -12,6 +13,7 @@ import { State } from '../../../../model/state.model';
 export class StateAbmComponent implements OnInit, OnDestroy {
   @Input() stateSelected: State;
   @Input() abmState: boolean;
+  @Input() dataCountry: Country;
 
   state: UntypedFormGroup;
   fb: UntypedFormBuilder;
@@ -27,7 +29,7 @@ export class StateAbmComponent implements OnInit, OnDestroy {
 
     this.subscriptionStateFilter = this.service.getUpdateState().subscribe
       (data => { 
-     //   console.log("sendUpdate state: " + data.data);
+       console.log("sendUpdate state: " + data.data);
         this.stateSelected = data.data;
       });
   }
@@ -85,8 +87,17 @@ export class StateAbmComponent implements OnInit, OnDestroy {
 
     console.log('Current State abm: ', this.evt);
 
+
+    if (this.dataCountry == undefined) {
+      alert("country not found!")
+      return;
+    }
+    this.evt.countryId = this.dataCountry.id;
+
+
     if (this.buttonAction == "Update") {
 
+     
       this.evt.id = (this.stateSelected).id;
 
       this.service.UpdateStates((this.stateSelected).id, this.evt)

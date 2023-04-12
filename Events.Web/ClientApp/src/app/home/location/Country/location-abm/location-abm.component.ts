@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AppService } from 'src/app/server/app.service';
 import { LocationEnum } from '../../../../helpers/enums/location.enum';
 import { City } from '../../../../model/city.model';
@@ -25,9 +26,11 @@ export class LocationAbmComponent implements OnInit, OnDestroy {
 
   constructor(private service: AppService) {
 
+    
   }
 
   ngOnDestroy() {
+
   }
 
   ngOnInit(): void {
@@ -48,7 +51,6 @@ export class LocationAbmComponent implements OnInit, OnDestroy {
       }
       if (this.abmLocation.type != undefined && this.abmLocation.type == LocationEnum.state) {
         console.log("edit state");
-
         this.abmCountry = false;
         this.abmState = true;
         this.abmCity = false;
@@ -70,8 +72,8 @@ export class LocationAbmComponent implements OnInit, OnDestroy {
     else {
       console.log("Add country");
       this.abmCountry = true;
-      this.abmState = true;
-      this.abmCity = true;
+      this.abmState = false;
+      this.abmCity = false;
     }
   }
 

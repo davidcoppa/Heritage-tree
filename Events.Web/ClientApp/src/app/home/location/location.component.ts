@@ -15,7 +15,7 @@ import { AppService } from '../../server/app.service';
 export class LocationComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() abmObject: boolean;
- 
+
   countries: Country[] = [];
   states: State[] = [];
   @Input() sort!: MatSort;
@@ -41,23 +41,26 @@ export class LocationComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptionCountry = this.service.getUpdateCountry().subscribe
       (data => {
         if (data != undefined) {
+          if (data.data != undefined) {
+            if (data.data.abmObject == true) {
+              this.abmObject = data.data.abmObject;
+              this.abmLocation = data.data;
+            }
+            else {
 
-          if (data.data.abmObject == true) {
-            this.abmObject = data.data.abmObject;
-          }
-          else {
-            this.sort = data.data.sort;
-            this.paginator = data.data.paginator;
-            this.ngOnInit();
+              this.sort = data.data.sort;
+              this.paginator = data.data.paginator;
+              this.ngOnInit();
+            }
           }
         }
       });
 
     this.subscriptionABMLocation = this.service.getUpdateABMLocation().subscribe
       (data => {
-  //      console.log("new part data: "+ data);
+        //      console.log("new part data: "+ data);
         if (data != undefined) {
-          
+
           if (data.data.abmObject == true) {
 
             this.abmObject = data.data.abmObject;
@@ -87,6 +90,7 @@ export class LocationComponent implements OnInit, OnChanges, OnDestroy {
             return [];
           }
           this.resultsLength = data.length;
+          this.abmObject = false;
 
           return data;
         })
