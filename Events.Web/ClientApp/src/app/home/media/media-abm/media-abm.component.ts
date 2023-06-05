@@ -190,8 +190,11 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
       //ppp.concat(adsfasf, asdfmamp);
       ////this.filesToShow.concat(, this.mediaToSave.file as unknown as FileData[]);
       
-
+      if (filesToSave == undefined) {
+        filesToSave = [];
+      }
       for (var i = 0; i < newFiles.length; i++) {
+        
         filesToSave.push(newFiles[i])
       }
       this.mediaToSave.file = filesToSave;
@@ -202,7 +205,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
 
       this.mediaToSave.event = this.selectedEvent;
       this.mediaToSave.tagItems = this.tagItems;
-      this.mediaToSave.description = (this.selectedEvent == null) ? '' : this.selectedEvent.description;
+      this.mediaToSave.description = this.mediaToSave.description != null ? this.mediaToSave.description:((this.selectedEvent == null) ? '' : this.selectedEvent.description);
 
       if (this.buttonAction == "Update") {
         this.mediaToSave.id = this.mediaSelected.id;

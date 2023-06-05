@@ -59,12 +59,18 @@ export class FilterEventComponent implements OnInit {
       if (user.id != undefined) {
         this.dataEvent = user;
         this.service.sendUpdateEvent(this.dataEvent);
+
       } else {
         this.eventControl.setValue(this.dataEvent);
+        this.service.sendUpdateEvent(this.dataEvent);
+
       }
     }
+    else {
+      this.service.sendUpdateEvent(user);
+    }
 
-    //this.service.sendUpdateEvent(user);
+  // 
 
     return user && user.description ? user.description : '';
   }
