@@ -48,7 +48,7 @@ namespace Events.Core.Controllers
                                  || x.DateUploaded.ToString().Contains(search))
                                          .Include(x => x.Event)
                                         .Include(x => x.File)
-                                        .Include(x=>x.TagItems)
+                                        .Include(x => x.TagItems)
                                         .AsQueryable<Media>();
 
                 }
@@ -70,14 +70,14 @@ namespace Events.Core.Controllers
 
                 foreach (MediaDTO mediaFile in rtn)
                 {
-                   
+
 
                     if (mediaFile.File == null)
                     {
                         continue;
                     }
 
-                    mediaFile.OnlyFilesInfo=mediaFile.File;
+                    mediaFile.OnlyFilesInfo = mediaFile.File;
 
                     foreach (var tmbFile in mediaFile.File)
                     {
@@ -121,7 +121,7 @@ namespace Events.Core.Controllers
 
                 }
 
-               
+
 
                 return Ok(rtn);
 
@@ -234,10 +234,11 @@ namespace Events.Core.Controllers
 
         // POST: Photos/Edit/5
 
-        [HttpPost("Edit/{id:int}")]
+        [HttpPost("Edit")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Description")] Media photos)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Edit(int id, MediaDTO photos)
         {
 
             if (!ModelState.IsValid)
@@ -250,10 +251,131 @@ namespace Events.Core.Controllers
                 return NotFound();
             }
 
-
             try
             {
-                context.Update(photos);
+                Media mediaOnDb = await context.Media.Where(x => x.Id == photos.Id)
+                                                   .Include(x => x.File)
+                                                   .Include(x => x.Event)
+                                                   .Include(x => x.TagItems)
+                                                   .FirstOrDefaultAsync();
+
+                if (mediaOnDb == null)
+                {
+                    return BadRequest(messages.BadRequestModelInvalid);
+                }
+
+                //get the event
+                if (photos.Event != null && mediaOnDb.Event != null)
+                {
+                    //the main event of the media changed, so we update it
+                    if (photos.Event.ID != mediaOnDb.Event.Id)
+                    {
+
+                        Event? newEvt = await context.Event.Where(x => x.Id == photos.Event.ID).Include(x => x.Person1)
+                                                                     .Include(x => x.Person2)
+                                                                     .Include(x => x.Person3)
+                                                                     .Include(x => x.EventType)
+                                                                     .FirstOrDefaultAsync();
+                        if (newEvt != null)
+                        {
+                            mediaOnDb.Event = newEvt;
+                            context.Entry(mediaOnDb.Event).CurrentValues.SetValues(newEvt);
+
+                        }
+                    }
+                }
+
+                //get the tags and add the new ones
+                if (photos.TagItems != null)
+                {
+                    List<Tags> listTagsToAdd = new List<Tags>();
+                    if (mediaOnDb.TagItems==null||mediaOnDb.TagItems.Count == 0)
+                    {
+                        List<TagsEditDTO> listnewtags = photos.TagItems;
+                        //add the new tags
+                        foreach (var item in listnewtags)
+                        {
+                            var editTag = mapper.Map<TagsDTO>(item);
+                            var tagToBd= mapper.Map<Tags>(editTag);
+                            listTagsToAdd.Add(tagToBd);
+                        }
+                        mediaOnDb.TagItems = listTagsToAdd;
+                    }
+                    else
+                    {
+                        //compare tags and add/remove
+                        foreach (var item in photos.TagItems)
+                        {
+                            var existTag = await context.Tags.Where(x => x.Id == item.Id).FirstOrDefaultAsync();
+
+                            //new one
+                            if (existTag == null)
+                            {
+                                var editTag = mapper.Map<TagsDTO>(item);
+                                var tagToBd = mapper.Map<Tags>(editTag);
+                                listTagsToAdd.Add(tagToBd);
+                            }
+                            else
+                            {
+                                //existing 
+                                var editTag = mapper.Map<TagsDTO>(item);
+                                var tagToBd = mapper.Map<Tags>(editTag);
+                                listTagsToAdd.Add(tagToBd);
+                            }
+                        }
+                        mediaOnDb.TagItems = listTagsToAdd;
+
+                    }
+                }
+
+                //get the files and add the new ones
+                if (photos.File != null)
+                {
+                    List<FileData> listFileToAdd = new List<FileData>();
+                    if (mediaOnDb.File == null || mediaOnDb.File.Count == 0)
+                    {
+                        List<FileDataDTO> listnewFiles = photos.File;
+                        //add the new tags
+                        foreach (var item in listnewFiles)
+                        {
+                            var editFile = mapper.Map<FileData>(item);
+                            //   var fileToBd = mapper.Map<Tags>(editFile);
+                            listFileToAdd.Add(editFile);
+                        }
+                        mediaOnDb.File = listFileToAdd;
+                    }
+                    else
+                    {
+                        //compare tags and add/remove
+                        foreach (var item in photos.File)
+                        {
+                            var existFile = await context.FileData.Where(x => x.Id == item.Id).FirstOrDefaultAsync();
+
+                            //new one
+                            if (existFile == null)
+                            {
+                                item.UrlPreview = fileManager.ChangePathNameNoExtension(item.Url, "-small");
+
+                                MediaType mediatype = await context.MediaType.Where(m => m.Id == item.DocumentType.Id).FirstOrDefaultAsync();
+                                if (mediatype != null)
+                                {
+                                    item.DocumentType = mediatype;
+                                }
+
+                                var editFile = mapper.Map<FileData>(item);
+                                listFileToAdd.Add(editFile);
+                            }
+                            else
+                            {
+                                //existing 
+                                listFileToAdd.Add(existFile);
+                            }
+                        }
+                        mediaOnDb.File = listFileToAdd;
+                    }
+                }
+
+                context.Media.Update(mediaOnDb);
                 await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -266,6 +388,11 @@ namespace Events.Core.Controllers
                 {
                     throw;
                 }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error: "+ex);
+
             }
             return Ok(photos);
         }

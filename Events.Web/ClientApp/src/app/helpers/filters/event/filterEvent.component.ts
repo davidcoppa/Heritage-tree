@@ -64,7 +64,7 @@ export class FilterEventComponent implements OnInit {
       }
     }
 
-    this.service.sendUpdateEvent(user);
+    //this.service.sendUpdateEvent(user);
 
     return user && user.description ? user.description : '';
   }

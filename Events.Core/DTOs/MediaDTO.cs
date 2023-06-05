@@ -1,5 +1,4 @@
 ﻿using Events.Core.Model;
-using EventsManager.Model;
 
 namespace Events.Core.DTOs
 {
@@ -9,11 +8,11 @@ namespace Events.Core.DTOs
         public DateTime? DateUploaded { get; set; }
         public string? Description { get; set; }
         public string? Name { get; set; }
-        public List<FileData>? File { get; set; }
-        public Event? Event { get; set; }
-        public List<Tags>? TagItems { get; set; }
+        public List<FileDataDTO>? File { get; set; }
+        public EventCreateEditDTO? Event { get; set; }
+        public List<TagsEditDTO>? TagItems { get; set; }
 
-        public List<FileData>? OnlyFilesInfo { get; set; }
+        public List<FileDataDTO>? OnlyFilesInfo { get; set; }
 
 
     }

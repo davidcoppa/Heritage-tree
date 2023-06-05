@@ -59,10 +59,10 @@ namespace Events.Web
              );
 
             //add a validator per controller
-            services.AddSingleton<IDataValidator, DataValidator>();
-            services.AddSingleton<IMessages, En_Messages>();
-            services.AddSingleton<IHelper, Helper>();
-            services.AddSingleton<IFileManager, FileManager>();
+            services.AddScoped<IDataValidator, DataValidator>();
+            services.AddScoped<IMessages, En_Messages>();
+            services.AddScoped<IHelper, Helper>();
+            services.AddScoped<IFileManager, FileManager>();
             //  services.AddCors();
 
             services.AddControllers().AddJsonOptions(x =>

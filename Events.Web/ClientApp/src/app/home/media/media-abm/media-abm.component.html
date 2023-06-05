@@ -24,7 +24,8 @@
     </mat-form-field>
 
     <app-filter-Event [dataEvent]="selectedEvent"></app-filter-Event>
-    <app-chips-autocomplete></app-chips-autocomplete>
+
+    <app-chips-autocomplete [itemTags]="tagItems"></app-chips-autocomplete>
 
     <ng-image-slider [images]="imageObject"
                      [imagePopup]="true"
@@ -39,6 +40,6 @@
       </app-FileUpload>
     </ng-container>
 
-    <button mat-raised-button color="primary" (click)="SaveMedia(mediaGroup)" [disabled]="!mediaGroup.valid">Add</button>
+    <button mat-raised-button color="primary" (click)="SaveMedia(mediaGroup)" [disabled]="!mediaGroup.valid">{{buttonAction}}</button>
   </form>
   </div>

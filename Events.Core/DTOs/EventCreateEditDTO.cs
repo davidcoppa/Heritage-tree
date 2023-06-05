@@ -13,14 +13,14 @@ namespace Events.Core.DTOs
 
         [DataType(DataType.Date)]
         public DateTime? EventDate { get; set; }
-        public EventTypes EventType { get; set; }
+        public EventTypes? EventType { get; set; }
         //public PersonWithParents Person1 { get; set; }
         //public PersonWithParents? Person2 { get; set; }
         //public PersonWithParents? Person3 { get; set; }
-        public Person Person1 { get; set; }
+        public Person? Person1 { get; set; }
         public Person? Person2 { get; set; }
         public Person? Person3 { get; set; }
-        public List<Media>? Media { get; set; }
+        public List<MediaDTO>? Media { get; set; }
         public Country? Loccation { get; set; }
     }
 }

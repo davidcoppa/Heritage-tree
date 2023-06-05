@@ -16,7 +16,7 @@ import { AppService } from '../../server/app.service';
 })
 export class ChipsTags implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  @Input() dataTags: TagItem;
+  @Input() itemTags: TagItem[];
 
 
   dataControler = new UntypedFormControl('');
@@ -24,7 +24,7 @@ export class ChipsTags implements OnInit {
 
   // allItems: string[] ;
   allItems: TagItem[];
-  itemTags: TagItem[]=[];
+  //itemTags: TagItem[]=[];
 
   @ViewChild('dataInput') dataInput: ElementRef<HTMLInputElement>;
 
@@ -147,12 +147,12 @@ export class ChipsTags implements OnInit {
 
   displayTagItem = (tags: TagItem): string => {
 
-    if (this.dataTags != undefined) {
+    if (this.itemTags != undefined) {
       if (tags.id != undefined) {
-        this.dataTags = tags;
-        this.service.sendUpdateChipTag(this.dataTags);
+      //  this.dataTags = tags;
+        this.service.sendUpdateChipTag(this.itemTags);
       } else {
-        this.dataControler.setValue(this.dataTags);
+        this.dataControler.setValue(this.itemTags);
       }
     }
 

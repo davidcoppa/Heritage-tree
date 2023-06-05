@@ -8,6 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Modules\**" />
+    <Compile Remove="Resources\**" />
+    <Content Remove="Modules\**" />
+    <Content Remove="Resources\**" />
+    <EmbeddedResource Remove="Modules\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Modules\**" />
+    <None Remove="Resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="DynamicLINQ" Version="1.0.0" />
     <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="12.3.0" />
@@ -26,9 +37,5 @@
     <PackageReference Include="System.Linq.Dynamic" Version="1.0.8" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
   </ItemGroup>
-	<ItemGroup>
-		<Folder Include="Modules\" />
-		<Folder Include="Resources\tmp\" />
-	</ItemGroup>
 
 </Project>

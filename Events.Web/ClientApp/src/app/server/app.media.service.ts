@@ -49,8 +49,9 @@ export class AppMediaService {
     let queryParams = new HttpParams();
     queryParams = queryParams.append("id", id);
 
-    return this.httpClient.post<Media>('api/Media/EditMedia', newMedia, { params: queryParams });
+    return this.httpClient.post<Media>('api/Media/Edit', newMedia, { params: queryParams });
 
   }
 
 }
+

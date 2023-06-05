@@ -28,12 +28,13 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
   mediaGroup: UntypedFormGroup;
   fb: UntypedFormBuilder;
   media: Media;
-  buttonAction: string = "Add";
+  buttonAction: string;
   selectedEvent: Events;
   mediaToSave: Media;
   tagItems: TagItem[] = [];
 
   filesToShow: FileData[];
+  allFiles: FileData[];
   imageObject: object[]=[];
 
 
@@ -54,7 +55,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
     
     this.subscriptionABMMedia = this.appMediaService.getUpdateMedia().subscribe
       (data => {
-        console.log("media abm ctor -- data: " + data);
+    ///    console.log("media abm ctor -- data: " + data);
         if (data != undefined) {
 
           if (data.data.abmObject == true) {
@@ -91,8 +92,10 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
     console.log("media edit init: ");
 
     if (this.mediaSelected != undefined) {
+      this.buttonAction = "Update";
       this.mediaGroup = this.CreateForm(this.mediaSelected);
     } else {
+      this.buttonAction = "Add";
       this.mediaGroup = this.CreateForm(null);
     }
 
@@ -114,6 +117,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
 
   getFileMedia() {
     this.filesToShow = this.mediaSelected.onlyFilesInfo;
+ //   Array.prototype.push.apply(this.media.file, this.filesToShow)
 
     for (var i = 0; i < this.filesToShow.length; i++) {
    //   console.log("media this.filesToShow  i : " + this.filesToShow[i]);
@@ -142,6 +146,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
       this.mediaGroup = this.CreateForm(null);
 
     } else {
+   
       this.media = this.mediaSelected;
     //  this.getFileMedia();
 
@@ -151,6 +156,7 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
   //get media, events and tags
   CreateForm(mediaEdit: Media | null): UntypedFormGroup {
     if (mediaEdit == null) {
+      
       return this.fb.group({
         Name: [null, [Validators.required]],
         Description: [null],
@@ -159,9 +165,10 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
       });
     } else {
       this.selectedEvent = (mediaEdit.event == null) ? this.selectedEvent : mediaEdit.event;
+      this.tagItems = (mediaEdit.tagItems == null) ? this.tagItems : mediaEdit.tagItems;
 
+      
       this.getFileMedia();
-
       return this.fb.group({
         Name: new UntypedFormControl(mediaEdit.name ?? null),
         Description: new UntypedFormControl(mediaEdit.description ?? null),
@@ -176,15 +183,29 @@ export class MediaAbmComponent implements OnInit, OnChanges, OnDestroy {
   SaveMedia(MeidaABM: UntypedFormGroup) {
     if (MeidaABM.status == 'VALID') {
       this.mediaToSave = MeidaABM.value as Media;
-      console.log('Current media: ', this.media);
-      //TODO:put files from media 
+    //  console.log('Current media: ', this.media);
+      var newFiles = this.media.file as unknown as FileData[];
+      var filesToSave = this.filesToShow as unknown as FileData[];
+      //var ppp: FileData[]=[];
+      //ppp.concat(adsfasf, asdfmamp);
+      ////this.filesToShow.concat(, this.mediaToSave.file as unknown as FileData[]);
+      
 
-      this.mediaToSave.file = this.media.file;
+      for (var i = 0; i < newFiles.length; i++) {
+        filesToSave.push(newFiles[i])
+      }
+      this.mediaToSave.file = filesToSave;
+
+    //  Array.prototype.push.apply(this.mediaToSave.file, [this.filesToShow]);
+
+
+
       this.mediaToSave.event = this.selectedEvent;
       this.mediaToSave.tagItems = this.tagItems;
       this.mediaToSave.description = (this.selectedEvent == null) ? '' : this.selectedEvent.description;
 
       if (this.buttonAction == "Update") {
+        this.mediaToSave.id = this.mediaSelected.id;
         this.appMediaService.UpdateMedia(this.mediaSelected.id, this.mediaToSave)
           .pipe(first())
           .subscribe(
