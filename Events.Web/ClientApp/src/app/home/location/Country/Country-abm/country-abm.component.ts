@@ -56,7 +56,8 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
         code: [null],
         capital: [null],
         region: [null],
-        coordinates: [null]
+        lat: [null],
+        lng:[null]
       });
     } else {
       this.buttonAction = "Update";
@@ -68,7 +69,8 @@ export class CountryAbmComponent implements OnInit, OnDestroy {
         code: new UntypedFormControl(countryEdit.code ?? null),
         capital: new UntypedFormControl(countryEdit.capital ?? null),
         region: new UntypedFormControl(countryEdit.region ?? null),
-        coordinates: new UntypedFormControl(countryEdit.coordinates ?? null)
+        lat: new UntypedFormControl(countryEdit.lat ?? null),
+        lng: new UntypedFormControl(countryEdit.lng ?? null)
       });
 
     }

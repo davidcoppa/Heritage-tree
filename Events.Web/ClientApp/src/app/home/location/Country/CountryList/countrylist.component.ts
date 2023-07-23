@@ -30,7 +30,8 @@ export class CountrylistComponent implements AfterViewInit, OnDestroy {
     'Code',
     'Capital',
     'Region',
-    'Coordinates',
+    'Lat',
+    'Lng',
     'FullName',
     'State',
     'Action'
@@ -40,8 +41,8 @@ export class CountrylistComponent implements AfterViewInit, OnDestroy {
     'Code',
     'Capital',
     'Region',
-    'Coordinates',
-    'FullName',
+    'Lat',
+    'Lng',
     'City',
     'Action'
   ];
@@ -50,8 +51,8 @@ export class CountrylistComponent implements AfterViewInit, OnDestroy {
     'Code',
     'Capital',
     'Region',
-    'Coordinates',
-    'FullName',
+    'Lat',
+    'Lng',
     'Action'
   ];
 
@@ -121,9 +122,10 @@ export class CountrylistComponent implements AfterViewInit, OnDestroy {
   }
 
   toggleRowCity(element: object) {
-    console.log("City list click - element: " + element);
 
     var elementCity = element as State;
+    console.log("state list click - element: " + elementCity);
+
 
     (elementCity.cities && (elementCity.cities as MatTableDataSource<City>).data?.length) ?
       (this.expandedElementCity = this.expandedElementCity === elementCity ? null : elementCity) : null;
@@ -132,7 +134,7 @@ export class CountrylistComponent implements AfterViewInit, OnDestroy {
 
 
   toggleRowState(element: object) {
-    console.log("state list click");
+    console.log("country list click");
 
     var elementCountry = element as Country;
 
@@ -142,7 +144,7 @@ export class CountrylistComponent implements AfterViewInit, OnDestroy {
   //(elementCity.file as MatTableDataSource<FileData>)
 
   applyFilter(filterValue: string) {
-    this.innerTablesState.forEach((table, index) => (table.dataSource as MatTableDataSource<State>).filter = filterValue.trim().toLowerCase());
+    this.innerTablesState.forEach((table, index) => (table.dataSource as MatTableDataSource<Country>).filter = filterValue.trim().toLowerCase());
   }
 
 

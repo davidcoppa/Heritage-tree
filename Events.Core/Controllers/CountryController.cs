@@ -49,26 +49,27 @@ namespace Events.Core.Controllers
 
             foreach (var country in countryLocation ?? Enumerable.Empty<Country>())
             {
-                string strnName = country.Name;
-                foreach (var states in country.States ?? Enumerable.Empty<States>())
-                {
-                    strnName = strnName + ", " + states.Name;
-                    foreach (var cities in states.Cities ?? Enumerable.Empty<City>())
-                    {
-                        strnName = strnName + ", " + cities.Name;
-                    }
-                }
+               // string strnName = country.Name;
+                //foreach (var states in country.States ?? Enumerable.Empty<States>())
+                //{
+                //    strnName = strnName + ", " + states.Name;
+                //    foreach (var cities in states.Cities ?? Enumerable.Empty<City>())
+                //    {
+                //        strnName = strnName + ", " + cities.Name;
+                //    }
+                //}
 
                 CountryReturnDTO retval = new CountryReturnDTO
                 {
                     Capital = country.Capital,
                     Code = country.Code,
                     Id = country.Id,
-                    Coordinates = country.Coordinates,
+                    Lat = country.Lat,
+                    Lng = country.Lng,
                     Name = country.Name,
                     Region = country.Region,
                     State = country.States,
-                    FullName = strnName
+                    FullName = country.Name
                 };
 
                 retValList.Add(retval);

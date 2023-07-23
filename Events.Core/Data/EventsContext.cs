@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using EventsManager.Model;
 using Events.Core.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace EventsManager.Data
 {
-    public class EventsContext : DbContext
+    public class EventsContext : IdentityDbContext<IdentityUser>
     {
         private readonly Action<EventsContext, ModelBuilder> _customizeModel;
 
@@ -27,7 +29,25 @@ namespace EventsManager.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
+            var roleAdmin = new IdentityRole()
+            {
+                Id = "6368d931-bb95-4a6d-9ada-ac38d97381e1",
+                Name = "Admin",
+                NormalizedName = "Admin"
+            };
 
+            modelBuilder.Entity<IdentityRole>().HasData(roleAdmin);
+
+            var roleUser = new IdentityRole()
+            {
+                Id = "3b4a505e-964f-472c-8282-6eebf3da2c8d",
+                Name = "User",
+                NormalizedName = "User"
+            };
+
+            modelBuilder.Entity<IdentityRole>().HasData(roleUser);
+
+            base.OnModelCreating(modelBuilder);
 
 
         }
@@ -42,6 +62,7 @@ namespace EventsManager.Data
         public DbSet<FileData> FileData { get; set; }
         public DbSet<Tags> Tags { get; set; }
         public DbSet<MediaType> MediaType { get; set; }
+        public DbSet<UserEvent> UserEvent { get; set; }
 
     }
 }

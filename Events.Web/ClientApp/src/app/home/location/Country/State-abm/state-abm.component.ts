@@ -57,7 +57,8 @@ export class StateAbmComponent implements OnInit, OnDestroy {
         code: [null],
         capital: [null],
         region: [null],
-        coordinates: [null]
+        lat: [null],
+        lng: [null]
       });
     } else {
       this.evt = this.stateSelected;
@@ -68,7 +69,8 @@ export class StateAbmComponent implements OnInit, OnDestroy {
         code: new UntypedFormControl(stateEdit.code ?? null),
         capital: new UntypedFormControl(stateEdit.capital ?? null),
         region: new UntypedFormControl(stateEdit.region ?? null),
-        coordinates: new UntypedFormControl(stateEdit.coordinates ?? null)
+        lat: new UntypedFormControl(stateEdit.lat ?? null),
+        lng: new UntypedFormControl(stateEdit.lng ?? null)
       });
     }
 

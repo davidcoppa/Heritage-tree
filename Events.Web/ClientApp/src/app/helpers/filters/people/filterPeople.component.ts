@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit} from "@angular/core";
+import { AfterViewInit, Component, Input, OnChanges, OnInit} from "@angular/core";
 import { UntypedFormControl } from "@angular/forms";
 import { map, startWith, Observable, first, Subscription } from "rxjs";
 import { displayPeople } from "../../../model/displayPeople.model";
@@ -9,7 +9,7 @@ import { AppService } from "../../../server/app.service";
   selector: 'app-filter-People',
   templateUrl: './filterPeople.component.html'
 })
-export class FilterPeopleComponent implements OnInit, OnChanges {
+export class FilterPeopleComponent implements AfterViewInit {
 
   @Input() dataPeople: displayPeople;
 
@@ -21,10 +21,8 @@ export class FilterPeopleComponent implements OnInit, OnChanges {
   constructor(private service: AppService) {
   }
 
-  ngOnChanges() {
-  }
-
-  ngOnInit(): void {
+ 
+  ngAfterViewInit(): void {
     this.GetAllPerson();
   }
 
@@ -34,15 +32,15 @@ export class FilterPeopleComponent implements OnInit, OnChanges {
       .pipe(first())
       .subscribe(
         data => {
-          console.log('Current data: ', data);
+        //  console.log('Current data: ', data);
 
-          this.optionsPersons = data;
+          this.optionsPersons = data==null?[]:data ;
 
           this.personsOptions = this.personControl.valueChanges.pipe(
             startWith(''),
             map(value => {
               const name = typeof value === 'string' ? value : value?.name;
-              return name ? this.filterPeople(name as string) : this.optionsPersons.slice();
+              return name=='' ? this.filterPeople(name as string) : this.optionsPersons.slice();
             }),
           );
         },
@@ -64,7 +62,7 @@ export class FilterPeopleComponent implements OnInit, OnChanges {
 
         }
         else {
-          console.log("oh no that's bad!!! " + this.dataPeople);
+          console.log("No users found!");
         }
       }
 
@@ -83,8 +81,5 @@ export class FilterPeopleComponent implements OnInit, OnChanges {
       || option.dateOfBirth?.toString().toLowerCase().includes(filterValue)
       || option.dateOfDeath?.toString().toLowerCase().includes(filterValue));
   }
-
-
-
 
 }

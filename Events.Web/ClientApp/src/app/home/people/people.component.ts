@@ -10,7 +10,7 @@ import { AppService } from 'src/app/server/app.service';
   templateUrl: './people.component.html',
   styleUrls: ['./people.component.css']
 })
-export class PeopleComponent implements OnInit, OnChanges, OnDestroy {
+export class PeopleComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() abmObject: boolean;
   person: Person[] = [];
   @Input() sort!: MatSort;
@@ -41,13 +41,13 @@ export class PeopleComponent implements OnInit, OnChanges, OnDestroy {
           this.sort = data.data.sort;
           this.paginator = data.data.paginator;
 
-          this.ngOnInit();
+     //     this.ngOnInit();
         }
        
       });
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     console.log("changes people");
     if (this.sort == undefined) { return; }
 

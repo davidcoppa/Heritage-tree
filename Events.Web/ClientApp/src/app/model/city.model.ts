@@ -4,6 +4,7 @@ export interface City {
   capital: string
   code: string,
   region: string
-  coordinates: string,
+  lat: string,
+  lng: string,
   fullName: string
 }

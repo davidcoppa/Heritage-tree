@@ -1,65 +1,89 @@
-<!-- <app-layout> -->
+<div>
+  <div *ngIf="!isUserAuthenticated()">
+    <div *ngIf="!isNewUser">
+      <app-login></app-login>
+    </div>
+    <div *ngIf="isNewUser">
+      <app-register></app-register>
+    </div>
+  </div>
+    <div *ngIf="isUserAuthenticated()" style="color:green;">
+      <h2>
 
 
-  <mat-toolbar class="mat-elevation-z8">
-    <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
-        <mat-icon *ngIf="!sidenav.opened">
-            menu
-        </mat-icon>
-        <mat-icon *ngIf="sidenav.opened">
-            close
-        </mat-icon>
-    </button>
+        <mat-toolbar class="mat-elevation-z8">
+          <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+            <mat-icon *ngIf="!sidenav.opened">
+              menu
+            </mat-icon>
+            <mat-icon *ngIf="sidenav.opened">
+              close
+            </mat-icon>
+          </button>
 
-    <app-header>
-      
-    </app-header>
-  </mat-toolbar>
+          <app-header>
 
-  <mat-sidenav-container>
-   
-    <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
-      <img
-        class="avatar mat-elevation-z8"
-        src=""
-      />
-  
-      <h4 class="name">John Smith</h4>
-      <p class="designation">Software Engineer</p>
-  
-      <mat-divider></mat-divider>
-  
-      <button mat-button class="menu-button" routerLink="/home">
-        <mat-icon>home</mat-icon>
-        <span>Home</span>
-      </button>
-      <button mat-button class="menu-button" routerLink="/profile">
-        <mat-icon>person</mat-icon>
-        <span>Profile</span>
-      </button>
-      <button mat-button class="menu-button" routerLink="/about">
-        <mat-icon>info</mat-icon>
-        <span>About</span>
-      </button>
-  
-      <mat-divider></mat-divider>
-  
-      <button mat-button class="menu-button" routerLink="/help">
-        <mat-icon>help</mat-icon>
-        <span>Help</span>
-      </button>
-    </mat-sidenav>
+          </app-header>
 
-   <!-- <app-side-nav>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+              <li *ngIf="isUserAuthenticated()" class="nav-item">
+                <a class="nav-link" routerLink="/people">People</a>
+              </li>
+              <li *ngIf="isUserAuthenticated()" class="nav-item">
+                <a class="nav-link" (click)="logOut()">Logout</a>
+              </li>
+            </ul>
+          </div>
 
-   </app-side-nav> -->
-   
-    <mat-sidenav-content>
-      <div class="content mat-elevation-z8">
-       <router-outlet></router-outlet>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+        </mat-toolbar>
+
+        <mat-sidenav-container>
+
+          <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+            <img class="avatar mat-elevation-z8"
+                 src="" />
+
+            <h4 class="name">John Smith</h4>
+            <p class="designation">Software Engineer</p>
+
+            <mat-divider></mat-divider>
+
+            <button mat-button class="menu-button" routerLink="/home">
+              <mat-icon>home</mat-icon>
+              <span>Home</span>
+            </button>
+            <button mat-button class="menu-button" routerLink="/profile">
+              <mat-icon>person</mat-icon>
+              <span>Profile</span>
+            </button>
+            <button mat-button class="menu-button" routerLink="/about">
+              <mat-icon>info</mat-icon>
+              <span>About</span>
+            </button>
+
+            <mat-divider></mat-divider>
+
+            <button mat-button class="menu-button" routerLink="/help">
+              <mat-icon>help</mat-icon>
+              <span>Help</span>
+            </button>
+          </mat-sidenav>
+
+          <!-- <app-side-nav>
+
+        </app-side-nav> -->
+
+          <mat-sidenav-content>
+            <div class="content mat-elevation-z8">
+              <router-outlet></router-outlet>
+            </div>
+          </mat-sidenav-content>
+        </mat-sidenav-container>
 
 
-<!-- </app-layout> -->
+
+
+      </h2>
+    </div>
+  </div>

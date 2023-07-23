@@ -57,7 +57,8 @@ export class CityAbmComponent implements OnInit, OnDestroy {
         code: [null],
         capital: [null],
         region: [null],
-        coordinates: [null]
+        lat: [null],
+        lng: [null]
       });
     } else {
       this.evt = this.citySelected;
@@ -68,7 +69,8 @@ export class CityAbmComponent implements OnInit, OnDestroy {
         code: new UntypedFormControl(cityEdit.code ?? null),
         capital: new UntypedFormControl(cityEdit.capital ?? null),
         region: new UntypedFormControl(cityEdit.region ?? null),
-        coordinates: new UntypedFormControl(cityEdit.coordinates ?? null)        
+        lat: new UntypedFormControl(cityEdit.lat ?? null),
+        lng: new UntypedFormControl(cityEdit.lng ?? null)      
       });
     }
 

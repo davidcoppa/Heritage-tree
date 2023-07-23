@@ -50,6 +50,11 @@ import { FilterEventComponent } from './helpers/filters/event/filterEvent.compon
 import { ChipsTags } from './helpers/chips/chips.tags.component';
 import { FilterNamePipe } from './helpers/pipes/filterName.pipe';
 import { NgImageSliderModule } from 'ng-image-slider';
+import { JwtHelperService, JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { LoginComponent } from './auth0/LogIn/login.component';
+import { RecaptchaV3Module, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { RegisterComponent } from './auth0/register/register.component';
 
 
 
@@ -89,9 +94,15 @@ import { NgImageSliderModule } from 'ng-image-slider';
     FilterEventComponent,
     //media
     FileUploadComponent,
-    ChipsTags
+    ChipsTags,
+
+    //user
+    LoginComponent,
+    RegisterComponent
+   
   ],
   imports: [
+   
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       registrationStrategy: 'registerImmediately',
@@ -101,6 +112,8 @@ import { NgImageSliderModule } from 'ng-image-slider';
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    RecaptchaV3Module,
+    FlexLayoutModule,
     ReactiveFormsModule,
     AppMaterial,
     ToastrModule.forRoot({
@@ -108,11 +121,16 @@ import { NgImageSliderModule } from 'ng-image-slider';
       positionClass: 'toast-top-right'
     }),
     NgImageSliderModule
+    //JwtModule.forRoot(JWT_Module_Options)
+
   ],
   providers: [AppService, AppMediaService, AppFileService, HttpClient,
     { provide: MAT_DATE_LOCALE, useValue: 'en-ES' },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService,
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: environment.recaptcha.siteKey,} 
   ],
   bootstrap: [AppComponent]
 })

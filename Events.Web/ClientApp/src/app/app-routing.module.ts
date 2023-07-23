@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
+import { LoginComponent } from './auth0/LogIn/login.component';
+import { RegisterComponent } from './auth0/register/register.component';
 import { EventComponent } from './home/event/event.component';
 import { EventTypeComponent } from './home/eventType/eventtype.component';
 import { LocationComponent } from './home/location/location.component';
@@ -16,6 +17,8 @@ export const routes: Routes = [
   { path: 'eventypes', component: EventTypeComponent},
   { path: 'media', component: MediaComponent},
   { path: 'location', component: LocationComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'login/register', component: RegisterComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 

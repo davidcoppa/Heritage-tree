@@ -8,7 +8,8 @@ export interface State {
   code: string,
   region: string,
 
-  coordinates: string,
+  lat: string,
+  lng: string,
 
   cities: City[] | MatTableDataSource<City> ,
   fullName: string

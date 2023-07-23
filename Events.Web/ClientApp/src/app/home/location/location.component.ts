@@ -110,12 +110,13 @@ export class LocationComponent implements OnInit, OnChanges, OnDestroy {
 
                 this.states = [...this.states, { ...stateData, cities: new MatTableDataSource(stateData.cities) }];
 
-                this.countries = [...this.countries, { ...user, state: new MatTableDataSource(this.states) }];
               }
               else {
-                this.countries = [...this.countries, { ...user, state: new MatTableDataSource(userState) }];
+                this.states = [...this.states, {...stateData  }];
+                //this.countries = [...this.countries, { ...user, state: new MatTableDataSource(userState) }];
               }
-            })
+            }),
+              this.countries = [...this.countries, { ...user, state: new MatTableDataSource(this.states) }];
           } else {
             this.countries = [...this.countries, user];
           }

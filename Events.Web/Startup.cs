@@ -4,11 +4,18 @@ using Events.Core.Common;
 using Events.Core.Common.Helpers;
 using Events.Core.Common.Messages;
 using Events.Core.Common.Validators;
+using Events.Core.Model;
 using EventsManager.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Events.Web
@@ -17,6 +24,7 @@ namespace Events.Web
     {
         public Startup(IConfiguration configuration)
         {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             Configuration = configuration;
         }
 
@@ -34,6 +42,11 @@ namespace Events.Web
                 options.Providers.Add<BrotliCompressionProvider>();
             });
 
+            services.AddHttpsRedirection(options =>
+            {
+                options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
+                options.HttpsPort = 443;
+            });
             services.AddHsts(
                 options =>
                 {
@@ -41,6 +54,7 @@ namespace Events.Web
                     options.IncludeSubDomains = true;
                     options.MaxAge = TimeSpan.FromDays(180);
                 });
+
 
 
             services.AddDbContext<EventsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -68,7 +82,29 @@ namespace Events.Web
             services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+         
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => options.TokenValidationParameters =
+                new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(Configuration["JWT:key"])),
+                    ClockSkew = TimeSpan.Zero
 
+                });
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<EventsContext>()
+            .AddDefaultTokenProviders();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsAdmin", policy => policy.RequireClaim("IsAdmin"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -60,7 +60,8 @@ namespace Events.Core.Controllers
                     Capital = states.Capital,
                     Code = states.Code,
                     Id = states.Id,
-                    Coordinates = states.Coordinates,
+                    Lat = states.Lat,
+                    Lng = states.Lng,
                     Name = states.Name,
                     Region = states.Region,
                     FullName = strnName

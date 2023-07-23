@@ -28,9 +28,14 @@
           <td mat-cell *matCellDef="let row">{{row.region}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="Coordinates" class="text-wrap">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Coordinates</th>
-          <td mat-cell *matCellDef="let row">{{row.coordinates}} </td>
+        <ng-container matColumnDef="Lat" class="text-wrap">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Lat</th>
+          <td mat-cell *matCellDef="let row">{{row.lat}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Lng" class="text-wrap">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Lng</th>
+          <td mat-cell *matCellDef="let row">{{row.lng}} </td>
         </ng-container>
 
         <ng-container matColumnDef="FullName">
@@ -78,16 +83,16 @@
                     <td mat-cell *matCellDef="let row">{{row.region}} </td>
                   </ng-container>
 
-                  <ng-container matColumnDef="Coordinates" class="text-wrap">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Coordinates</th>
-                    <td mat-cell *matCellDef="let row">{{row.coordinates}} </td>
+                  <ng-container matColumnDef="Lat" class="text-wrap">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Lat</th>
+                    <td mat-cell *matCellDef="let row">{{row.lat}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="Lng" class="text-wrap">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Lng</th>
+                    <td mat-cell *matCellDef="let row">{{row.lng}} </td>
                   </ng-container>
 
-                  <ng-container matColumnDef="FullName">
-                    <th mat-header-cell *matHeaderCellDef>FullName</th>
-                    <td mat-cell *matCellDef="let row">{{row.fullName}}</td>
-                  </ng-container>
-
+                 
                   <ng-container matColumnDef="City">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>City</th>
                     <td mat-cell *matCellDef="let row">{{row.cities?.data?.length}}</td>
@@ -96,47 +101,47 @@
 
                   <ng-container matColumnDef="expandedDetailCity">
                     <td mat-cell *matCellDef="let city" [attr.colspan]="cityDisplaedColumns.length">
-                      <div class="example-element-detail" *ngIf="city.cities?.data.length"
+                      <div class="example-element-detail" *ngIf="city.cities?.data?.length"
                            [@detailExpand]="city == expandedElementCity ? 'expanded' : 'collapsed'">
                         <div class="inner-table mat-elevation-z8" *ngIf="expandedElementCity">
 
-                          <table innerTablesCity mat-table #innerSortCity="matSort"
+                          <table #innerTablesCity mat-table #innerSortCity="matSort"
                                  [dataSource]="city.cities" matSort
                                  multiTemplateDataRows
                                  class="table">
 
                             <ng-container matColumnDef="Name">
                               <th mat-header-cell *matHeaderCellDef>Name</th>
-                              <td mat-cell *matCellDef="let row">{{city.name}}</td>
+                              <td mat-cell *matCellDef="let city">{{city.name}}</td>
                             </ng-container>
 
                             <ng-container matColumnDef="Code" class="text-wrap">
                               <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
-                              <td mat-cell *matCellDef="let row">{{city.code}} </td>
+                              <td mat-cell *matCellDef="let city">{{city.code}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="Capital" class="text-wrap">
                               <th mat-header-cell *matHeaderCellDef mat-sort-header>Capital</th>
-                              <td mat-cell *matCellDef="let row">{{city.capital}} </td>
+                              <td mat-cell *matCellDef="let city">{{city.capital}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="Region" class="text-wrap">
                               <th mat-header-cell *matHeaderCellDef mat-sort-header>Region</th>
-                              <td mat-cell *matCellDef="let row">{{city.region}} </td>
+                              <td mat-cell *matCellDef="let city">{{city.region}} </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="Coordinates" class="text-wrap">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Coordinates</th>
-                              <td mat-cell *matCellDef="let row">{{city.coordinates}} </td>
+                            <ng-container matColumnDef="Lat" class="text-wrap">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Lat</th>
+                              <td mat-cell *matCellDef="let city">{{city.lat}} </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="FullName">
-                              <th mat-header-cell *matHeaderCellDef>FullName</th>
-                              <td mat-cell *matCellDef="let row">{{city.fullName}}</td>
+                            <ng-container matColumnDef="Lng" class="text-wrap">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Lng</th>
+                              <td mat-cell *matCellDef="let city">{{city.lng}} </td>
                             </ng-container>
 
 
-
+                      
                             <ng-container matColumnDef="Action">
                               <tr>
                                 <th mat-header-cell *matHeaderCellDef> Action </th>

@@ -1,0 +1,88 @@
+<mat-card appearance="outlined">
+  <mat-card-title>Register</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <p>
+        <mat-form-field>
+          <input type="text" matInput formControlName="email" placeholder="Email" [ngClass]="{ 'is-invalid': f['email'].errors }" required />
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field>
+          <input type="password" formControlName="password" matInput placeholder="Password" [ngClass]="{ 'is-invalid': f['password'].errors }" required />
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <input type="password" formControlName="password2" matInput placeholder="Repeat Password" [ngClass]="{ 'is-invalid': f['password2'].errors }" required />
+        </mat-form-field>
+      </p>
+
+      <p *ngIf="error" class="error">
+        {{ error }}
+      </p>
+
+      <div class="button" *ngIf="!registerOk">
+        <button type="submit" mat-button>
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Register
+        </button>
+      </div>
+    </form>
+
+  </mat-card-content>
+  <div *ngIf="registerOk" class="button">
+    You are registered!!!
+    <button (click)="goToLogin()" mat-button>
+      <span>login</span>
+    </button>
+  </div>
+</mat-card>
+
+
+<!--<div class="col-md-6 offset-md-3 mt-5">-->
+<!--<div class="alert alert-info">
+    Username: test<br />
+    Password: test
+</div>-->
+<!--<div class="card">
+    <h4 class="card-header">GITS - Admin - New User</h4>
+    <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">Email is required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+            <div *ngIf="f.password.errors.minLength">Passwords must have at least 8 character.</div>
+            <div *ngIf="f.password.errors.pattern">Passwords must have at least one digit ('0'-'9').</div>
+            <div *ngIf="f.password.errors.pattern">Passwords must have at least one uppercase ('A'-'Z').</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password2">Confirm Password</label>
+          <input type="password" formControlName="password2" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password2.errors }" />
+          <div *ngIf="submitted && f.password2.errors" class="invalid-feedback">
+            <div *ngIf="f.password2.errors.required">Password is required</div>
+            <div *ngIf="f.password2.errors.ConfirmedValidator">Password and Confirm Password must be match.</div>
+
+          </div>
+          <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{errors}}</div>
+
+        </div>
+        <button class="btn btn-primary" type="submit" [disabled]="!form.valid">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Register
+        </button>
+      </form>
+    </div>
+  </div>
+</div>-->

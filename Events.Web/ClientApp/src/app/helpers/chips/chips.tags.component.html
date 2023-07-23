@@ -1,9 +1,9 @@
 <form>
   <mat-form-field class="chip-list" appearance="fill">
     <mat-label>Tags</mat-label>
-    <mat-chip-list #chipGrid aria-label="Fruit selection">
+    <mat-chip-grid #chipGrid aria-label="Fruit selection">
 
-      <mat-chip *ngFor="let item of itemTags" (removed)="remove(item)">
+      <mat-chip-row *ngFor="let item of itemTags" (removed)="remove(item)">
         {{item.name}}
 
         <button matChipRemove [attr.aria-label]="'remove ' + item">
@@ -11,7 +11,7 @@
         </button>
 
 
-      </mat-chip>
+      </mat-chip-row>
 
         <input placeholder="New Tag..." #dataInput
                [formControl]="dataControler"
@@ -20,7 +20,7 @@
                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                (matChipInputTokenEnd)="add($event)" />
       
-    </mat-chip-list>
+    </mat-chip-grid>
 
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
       <mat-option *ngFor="let item of filteredObjects | async" [value]="item">

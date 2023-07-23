@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.18" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.25" />
@@ -34,11 +35,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\auth0\LogIn\login.component.ts" />
+    <None Remove="ClientApp\src\app\auth0\register\register.component.ts" />
     <None Remove="ClientApp\src\app\helpers\chips\chips.tags.component.ts" />
     <None Remove="ClientApp\src\app\helpers\enums\location.enum.ts" />
     <None Remove="ClientApp\src\app\helpers\enums\Person.enum.ts" />
     <None Remove="ClientApp\src\app\helpers\pipes\filterName.pipe.ts" />
+    <None Remove="ClientApp\src\app\helpers\validators\equalStringValidator.ts" />
     <None Remove="ClientApp\src\app\home\location\location.component.ts" />
+    <None Remove="ClientApp\src\app\home\user\settings\event.settings.component.ts" />
+    <None Remove="ClientApp\src\app\model\captcha.model.ts" />
     <None Remove="ClientApp\src\app\model\fileData.model.ts" />
     <None Remove="ClientApp\src\app\model\listSubObject.ts" />
     <None Remove="ClientApp\src\app\model\user.ts" />
@@ -52,11 +58,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\auth0\LogIn\login.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\auth0\register\register.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\app\helpers\chips\chips.tags.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\enums\location.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\enums\person.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\pipes\filterName.pipe.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\helpers\validators\equalStringValidator.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\home\location\location.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\home\user\settings\event.settings.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\model\captcha.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\fileData.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\listSubObject.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\user.ts" />

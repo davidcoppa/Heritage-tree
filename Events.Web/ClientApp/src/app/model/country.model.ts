@@ -7,7 +7,8 @@ export interface Country {
   capital: string,
   code: string,
   region: string,
-   coordinates :string,
+  lat: string,
+  lng: string,
   state: State[] | MatTableDataSource<State>,
   fullName: string
 }

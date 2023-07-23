@@ -7,6 +7,7 @@
         public string Capital { get; set; }
         public string? Code { get; set; }
         public string? Region { get; set; }
-        public string? Coordinates { get; set; }
+        public string? Lat { get; set; }
+        public string? Lng { get; set; }
     }
 }
